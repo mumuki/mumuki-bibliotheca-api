@@ -3,8 +3,12 @@ source 'https://rubygems.org'
 gem 'rake'
 
 gem 'sinatra'
+
 gem 'mongo', '~> 2.1'
 gem 'bson_ext'
+
+gem 'git'
+gem 'octokit', '~> 4.1'
 
 
 group :test do
