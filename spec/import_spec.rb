@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Import do
+describe GitIo::Import do
   let(:import) { guide.imports.build }
 
   describe '#status' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ImportLog do
+describe GitIo::ImportLog do
   let(:log) { ImportLog.new }
 
   describe 'pre validation errors' do

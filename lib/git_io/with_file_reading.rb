@@ -1,5 +1,4 @@
-module WithFileReading
-
+module GitIo::WithFileReading
   def read_code_file(root,filename)
     files = Dir.glob("#{root}/#{filename}.*")
     file = files[0]

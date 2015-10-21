@@ -1,4 +1,4 @@
-class ImportLog
+class GitIo::ImportLog
   attr_accessor :messages
 
   def initialize

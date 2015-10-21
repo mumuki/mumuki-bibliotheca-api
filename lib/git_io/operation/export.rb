@@ -1,5 +1,4 @@
-class Export < RepositoryOperation
-  schedule_on_create ExportGuideJob
+class GitIo::Operation::Export < GitIo::Operation
 
   def run_export! #TODO template method
     Rails.logger.info "Exporting guide #{guide.name}"

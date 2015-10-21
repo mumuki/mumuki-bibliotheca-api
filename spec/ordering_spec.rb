@@ -5,7 +5,7 @@ def position_after_ordering(ordering, position, builder)
   builder.position
 end
 
-describe Ordering do
+describe GitIo::Ordering do
   let(:builder) { ExerciseBuilder.new.tap { |it| it.position = 1 } }
 
   it { expect(Ordering.from(nil)).to be NaturalOrdering }

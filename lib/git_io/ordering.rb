@@ -1,10 +1,10 @@
-module Ordering
+module GitIo::Ordering
   def self.from(order)
-    order ? FixedOrdering.new(order) : NaturalOrdering
+    order ? GitIo::FixedOrdering.new(order) : GitIo::NaturalOrdering
   end
 end
 
-class FixedOrdering
+class GitIo::FixedOrdering
   def initialize(order)
     @order = order
   end
@@ -18,7 +18,7 @@ class FixedOrdering
   end
 end
 
-module NaturalOrdering
+module GitIo::NaturalOrdering
   def self.with_position(_original_id, _builder)
   end
 end
