@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GitIo::Export do
+describe GitIo::Operation::Export do
   let(:committer) { create(:user, token: '123456') }
   let(:haskell) { create(:haskell) }
   let!(:exercise_1) { create(:exercise, guide: guide,

@@ -1,6 +1,4 @@
-class GitIo::Operation
-  include GitIo::WithFileReading
-
+module GitIo::Operation
   attr_accessor :repo
 
   def with_cloned_repo
@@ -12,7 +10,9 @@ class GitIo::Operation
 
 end
 
-
+require_relative './operation/with_file_reading'
+require_relative './operation/guide_reader'
+require_relative './operation/exercise_reader'
 require_relative './operation/export'
 require_relative './operation/import'
 require_relative './operation/import_log'

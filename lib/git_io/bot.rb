@@ -1,11 +1,8 @@
-require 'octokit'
-require 'git'
-
 class GitIo::Bot
   attr_accessor :token, :name
 
   def initialize(token, name)
-    @token = token
+    @token = t
     @name = name
   end
 

@@ -1,6 +1,7 @@
-class GitIo::Operation::Export < GitIo::Operation
+class GitIo::Operation::Export
+  include GitIo::Operation
 
-  def run_export! #TODO template method
+  def run! #TODO template method
     Rails.logger.info "Exporting guide #{guide.name}"
     run_update! do
       committer.ensure_repo_exists! guide
@@ -74,7 +75,7 @@ class GitIo::Operation::Export < GitIo::Operation
   end
 
   def expectations_yaml(e)
-    {'expectations' => e.expectations }.to_yaml
+    {'expectations' => e.expectations}.to_yaml
   end
 
   def extra_filename

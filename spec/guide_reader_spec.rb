@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GitIo::GuideReader do
+describe GitIo::Operation::GuideReader do
   let(:author) { create(:user) }
   let(:log) { ImportLog.new }
   let(:repo) { GuideReader.new(author, haskell, 'spec/data/simple-guide') }

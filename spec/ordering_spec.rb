@@ -1,11 +1,14 @@
 require 'spec_helper'
 
+include GitIo
+
 def position_after_ordering(ordering, position, builder)
   ordering.with_position(position, builder)
   builder.position
 end
 
-describe GitIo::Ordering do
+describe Ordering do
+
   let(:builder) { ExerciseBuilder.new.tap { |it| it.position = 1 } }
 
   it { expect(Ordering.from(nil)).to be NaturalOrdering }
