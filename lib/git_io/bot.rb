@@ -1,9 +1,9 @@
 class GitIo::Bot
   attr_accessor :token, :name
 
-  def initialize(token, name)
-    @token = t
+  def initialize(name, token)
     @name = name
+    @token = token
   end
 
   def octokit
@@ -66,9 +66,7 @@ class GitIo::Bot
 
 
   def self.from_env
-    bot = self.new
-    bot.token = ENV['MUMUKIBOT_GITHUB_TOKEN']
-    bot
+    self.new 'mumukibot', ENV['MUMUKIBOT_GITHUB_TOKEN']
   end
 
   private

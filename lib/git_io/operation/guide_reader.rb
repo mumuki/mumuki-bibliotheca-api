@@ -1,69 +1,84 @@
+class Object
+  def try
+    yield self
+  end
+end
+
+class NilClass
+  def try
+
+  end
+end
+
 module GitIo::Operation
   class GuideReader
+    include GitIo::Operation::WithFileReading
 
-    attr_reader :exercise_reader, :dir
+    attr_reader :dir, :log
 
-    def initialize(dir)
+    def initialize(dir, log)
       @dir = File.expand_path(dir)
-      @exercise_reader = ExerciseReader.new(@dir)
+      @log = log
     end
 
     def read_guide!
-      order = read_meta! dir
-      read_description! dir
-      read_corollary! dir
-      read_extra! dir
-      read_exercises! dir, order
+      builder = GuideBuilder.new
+
+      read_meta! builder
+      read_description! builder
+      read_corollary! builder
+      read_extra! builder
+      read_exercises! builder
+
+      builder.build
     end
 
-    def read_description!(dir)
+    def read_description!(builder)
       description = read_file(File.join(dir, 'description.md'))
       raise 'Missing description file' unless description
-      guide.update!(description: description)
+      builder.description = description
     end
 
-    def read_corollary!(dir)
-      guide.update!(corollary: read_file(File.join(dir, 'corollary.md')))
+    def read_corollary!(builder)
+      builder.corollary = read_file(File.join(dir, 'corollary.md'))
     end
 
-    def read_extra!(dir)
-      guide.update!(extra_code: read_code_file(dir, 'extra'))
+    def read_extra!(builder)
+      builder.extra_code = read_code_file(dir, 'extra')
     end
 
-    def read_meta!(dir)
+    def read_meta!(builder)
       meta = read_yaml_file(File.join(dir, 'meta.yml'))
 
-      guide.language = Language.find_by_ignore_case! :name, meta['language']
-      guide.locale = meta['locale']
-      read_optional! meta, 'original_id_format', '%05d'
-      read_optional! meta, 'learning', false
-      read_optional! meta, 'beta', false
-      guide.save!
+      builder.language = GitIo::Language.find_by_name meta['language']
+      builder.locale = meta['locale']
 
-      meta['order']
+      read_optional! builder, meta, 'original_id_format', '%05d'
+      read_optional! builder, meta, 'learning', false
+      read_optional! builder, meta, 'beta', false
+
+      builder.order = meta['order']
     end
 
-    def read_optional!(meta, key, default)
-      guide[key] = meta[key] || default
+    def read_optional!(builder, meta, key, default)
+      builder[key] = meta[key] || default
     end
 
-    def read_exercises!(dir, order = nil)
-      ordering = Ordering.from order
-      log = ImportLog.new
-      GuideReader.new(author, language, dir).read_exercises(log) do |exercise_builder|
-        exercise_builder.ordering = ordering
-        exercise_builder.guide = guide
-        exercise = exercise_builder.build
-        exercise.save
-        log.saved exercise
+    def read_exercises!(builder)
+      ordering = GitIo::Ordering.from builder.order
+      read_exercises do |exercise_builder|
+        exercise_builder.ordering = ordering #TODO
+
+        builder.add_exercise exercise_builder.build
       end
-      log
     end
 
 
-    def read_exercises(log)
+    def read_exercises
       each_exercise_file do |root, position, original_id, name|
         builder = ExerciseBuilder.new
+        exercise_reader = ExerciseReader.new(dir)
+
         builder.meta = exercise_reader.meta(root) || (log.no_meta(name); next)
         builder.original_id = original_id
         builder.name = name

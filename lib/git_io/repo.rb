@@ -9,4 +9,8 @@ class GitIo::Repo
   def full_name
     "#{organization}/#{name}"
   end
+
+  def self.from_full_name(full_name)
+    self.new *full_name.split('/')
+  end
 end

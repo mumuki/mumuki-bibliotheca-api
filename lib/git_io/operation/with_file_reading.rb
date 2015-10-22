@@ -1,3 +1,5 @@
+require 'yaml'
+
 module GitIo::Operation
   module WithFileReading
     def read_code_file(root, filename)

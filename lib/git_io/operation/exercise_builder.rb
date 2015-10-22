@@ -1,18 +1,13 @@
 require 'ostruct'
 
 module GitIo::Operation
-
   class ExerciseBuilder < OpenStruct
     def ordering=(ordering)
       ordering.with_position(original_id, self)
     end
 
     def type
-      (meta['type'] || 'problem').camelize
-    end
-
-    def clazz
-      @clazz ||= Kernel.const_get(type)
+      (meta['type'] || 'problem')
     end
 
     def tag_list
@@ -24,11 +19,11 @@ module GitIo::Operation
     end
 
     def layout
-      meta['layout'] || Exercise.default_layout
+      meta['layout'] || 'editor_bottom'
     end
 
     def expectations_list
-      if clazz == Playground
+      if type == :playground
         nil
       else
         (expectations || []).map do |e|
@@ -38,22 +33,21 @@ module GitIo::Operation
     end
 
     def build
-      exercise = clazz.find_or_initialize_by(original_id: original_id, guide_id: guide.id)
-      exercise.assign_attributes(
-          name: name,
-          description: description,
-          position: position,
-          hint: hint,
-          corollary: corollary,
-          test: test,
-          extra_code: extra_code,
-          language: language,
-          author: author,
-          expectations: expectations_list,
-          tag_list: tag_list,
-          locale: locale,
-          layout: layout)
-      exercise
+      {type: type,
+       name: name,
+       description: description,
+       position: position,
+       hint: hint,
+       corollary: corollary,
+       test: test,
+       extra_code: extra_code,
+       language: language,
+       author: author,
+       expectations: expectations_list,
+       tag_list: tag_list,
+       locale: locale,
+       layout: layout,
+       original_id: original_id}
     end
   end
 end
