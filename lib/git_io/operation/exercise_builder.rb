@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module GitIo::Operation
 
   class ExerciseBuilder < OpenStruct

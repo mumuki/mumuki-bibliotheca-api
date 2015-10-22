@@ -9,7 +9,7 @@ end
 
 describe Ordering do
 
-  let(:builder) { ExerciseBuilder.new.tap { |it| it.position = 1 } }
+  let(:builder) { GitIo::Operation::ExerciseBuilder.new.tap { |it| it.position = 1 } }
 
   it { expect(Ordering.from(nil)).to be NaturalOrdering }
   it { expect(Ordering.from([2, 3, 4])).to be_a FixedOrdering }
