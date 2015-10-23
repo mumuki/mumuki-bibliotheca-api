@@ -2,10 +2,6 @@ require 'ostruct'
 
 module GitIo::Operation
   class ExerciseBuilder < OpenStruct
-    def ordering=(ordering)
-      ordering.with_position(original_id, self)
-    end
-
     def type
       (meta['type'] || 'problem')
     end
@@ -36,7 +32,6 @@ module GitIo::Operation
       {type: type,
        name: name,
        description: description,
-       position: position,
        hint: hint,
        corollary: corollary,
        test: test,

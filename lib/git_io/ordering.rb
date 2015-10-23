@@ -10,17 +10,14 @@ module GitIo
       @order = order
     end
 
-    def with_position(original_id, builder)
-      builder.position = position_for(original_id)
-    end
-
     def position_for(original_id)
       @order.index(original_id) + 1
     end
   end
 
   module NaturalOrdering
-    def self.with_position(_original_id, _builder)
+    def self.position_for(original_id)
+      original_id
     end
   end
 end

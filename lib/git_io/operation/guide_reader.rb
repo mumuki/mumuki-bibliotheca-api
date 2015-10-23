@@ -1,15 +1,3 @@
-class Object
-  def try
-    yield self
-  end
-end
-
-class NilClass
-  def try
-
-  end
-end
-
 module GitIo::Operation
   class GuideReader
     include GitIo::Operation::WithFileReading
@@ -57,7 +45,7 @@ module GitIo::Operation
       read_optional! builder, meta, 'learning', false
       read_optional! builder, meta, 'beta', false
 
-      builder.order = meta['order']
+      builder.order = GitIo::Ordering.from meta['order']
     end
 
     def read_optional!(builder, meta, key, default)
@@ -65,10 +53,7 @@ module GitIo::Operation
     end
 
     def read_exercises!(builder)
-      ordering = GitIo::Ordering.from builder.order
       read_exercises do |exercise_builder|
-        exercise_builder.ordering = ordering #TODO
-
         builder.add_exercise exercise_builder.build
       end
     end
@@ -83,13 +68,10 @@ module GitIo::Operation
         builder.original_id = original_id
         builder.name = name
         builder.description = exercise_reader.markdown(root, 'description') || (log.no_description name; next)
-        builder.position = position
         builder.hint = exercise_reader.markdown(root, 'hint')
         builder.corollary = exercise_reader.markdown(root, 'corollary')
         builder.test = exercise_reader.test_code(root)
         builder.extra_code = exercise_reader.extra_code(root)
-        builder.language = @language
-        builder.author = @author
         builder.expectations = exercise_reader.expectations(root).try { |it| it['expectations'] }
         yield builder
       end

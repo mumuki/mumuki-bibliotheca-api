@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 def find_exercise_by_original_id(guide, original_id)
-  guide[:exercises].select { |e| e[:original_id] == 1 }.first
+  guide.exercises.select { |e| e[:original_id] == 1 }.first
 end
 
 describe GitIo::Operation::GuideReader do
   let(:log) { GitIo::Operation::ImportLog.new }
-  let(:haskell) { create(:haskell) }
+  let(:haskell) { build(:haskell) }
 
   describe 'read_exercises' do
     let(:results) { [] }
@@ -19,34 +19,34 @@ describe GitIo::Operation::GuideReader do
   end
 
   describe '#read_guide!' do
-    let!(:haskell) { GitIo::Language.new('haskell', 'hs') }
+    let!(:haskell) { build(:haskell) }
 
     context 'when guide is ok' do
       let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', log) }
       let(:guide) { reader.read_guide! }
 
-      it { expect(guide[:exercises].count).to eq 4 }
-      it { expect(guide[:description]).to eq "Awesome guide\n" }
-      it { expect(guide[:language]).to eq haskell }
-      it { expect(guide[:locale]).to eq 'en' }
+      it { expect(guide.exercises.count).to eq 4 }
+      it { expect(guide.description).to eq "Awesome guide\n" }
+      it { expect(guide.language).to eq haskell }
+      it { expect(guide.locale).to eq 'en' }
       it { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
 
       context 'when importing basic exercise' do
         let(:imported_exercise) { find_exercise_by_original_id(guide, 1) }
 
         it { expect(imported_exercise).to_not be nil }
-        it { expect(imported_exercise[:author]).to eq guide.author }
-        it { expect(imported_exercise[:name]).to eq 'sample_title' }
-        it { expect(imported_exercise[:description]).to eq '##Sample Description' }
-        it { expect(imported_exercise[:test]).to eq 'pending' }
-        it { expect(imported_exercise[:extra_code]).to eq "extra\n" }
-        it { expect(imported_exercise[:hint]).to be nil }
-        it { expect(imported_exercise[:corollary]).to be nil }
-        it { expect(imported_exercise[:language]).to eq haskell }
-        it { expect(imported_exercise[:expectations].size).to eq 2 }
-        it { expect(imported_exercise[:tag_list]).to include *%w(foo bar baz) }
-        it { expect(guide[:description]).to eq "Awesome guide\n" }
-        it { expect(imported_exercise[:layout]).to eq 'editor_right' }
+        it { expect(imported_exercise.author).to eq guide.author }
+        it { expect(imported_exercise.name).to eq 'sample_title' }
+        it { expect(imported_exercise.description).to eq '##Sample Description' }
+        it { expect(imported_exercise.test).to eq 'pending' }
+        it { expect(imported_exercise.extra_code).to eq "extra\n" }
+        it { expect(imported_exercise.hint).to be nil }
+        it { expect(imported_exercise.corollary).to be nil }
+        it { expect(imported_exercise.language).to eq haskell }
+        it { expect(imported_exercise.expectations.size).to eq 2 }
+        it { expect(imported_exercise.tag_list).to include *%w(foo bar baz) }
+        it { expect(guide.description).to eq "Awesome guide\n" }
+        it { expect(imported_exercise.layout).to eq 'editor_right' }
 
       end
 
@@ -60,22 +60,22 @@ describe GitIo::Operation::GuideReader do
         let(:imported_exercise) { find_exercise_by_original_id(guide, 3) }
 
         it { expect(imported_exercise).to_not be nil }
-        it { expect(imported_exercise[:hint]).to eq "Try this: blah blah\n" }
-        it { expect(imported_exercise[:corollary]).to eq "And the corollary is...\n" }
+        it { expect(imported_exercise.hint).to eq "Try this: blah blah\n" }
+        it { expect(imported_exercise.corollary).to eq "And the corollary is...\n" }
       end
 
       context 'when importing with layout' do
         let(:imported_exercise) { find_exercise_by_original_id(guide, 4) }
 
         it { expect(imported_exercise).to_not be nil }
-        it { expect(imported_exercise[:layout]).to eq 'editor_bottom' }
+        it { expect(imported_exercise.layout).to eq 'editor_bottom' }
       end
 
       context 'when importing playground' do
         let(:imported_exercise) { find_exercise_by_original_id(guide, 5) }
 
         it { expect(imported_exercise).to_not be nil }
-        it { expect(imported_exercise[:type]).to :playground }
+        it { expect(imported_exercise.type).to eq :playground }
 
       end
     end
@@ -90,11 +90,11 @@ describe GitIo::Operation::GuideReader do
       let(:reader) { GitIo::Operation::GuideReader.new('spec/data/full-guide', log) }
       let!(:guide) { reader.read_guide! }
 
-      it { expect(guide[:exercises].size).to eq 1 }
-      it { expect(guide[:corollary]).to eq "A guide's corollary\n" }
-      it { expect(guide[:learning]).to be true }
-      it { expect(guide[:beta]).to eq true }
-      it { expect(guide[:extra_code]).to eq "A guide's extra code\n" }
+      it { expect(guide.exercises.size).to eq 1 }
+      it { expect(guide.corollary).to eq "A guide's corollary\n" }
+      it { expect(guide.learning).to be true }
+      it { expect(guide.beta).to eq true }
+      it { expect(guide.extra_code).to eq "A guide's extra code\n" }
     end
   end
 end
