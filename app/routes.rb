@@ -29,3 +29,10 @@ post '/guides' do
   guides.insert_one JSON.parse(request.body.read).merge(id)
   id.to_json
 end
+
+post '/guides/imports' do
+  id = {id: new_id}
+  guides.insert_one JSON.parse(request.body.read).merge(id)
+  id.to_json
+end
+
