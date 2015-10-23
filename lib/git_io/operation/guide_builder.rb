@@ -13,7 +13,7 @@ module GitIo::Operation
           name: name,
           description: description,
           corollary: corollary,
-          language: language,
+          language: language.name,
           locale: locale,
           learning: learning,
           extra: extra,

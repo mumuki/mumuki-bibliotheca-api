@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'read-write' do
-  let(:haskell) { build(:haskell) }
+  let(:haskell) { GitIo::Language.find_by_name(:haskell) }
   let(:export_log) { GitIo::Operation::ExportLog.new }
   let(:import_log) { GitIo::Operation::ImportLog.new }
   let(:guide) { GitIo::Guide.new(

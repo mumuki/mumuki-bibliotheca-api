@@ -19,7 +19,7 @@ describe GitIo::Operation::GuideReader do
   end
 
   describe '#read_guide!' do
-    let!(:haskell) { build(:haskell) }
+    let!(:haskell) { GitIo::Language.find_by_name(:haskell) }
 
     context 'when guide is ok' do
       let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', log) }
