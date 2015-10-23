@@ -19,7 +19,7 @@ module GitIo::Operation
     end
 
     def layout
-      meta['layout'] || 'editor_bottom'
+      meta['layout'] || 'editor_right'
     end
 
     def expectations_list

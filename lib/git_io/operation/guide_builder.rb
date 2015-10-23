@@ -14,7 +14,10 @@ module GitIo::Operation
        corollary: corollary,
        language: language,
        locale: locale,
+       learning: learning,
        extra: extra,
+       beta: beta,
+       original_id_format: original_id_format,
        expectations: expectations || [],
        exercises: exercises}
     end

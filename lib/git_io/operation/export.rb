@@ -1,21 +1,28 @@
 module GitIo::Operation
-  class Export
-    include GitIo::Operation
+  class Export < GitIo::Operation::Operation
 
     attr_accessor :guide, :bot
 
+    def initialize(guide, bot)
+      super(bot)
+      @guide = guide
+    end
+
+    def repo
+      @repo ||= GitIo::Repo.from_full_name(guide[:github_repository])
+    end
+
     def run!
       Rails.logger.info "Exporting guide #{guide[:name]}"
-      repo = GitIo::Repo.from_full_name(guide[:github_repository])
 
       log = ExportLog.new
       log.with_error_logging do
         bot.ensure_exists! repo
-        with_local_repo(repo) do |dir, repo|
+        with_local_repo do |dir, local_repo|
           write_guide! dir
-          repo.add(all: true)
-          repo.commit("Mumuki Export on #{Time.now}")
-          repo.push
+          local_repo.add(all: true)
+          local_repo.commit("Mumuki Export on #{Time.now}")
+          local_repo.push
         end
         {result: 'Exported', status: :passed} #TODO save sha
       end

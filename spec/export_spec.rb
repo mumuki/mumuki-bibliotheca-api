@@ -27,7 +27,7 @@ describe GitIo::Operation::Export do
                  extra_code: 'Foo',
                  exercises: [exercise_1, exercise_2]} }
 
-  let(:export) { GitIo::Operation::Export.new(guide) }
+  let(:export) { GitIo::Operation::Export.new(guide, bot) }
 
   describe 'write methods' do
     let(:dir) { 'spec/data/export' }

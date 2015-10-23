@@ -1,9 +1,8 @@
 module GitIo::Operation
   class Operation
-    attr_accessor :repo, :log, :guide, :bot
+    attr_accessor :log, :bot
 
-    def initialize(repo, bot)
-      @repo = repo
+    def initialize(bot)
       @bot = bot
     end
 
