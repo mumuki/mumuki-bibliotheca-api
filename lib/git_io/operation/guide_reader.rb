@@ -32,7 +32,7 @@ module GitIo::Operation
     end
 
     def read_extra!(builder)
-      builder.extra_code = read_code_file(dir, 'extra')
+      builder.extra = read_code_file(dir, 'extra')
     end
 
     def read_meta!(builder)

@@ -11,23 +11,23 @@ describe 'read-write' do
       locale: 'en',
       original_id_format: '%05d',
       exercises: [
-          {type: :problem,
+          {type: 'problem',
            name: 'Bar',
            description: 'a description',
            test: 'foo bar',
            tag_list: %w(baz bar),
-           layout: :no_editor,
+           layout: 'no_editor',
            original_id: 1},
 
-          {type: :problem,
+          {type: 'problem',
            name: 'Foo',
            tag_list: %w(foo bar),
            original_id: 4},
 
           {name: 'Baz',
            tag_list: %w(baz bar),
-           layout: :editor_bottom,
-           type: :problem,
+           layout: 'editor_bottom',
+           type: 'problem',
            original_id: 2}]) }
 
   let(:dir) { 'spec/data/import-export' }
