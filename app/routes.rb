@@ -17,22 +17,31 @@ helpers do
   def new_id
     SecureRandom.hex(8)
   end
+
+  def with_json_body
+    yield JSON.parse(request.body.read)
+  rescue JSON::ParserError => e
+    error 400
+  end
 end
 
 get '/guides/:id' do
-  guide = guides.find id: params['id']
+  guide = guides.find(id: params['id']).projection(_id: 0)
   guide.to_a.first.to_json
 end
 
 post '/guides' do
-  id = {id: new_id}
-  guides.insert_one JSON.parse(request.body.read).merge(id)
-  id.to_json
+  with_json_body do |body|
+    id = {id: new_id}
+    guides.insert_one body.merge(id)
+    id.to_json
+  end
 end
 
-post '/guides/imports' do
-  id = {id: new_id}
-  guides.insert_one JSON.parse(request.body.read).merge(id)
-  id.to_json
+put '/guides/:id' do
+  with_json_body do |body|
+    id = {id: params[:id]}
+    guides.update id, body
+    id.to_json
+  end
 end
-

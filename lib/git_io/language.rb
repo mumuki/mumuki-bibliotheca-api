@@ -3,7 +3,7 @@ module GitIo
     attr_accessor :name, :extension, :test_extension
 
     def initialize(args={})
-      @name =args[:name]
+      @name = args[:name]
       @extension = args[:extension]
       @test_extension = args[:test_extension] || @extension
     end
