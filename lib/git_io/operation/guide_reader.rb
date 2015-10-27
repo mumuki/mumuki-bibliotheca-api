@@ -49,8 +49,7 @@ module GitIo::Operation
     end
 
     def read!(key, builder, meta)
-      value = meta[key]
-      builder[key] = value
+      builder[key] = meta[key]
     end
 
     def read_exercises!(builder)

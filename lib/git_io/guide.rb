@@ -1,8 +1,4 @@
 module GitIo
-  class Exercise
-
-  end
-
   class JsonWrapper
     def initialize(json)
       @json = defaults.merge(json)
@@ -14,6 +10,12 @@ module GitIo
 
     def method_missing(name, *args)
       @json[name]
+    end
+  end
+
+  class Exercise < JsonWrapper
+    def initialize
+      {}
     end
   end
 
