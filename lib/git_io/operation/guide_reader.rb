@@ -41,15 +41,16 @@ module GitIo::Operation
       builder.language = GitIo::Language.find_by_name meta['language']
       builder.locale = meta['locale']
 
-      read_optional! builder, meta, 'original_id_format', '%05d'
-      read_optional! builder, meta, 'learning', false
-      read_optional! builder, meta, 'beta', false
+      read! 'original_id_format', builder, meta
+      read! 'learning', builder, meta
+      read! 'beta', builder, meta
 
       builder.order = GitIo::Ordering.from meta['order']
     end
 
-    def read_optional!(builder, meta, key, default)
-      builder[key] = meta[key] || default
+    def read!(key, builder, meta)
+      value = meta[key]
+      builder[key] = value
     end
 
     def read_exercises!(builder)
@@ -57,7 +58,6 @@ module GitIo::Operation
         builder.add_exercise exercise_builder.build
       end
     end
-
 
     def read_exercises
       each_exercise_file do |root, position, original_id, name|

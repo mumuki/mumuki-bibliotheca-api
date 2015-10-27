@@ -1,23 +1,21 @@
 module GitIo
+  class Exercise
+
+  end
+
   class Guide
     def initialize(json)
-      @json = json
-    end
-
-    def beta
-      @json[:beta] || false
-    end
-
-    def learning
-      @json[:learning] || false
+      @json = {beta: false,
+               learning: false,
+               original_id_format: '%05d'}.merge(json)
     end
 
     def exercises
       @exercises ||= @json[:exercises].map { |e| OpenStruct.new e }
     end
 
-    def as_json
-      @json
+    def as_json(options)
+      @json.as_json(options)
     end
 
     def language
