@@ -1,0 +1,11 @@
+language: ruby
+cache: bundler
+sudo: false
+rvm:
+ - 2.0.0
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - cp config/database.travis.yml config/database.yml
+script:
+  - bundle exec rake db:migrate
+  - bundle exec rake
