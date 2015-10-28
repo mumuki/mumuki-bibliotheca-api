@@ -1,7 +1,10 @@
 module GitIo
   class JsonWrapper
     def initialize(json)
-      @json = defaults.merge(json.symbolize_keys)
+      json = json.symbolize_keys
+      @json = defaults.
+          merge(json).
+          merge(transforms(json))
     end
 
     def as_json(options={})
@@ -10,6 +13,10 @@ module GitIo
 
     def method_missing(name, *args)
       @json[name]
+    end
+
+    def transforms(original)
+      {}
     end
   end
 
@@ -28,12 +35,9 @@ module GitIo
        original_id_format: '%05d'}
     end
 
-    def exercises
-      @exercises ||= @json[:exercises].map { |e| Exercise.new e }
-    end
-
-    def language
-      @language ||= Language.find_by_name(@json[:language])
+    def transforms(original)
+      {exercises: original[:exercises].map { |e| Exercise.new e },
+       language: Language.find_by_name(original[:language]) }
     end
 
     def format_original_id(exercise)

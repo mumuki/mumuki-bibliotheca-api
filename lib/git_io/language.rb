@@ -8,6 +8,10 @@ module GitIo
       @test_extension = args[:test_extension] || @extension
     end
 
+    def as_json(options={})
+      name
+    end
+
     def self.find_by_name(name)
       name = name.to_s.downcase
       LANGUAGES.find { |l| l.name == name } || (raise "Unsupported language #{name}")

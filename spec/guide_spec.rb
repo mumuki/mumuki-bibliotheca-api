@@ -45,5 +45,14 @@ describe GitIo::Guide do
     it { expect(guide.exercises.third.type).to eq 'playground' }
     it { expect(guide.exercises.first.tag_list).to eq [] }
     it { expect(guide.original_id_format).to eq '%05d' }
+
+    describe 'as_json' do
+      let(:exported) { guide.as_json }
+
+      it { expect(exported['name']).to eq 'my guide' }
+      it { expect(exported['beta']).to eq false }
+      it { expect(exported['exercises'][0]['type']).to eq 'problem' }
+    end
   end
+
 end
