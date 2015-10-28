@@ -3,6 +3,7 @@ require 'mongo'
 require 'securerandom'
 require 'json'
 require 'json/ext'
+require_relative '../lib/git_io'
 
 configure do
   db = Mongo::Client.new(['127.0.0.1:27017'], :database => 'content')
@@ -25,9 +26,12 @@ helpers do
   end
 end
 
+get '/guides/:id/raw' do
+  guides.find(id: params['id']).projection(_id: 0).to_a.first.to_json
+end
+
 get '/guides/:id' do
-  guide = guides.find(id: params['id']).projection(_id: 0)
-  guide.to_a.first.to_json
+  guides.find(id: params['id']).projection(_id: 0).map {|it| GitIo::Guide.new(it) }.to_a.first.to_json
 end
 
 post '/guides' do
