@@ -4,7 +4,7 @@ module GitIo
       @json = defaults.merge(json)
     end
 
-    def as_json(options)
+    def as_json(options={})
       @json.as_json(options)
     end
 
@@ -14,7 +14,7 @@ module GitIo
   end
 
   class Exercise < JsonWrapper
-    def initialize
+    def defaults
       {}
     end
   end
@@ -27,7 +27,7 @@ module GitIo
     end
 
     def exercises
-      @exercises ||= @json[:exercises].map { |e| OpenStruct.new e }
+      @exercises ||= @json[:exercises].map { |e| Exercise.new e }
     end
 
     def language
@@ -35,7 +35,12 @@ module GitIo
     end
 
     def format_original_id(exercise)
-      self.original_id_format % exercise[:original_id]
+      self.original_id_format % exercise.original_id
     end
+
+    def find_exercise_by_original_id(original_id)
+      exercises.select { |e| e.original_id == original_id }.first
+    end
+
   end
 end

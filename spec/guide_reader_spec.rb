@@ -1,9 +1,5 @@
 require 'spec_helper'
 
-def find_exercise_by_original_id(guide, original_id)
-  guide.exercises.select { |e| e[:original_id] == original_id }.first
-end
-
 describe GitIo::Operation::GuideReader do
   let(:log) { GitIo::Operation::ImportLog.new }
   let(:haskell) { build(:haskell) }
@@ -32,7 +28,7 @@ describe GitIo::Operation::GuideReader do
       pending { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
 
       context 'when importing basic exercise' do
-        let(:imported_exercise) { find_exercise_by_original_id(guide, 1) }
+        let(:imported_exercise) { guide.find_exercise_by_original_id(1) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.author).to eq guide.author }
@@ -50,13 +46,13 @@ describe GitIo::Operation::GuideReader do
       end
 
       context 'when importing exercise with errors' do
-        let(:imported_exercise) { find_exercise_by_original_id(guide, 2) }
+        let(:imported_exercise) { guide.find_exercise_by_original_id(2) }
 
         it { expect(imported_exercise).to be nil }
       end
 
       context 'when importing exercise with hint and corollary' do
-        let(:imported_exercise) { find_exercise_by_original_id(guide, 3) }
+        let(:imported_exercise) { guide.find_exercise_by_original_id(3) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.hint).to eq "Try this: blah blah\n" }
@@ -64,14 +60,14 @@ describe GitIo::Operation::GuideReader do
       end
 
       context 'when importing with layout' do
-        let(:imported_exercise) { find_exercise_by_original_id(guide, 4) }
+        let(:imported_exercise) { guide.find_exercise_by_original_id(4) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.layout).to eq 'editor_bottom' }
       end
 
       context 'when importing playground' do
-        let(:imported_exercise) { find_exercise_by_original_id(guide, 5) }
+        let(:imported_exercise) { guide.find_exercise_by_original_id(5) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.name).to eq 'playground' }

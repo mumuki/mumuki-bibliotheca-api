@@ -19,7 +19,7 @@ module GitIo::Operation
 
 
     def write_exercise!(guide, e)
-      dirname = File.join dir, "#{guide.format_original_id(e)}_#{e[:name]}"
+      dirname = File.join dir, "#{guide.format_original_id(e)}_#{e.name}"
 
       FileUtils.mkdir_p dirname
 
