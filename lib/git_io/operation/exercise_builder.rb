@@ -3,7 +3,7 @@ require 'ostruct'
 module GitIo::Operation
   class ExerciseBuilder < OpenStruct
     def type
-      (meta['type'] || 'problem')
+      meta['type']
     end
 
     def tag_list
@@ -15,7 +15,7 @@ module GitIo::Operation
     end
 
     def layout
-      meta['layout'] || 'editor_right'
+      meta['layout']
     end
 
     def expectations_list
@@ -42,7 +42,7 @@ module GitIo::Operation
        tag_list: tag_list,
        locale: locale,
        layout: layout,
-       original_id: original_id}
+       original_id: original_id}.compact
     end
   end
 end

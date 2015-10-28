@@ -1,7 +1,7 @@
 module GitIo
   class JsonWrapper
     def initialize(json)
-      @json = defaults.merge(json)
+      @json = defaults.merge(json.symbolize_keys)
     end
 
     def as_json(options={})
@@ -15,7 +15,9 @@ module GitIo
 
   class Exercise < JsonWrapper
     def defaults
-      {}
+      {type: 'problem',
+       tag_list: [],
+       layout: 'editor_right'}
     end
   end
 

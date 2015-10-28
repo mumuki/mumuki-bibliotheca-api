@@ -12,6 +12,12 @@ module GitIo::Operation
       GitIo::Guide.new(build_json.compact)
     end
 
+    def add_exercise(exercise)
+      self.exercises << exercise
+    end
+
+    private
+
     def build_json
       {name: name,
        description: description,
@@ -24,10 +30,6 @@ module GitIo::Operation
        original_id_format: original_id_format,
        expectations: expectations || [],
        exercises: exercises.sort_by { |e| order.position_for(e[:original_id]) }}
-    end
-
-    def add_exercise(exercise)
-      self.exercises << exercise
     end
 
   end
