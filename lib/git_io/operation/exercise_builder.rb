@@ -36,11 +36,8 @@ module GitIo::Operation
        corollary: corollary,
        test: test,
        extra_code: extra_code,
-       language: language,
-       author: author,
        expectations: expectations_list,
        tag_list: tag_list,
-       locale: locale,
        layout: layout,
        original_id: original_id}.compact
     end
