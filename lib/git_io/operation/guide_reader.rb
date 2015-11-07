@@ -4,13 +4,14 @@ module GitIo::Operation
 
     attr_reader :dir, :log
 
-    def initialize(dir, log)
+    def initialize(dir, repo, log)
       @dir = File.expand_path(dir)
+      @slug = repo.full_name
       @log = log
     end
 
     def read_guide!
-      builder = GuideBuilder.new
+      builder = GuideBuilder.new(@slug)
 
       read_meta! builder
       read_description! builder
