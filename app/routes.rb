@@ -3,10 +3,15 @@ require 'mongo'
 require 'securerandom'
 require 'json'
 require 'json/ext'
+require 'yaml'
+require 'active_support/all'
+
 require_relative '../lib/git_io'
 
 configure do
-  db = Mongo::Client.new(['127.0.0.1:27017'], :database => 'content')
+  environment ||= ENV['RACK_ENV'] || 'development'
+  config = YAML.load(ERB.new(File.read('config/database.yml')).result).with_indifferent_access[environment]
+  db = Mongo::Client.new(["#{config[:host]}:#{config[:port]}"], { user: config[:user], password: config[:password], database: 'content' })
   set :db, db
 end
 
