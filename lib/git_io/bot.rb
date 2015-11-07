@@ -1,8 +1,11 @@
-class GitIo::Bot
-  attr_accessor :token, :name
+require 'git'
 
-  def initialize(name, token)
+class GitIo::Bot
+  attr_accessor :token, :name, :email
+
+  def initialize(name, email, token)
     @name = name
+    @email = email
     @token = token
   end
 
@@ -66,7 +69,7 @@ class GitIo::Bot
 
 
   def self.from_env
-    self.new 'mumukibot', ENV['MUMUKIBOT_GITHUB_TOKEN']
+    self.new 'mumukibot', 'bot@mumuki.org', ENV['MUMUKIBOT_GITHUB_TOKEN']
   end
 
   private
