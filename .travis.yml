@@ -2,6 +2,15 @@ language: ruby
 cache: bundler
 sudo: false
 rvm:
- - 2.0.0
+- 2.0.0
 script:
-  - bundle exec rspec
+- bundle exec rspec
+deploy:
+  provider: openshift
+  user: federico.aloi@gmail.com
+  password:
+    secure: FSjQA3zUdsCV0/PMNxNYZoMQOMOanIuY8r+qnFbh1GPkx+ezV2WL6G6cZOpHJpz8u6Ffq4UCMC1N3dtRtUsBgIgEz5bwFg4PeIKllx7SKB0dbI7xSEh0b00SsdwJe1pZu7zgGo2X+LdXwOUKLO3nH0/fDQuMkmmHmzPGOEEPUoWb097f8MWvRdnHi0kZc+3drfK+NSHaaXHwUTPjXmfkGnUO2zwdT5qUKdoGAVv+gVtEfdOW3Xorqgx0w2grv8bukmVarNQYD8MHn8AYIqoEiOBLYOiRwZ8k1iFzR+RtMeNWiiVqUnWxz4RhhSd+n1BJyFJtdkA5iF4fe4EeLmf6KmdvEnn4ug9Gh+c30Fpk9McZxzsCPQ2xIerFqirA6VA5pLNnRDnm4Y0MxMyuZAvRVf4ablIsuLlVrJ+7kSpqQ9g0uAB783HqpHbNuA7TOUdMflBuU5/NlAO/m/WHL5nnyfR39BmAhpe3VaQ2/XEdR7K67B/8F6cCllgRPFxJfkEfB8wrL4IZ+goRMgdDhkb25luDpNE+OAejNdhOWvHiU4acaltesLkWLDdrhKQXsFI61X7aabBkjWCCtEoWxsXlCsx/p4nkG+56XRVPtT2Af5f2PS34IGN5LU1sU5shFZzfJP8Em8MvTFwfs9FT8YdmkSY9bRMy0GDy6EUcy9m+VGU=
+  app: content
+  domain: mumuki
+  on:
+    repo: mumuki/mumuki-content-server
