@@ -50,7 +50,7 @@ end
 put '/guides/:id' do
   with_json_body do |body|
     id = {id: params[:id]}
-    guides.update id, body
+    guides.update_one id, body
     id.to_json
   end
 end
