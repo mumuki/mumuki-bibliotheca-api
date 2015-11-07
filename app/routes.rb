@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'mongo'
-require 'securerandom'
 require 'json'
 require 'json/ext'
 require 'yaml'
@@ -21,7 +20,7 @@ helpers do
   end
 
   def new_id
-    SecureRandom.hex(8)
+    IdGenerator.next
   end
 
   def with_json_body
