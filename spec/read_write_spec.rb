@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'read-write' do
   let(:haskell) { GitIo::Language.find_by_name(:haskell) }
+  let(:repo) { Repo.new('functional-haskell-guide-1', 'mumuki') }
   let(:export_log) { GitIo::Operation::ExportLog.new }
   let(:import_log) { GitIo::Operation::ImportLog.new }
   let(:guide) { GitIo::Guide.new(
@@ -35,7 +36,7 @@ describe 'read-write' do
   let(:imported_guide) do
     FileUtils.mkdir_p dir
     GitIo::Operation::GuideWriter.new(dir, export_log).write_guide! guide
-    GitIo::Operation::GuideReader.new(dir, import_log).read_guide!
+    GitIo::Operation::GuideReader.new(dir, repo, import_log).read_guide!
   end
 
   after do
