@@ -30,6 +30,10 @@ helpers do
   end
 end
 
+before do
+  content_type 'application/json'
+end
+
 get '/guides/:id/raw' do
   guides.find(id: params['id']).projection(_id: 0).to_a.first.to_json
 end
