@@ -42,6 +42,16 @@ get '/guides/:id' do
   guides.find(id: params['id']).projection(_id: 0).map {|it| GitIo::Guide.new(it) }.to_a.first.to_json
 end
 
+get '/guides/:organization/:repository/raw' do
+  slug = "#{params['organization']}/#{params['repository']}"
+  guides.find(github_repository: slug).projection(_id: 0).to_a.first.to_json
+end
+
+get '/guides/:organization/:repository' do
+  slug = "#{params['organization']}/#{params['repository']}"
+  guides.find(github_repository: slug).projection(_id: 0).map {|it| GitIo::Guide.new(it) }.to_a.first.to_json
+end
+
 post '/guides' do
   with_json_body do |body|
     id = {id: new_id}
