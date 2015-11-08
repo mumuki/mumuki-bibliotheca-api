@@ -88,6 +88,7 @@ describe GitIo::Operation::GuideReader do
       let(:reader) { GitIo::Operation::GuideReader.new('spec/data/full-guide', repo, log) }
       let!(:guide) { reader.read_guide! }
 
+      it { expect(guide.name).to eq 'Introduction' }
       it { expect(guide.exercises.size).to eq 1 }
       it { expect(guide.corollary).to eq "A guide's corollary\n" }
       it { expect(guide.learning).to be true }

@@ -42,6 +42,7 @@ module GitIo::Operation
       builder.language = GitIo::Language.find_by_name meta['language']
       builder.locale = meta['locale']
 
+      read! 'name', builder, meta
       read! 'original_id_format', builder, meta
       read! 'learning', builder, meta
       read! 'beta', builder, meta
