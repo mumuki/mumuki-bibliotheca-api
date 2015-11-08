@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe GitIo::Operation::GuideReader do
   let(:log) { GitIo::Operation::ImportLog.new }
+  let(:repo) { GitIo::Repo.new('functional-haskell-guide-1', 'mumuki') }
   let(:haskell) { build(:haskell) }
 
   describe 'read_exercises' do
     let(:results) { [] }
-    let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', log) }
+    let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', repo, log) }
 
     before { reader.read_exercises { |it| results << it } }
 
@@ -18,9 +19,10 @@ describe GitIo::Operation::GuideReader do
     let!(:haskell) { GitIo::Language.find_by_name(:haskell) }
 
     context 'when guide is ok' do
-      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', log) }
+      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', repo, log) }
       let(:guide) { reader.read_guide! }
 
+      it { expect(guide.github_repository).to eq 'mumuki/functional-haskell-guide-1'}
       it { expect(guide.exercises.count).to eq 4 }
       it { expect(guide.description).to eq "Awesome guide\n" }
       it { expect(guide.language).to eq haskell }
@@ -76,16 +78,17 @@ describe GitIo::Operation::GuideReader do
       end
     end
     context 'when guide is incomplete' do
-      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/incompelete-guide', log) }
+      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/incompelete-guide', repo, log) }
 
       it 'fails' do
         expect { reader.read_guide! }.to raise_exception
       end
     end
     context 'when guide has full data' do
-      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/full-guide', log) }
+      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/full-guide', repo, log) }
       let!(:guide) { reader.read_guide! }
 
+      it { expect(guide.name).to eq 'Introduction' }
       it { expect(guide.exercises.size).to eq 1 }
       it { expect(guide.corollary).to eq "A guide's corollary\n" }
       it { expect(guide.learning).to be true }

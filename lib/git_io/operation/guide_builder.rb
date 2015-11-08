@@ -4,6 +4,11 @@ module GitIo::Operation
   class GuideBuilder < OpenStruct
     attr_writer :exercises
 
+    def initialize(slug)
+      super()
+      self.slug = slug
+    end
+
     def exercises
       @exercises ||= []
     end
@@ -28,6 +33,7 @@ module GitIo::Operation
        extra: extra,
        beta: beta,
        original_id_format: original_id_format,
+       github_repository: slug,
        expectations: expectations || [],
        exercises: exercises.sort_by { |e| order.position_for(e[:original_id]) }}
     end

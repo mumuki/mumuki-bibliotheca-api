@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'mongo'
-require 'securerandom'
 require 'json'
 require 'json/ext'
 require 'yaml'
@@ -21,7 +20,7 @@ helpers do
   end
 
   def new_id
-    SecureRandom.hex(8)
+    IdGenerator.next
   end
 
   def with_json_body
@@ -29,6 +28,10 @@ helpers do
   rescue JSON::ParserError => e
     error 400
   end
+end
+
+before do
+  content_type 'application/json'
 end
 
 get '/guides/:id/raw' do
@@ -47,10 +50,17 @@ post '/guides' do
   end
 end
 
+post '/guides/import/:organization/:name' do
+  repo = GitIo::Repo.new(params[:name], params[:organization])
+  guide = GitIo::Operation::Import.new(GitIo::Bot.from_env, repo, guides).run!
+
+  guide.to_json
+end
+
 put '/guides/:id' do
   with_json_body do |body|
     id = {id: params[:id]}
-    guides.update id, body
+    guides.update_one id, body
     id.to_json
   end
 end

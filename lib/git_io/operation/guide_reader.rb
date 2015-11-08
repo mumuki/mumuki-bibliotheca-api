@@ -4,13 +4,14 @@ module GitIo::Operation
 
     attr_reader :dir, :log
 
-    def initialize(dir, log)
+    def initialize(dir, repo, log)
       @dir = File.expand_path(dir)
+      @slug = repo.full_name
       @log = log
     end
 
     def read_guide!
-      builder = GuideBuilder.new
+      builder = GuideBuilder.new(@slug)
 
       read_meta! builder
       read_description! builder
@@ -41,6 +42,7 @@ module GitIo::Operation
       builder.language = GitIo::Language.find_by_name meta['language']
       builder.locale = meta['locale']
 
+      read! 'name', builder, meta
       read! 'original_id_format', builder, meta
       read! 'learning', builder, meta
       read! 'beta', builder, meta
