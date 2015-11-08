@@ -46,6 +46,13 @@ post '/guides' do
   end
 end
 
+post '/guides/import/:organization/:name' do
+  repo = GitIo::Repo.new(params[:name], params[:organization])
+  guide = GitIo::Operation::Import.new(GitIo::Bot.from_env, repo, guides).run!
+
+  guide.to_json
+end
+
 put '/guides/:id' do
   with_json_body do |body|
     id = {id: params[:id]}
