@@ -28,7 +28,7 @@ describe GuideCollection do
     it { expect(updated.raw).to_not be_empty }
     it { expect(updated.exercises.count).to eq 1 }
     it { expect(updated.name).to eq 'bar' }
-    it { expect(updated.name).to eq 'haskell' }
+    it { expect(updated.language.name).to eq 'haskell' }
     it { expect(GuideCollection.count).to eq 1 }
   end
 

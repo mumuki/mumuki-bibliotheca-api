@@ -31,7 +31,7 @@ module GuideCollection
     def update(id, guide_json)
       consistent! 'id', id, guide_json
       with_id id do |_id|
-        guides.update_one _id, guide_json
+        guides.update_one _id, guide_json.merge(_id)
       end
     end
 
