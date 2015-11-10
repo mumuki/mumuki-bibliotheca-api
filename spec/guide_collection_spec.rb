@@ -35,13 +35,18 @@ describe GuideCollection do
 
 
   describe '#find_by_slug' do
-    let!(:id) { GuideCollection.insert({name: 'baz', githb_repository: 'foo/goo', language: 'haskell', exercises: []})[:id] }
-    let(:guide) { GuideCollection.find_by_slug('foo', 'foo') }
+    let!(:id) { GuideCollection.insert({name: 'baz', github_repository: 'foo/goo', language: 'haskell', exercises: []})[:id] }
+    context 'exists' do
+      let(:guide) { GuideCollection.find_by_slug('foo', 'goo') }
 
-    it { expect(guide.raw).to_not be_empty }
-    it { expect(guide.exercises.count).to eq 1 }
-    it { expect(guide.baz).to eq 'bar' }
-    it { expect(GuideCollection.count).to eq 1 }
+      it { expect(guide.raw).to_not be_empty }
+      it { expect(guide.exercises.count).to eq 1 }
+      it { expect(guide.baz).to eq 'bar' }
+      it { expect(GuideCollection.count).to eq 1 }
+    end
 
+    context 'not exists' do
+      it { expect { GuideCollection.find_by_slug('foo', 'bar') }.to raise_error('guide {"github_repository":"bar/foo"} not found') }
+    end
   end
 end

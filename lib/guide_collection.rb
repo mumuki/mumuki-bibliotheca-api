@@ -16,7 +16,11 @@ module GuideCollection
     end
 
     def find_by(args)
-      GuideDocument.new guides.find(args).projection(_id: 0).first.to_h
+      first = guides.find(args).projection(_id: 0).first
+
+      raise "guide #{args.to_json} not found" unless first
+
+      GuideDocument.new first.to_h
     end
 
     def find_by_slug(organization, repository)
