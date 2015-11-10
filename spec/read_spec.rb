@@ -3,7 +3,7 @@ require 'spec_helper'
 describe GitIo::Operation::GuideReader do
   context 'when optional properties are specified' do
     let(:log) { GitIo::Operation::ImportLog.new }
-    let(:repo) { GitIo::Repo.new('functional-haskell-guide-1', 'mumuki') }
+    let(:repo) { GitIo::Repo.new('mumuki', 'functional-haskell-guide-1') }
     let(:reader) { GitIo::Operation::GuideReader.new('spec/data/full-guide', repo, log) }
     let!(:guide) { reader.read_guide! }
 

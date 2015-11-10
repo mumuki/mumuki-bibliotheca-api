@@ -35,13 +35,17 @@ describe GuideCollection do
 
 
   describe '#find_by_slug' do
-    let!(:id) { GuideCollection.insert({name: 'baz', github_repository: 'foo/goo', language: 'haskell', exercises: []})[:id] }
+    let!(:id) { GuideCollection.insert(
+        {name: 'baz',
+         github_repository: 'foo/goo',
+         language: 'haskell',
+         exercises: [{name: 'baz', description: '#goo'}]})[:id] }
     context 'exists' do
       let(:guide) { GuideCollection.find_by_slug('foo', 'goo') }
 
       it { expect(guide.raw).to_not be_empty }
       it { expect(guide.exercises.count).to eq 1 }
-      it { expect(guide.baz).to eq 'bar' }
+      it { expect(guide.name).to eq 'baz' }
       it { expect(GuideCollection.count).to eq 1 }
     end
 

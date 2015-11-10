@@ -1,9 +1,9 @@
 class GitIo::Repo
-  attr_accessor :name, :organization
+  attr_accessor :organization, :name
 
-  def initialize(name, organization)
-    @name = name
+  def initialize(organization, name)
     @organization = organization
+    @name = name
   end
 
   def full_name
