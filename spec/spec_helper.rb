@@ -8,6 +8,6 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
   config.after(:each) do
-    Database.client.database.drop
+    Database.client[:guides].drop
   end
 end
