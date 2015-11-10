@@ -4,20 +4,10 @@ require 'json'
 require 'yaml'
 require 'active_support/all'
 
-require_relative '../lib/git_io'
+require_relative '../lib/content_server'
 
-configure do
-  environment ||= ENV['RACK_ENV'] || 'development'
-  config = YAML.load(ERB.new(File.read('config/database.yml')).result).with_indifferent_access[environment]
-  db = Mongo::Client.new(["#{config[:host]}:#{config[:port]}"], {user: config[:user], password: config[:password], database: 'content'})
-  set :db, db
-end
 
 helpers do
-  def guides
-    settings.db[:guides]
-  end
-
   def with_json_body
     yield JSON.parse(request.body.read)
   rescue JSON::ParserError => e

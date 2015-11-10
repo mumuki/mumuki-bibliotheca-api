@@ -1,8 +1,6 @@
 require 'factory_girl'
 
-require_relative '../lib/git_io'
-require_relative '../lib/guide_collection'
-require_relative '../lib/database'
+require_relative '../lib/content_server'
 
 require_relative './factories/language_factory'
 
