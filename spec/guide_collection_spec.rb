@@ -50,7 +50,7 @@ describe GuideCollection do
     end
 
     context 'not exists' do
-      it { expect { GuideCollection.find_by_slug('foo', 'bar') }.to raise_error('guide {"github_repository":"bar/foo"} not found') }
+      it { expect { GuideCollection.find_by_slug('foo', 'bar') }.to raise_error('guide {"github_repository":"foo/bar"} not found') }
     end
   end
 end
