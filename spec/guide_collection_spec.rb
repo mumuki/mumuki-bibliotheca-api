@@ -30,7 +30,48 @@ describe GuideCollection do
     it { expect(updated.name).to eq 'bar' }
     it { expect(updated.name).to eq 'haskell' }
     it { expect(GuideCollection.count).to eq 1 }
+  end
 
+  describe '#upsert_by_slug' do
+    let(:upserted) { GuideCollection.find_by_slug('foo', 'goo') }
+
+    context 'slug exists' do
+      let!(:original_id) { GuideCollection.insert(
+          {name: 'baz',
+           github_repository: 'foo/goo',
+           language: 'haskell',
+           exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+
+      let!(:id) { GuideCollection.upsert_by_slug(
+          'foo/goo',
+          {name: 'foobaz',
+           github_repository: 'foo/goo',
+           language: 'haskell',
+           exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+
+      it { expect(id).to_not be nil }
+      it { expect(id).to eq original_id }
+
+      it { expect(upserted.id).to eq id }
+      it { expect(upserted.github_repository).to eq 'foo/goo' }
+      it { expect(upserted.name).to eq 'foobaz' }
+      it { expect(GuideCollection.count).to eq 1 }
+    end
+
+    context 'slugs does not exits' do
+      let!(:id) { GuideCollection.upsert_by_slug(
+          'foo/goo',
+          {name: 'foobaz',
+           github_repository: 'foo/goo',
+           language: 'haskell',
+           exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+
+      it { expect(id).to_not be nil }
+      it { expect(upserted.id).to eq id }
+      it { expect(upserted.github_repository).to eq 'foo/goo' }
+      it { expect(upserted.name).to eq 'foobaz' }
+      it { expect(GuideCollection.count).to eq 1 }
+    end
   end
 
 

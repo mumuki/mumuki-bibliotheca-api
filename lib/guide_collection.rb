@@ -6,9 +6,9 @@ module GuideCollection
     end
 
     def insert(guide_json)
-      id = {id: new_id}
-      guides.insert_one guide_json.merge(id)
-      id
+      with_id new_id do |id|
+        guides.insert_one guide_json.merge(id)
+      end
     end
 
     def find(id)
@@ -23,21 +23,31 @@ module GuideCollection
       GuideDocument.new first.to_h
     end
 
-    def find_by_slug(organization, repository)
-      find_by(github_repository: GitIo::Repo.new(organization, repository).full_name)
+    def find_by_slug(organization_or_slug, repository=nil)
+      slug = repository ? GitIo::Repo.new(organization_or_slug, repository).full_name : organization_or_slug
+      find_by(github_repository: slug)
     end
 
     def update(id, guide_json)
-      id = {id: id}
-      guides.update_one id, guide_json
+      consistent! 'id', id, guide_json
+      with_id id do |_id|
+        guides.update_one _id, guide_json
+      end
     end
 
-    def consistent!(id, guide_json)
-      guide_id = guide_json['id']
-      raise "inconsistent ids #{id} and #{guide_id}" if guide_id.present? && guide_id != id
+    def upsert_by_slug(slug, guide_json)
+      consistent! 'slug', slug, guide_json
+
+      with_id(id_for_slug(slug) || new_id) do |id|
+        guides.update_one({github_repository: slug}, guide_json.as_json.merge(id), {upsert: true})
+      end
     end
 
     private
+
+    def id_for_slug(slug)
+      guides.find({github_repository: slug}).projection(id: 1).first.try(:id)
+    end
 
     def new_id
       IdGenerator.next
@@ -46,6 +56,18 @@ module GuideCollection
     def guides
       Database.client[:guides]
     end
+
+    def consistent!(field, original_value, guide_json)
+      guide_value = guide_json[field]
+      raise "inconsistent #{field} #{original_value} and #{guide_value}" if guide_value.present? && guide_value != original_value
+    end
+
+    def with_id(id)
+      id_object = {id: id}
+      yield id_object
+      id_object
+    end
+
   end
 end
 
