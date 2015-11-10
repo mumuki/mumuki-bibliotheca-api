@@ -17,9 +17,7 @@ module GuideCollection
 
     def find_by(args)
       first = guides.find(args).projection(_id: 0).first
-
       raise "guide #{args.to_json} not found" unless first
-
       GuideDocument.new first.to_h
     end
 
@@ -37,7 +35,6 @@ module GuideCollection
 
     def upsert_by_slug(slug, guide_json)
       consistent! 'slug', slug, guide_json
-
       with_id(id_for_slug(slug) || new_id) do |id|
         guides.update_one({github_repository: slug}, guide_json.as_json.merge(id), {upsert: true})
       end
@@ -46,7 +43,7 @@ module GuideCollection
     private
 
     def id_for_slug(slug)
-      guides.find({github_repository: slug}).projection(id: 1).first.try(:id)
+      guides.find({github_repository: slug}).projection(id: 1).first.try { |it| it[:id] }
     end
 
     def new_id
