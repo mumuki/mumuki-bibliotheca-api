@@ -10,7 +10,7 @@ development:
   port: 27017
   database: content
 
-development:
+test:
   host: localhost
   port: 27017
   database: content-test
