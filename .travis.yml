@@ -5,6 +5,8 @@ rvm:
 - 2.0.0
 script:
 - bundle exec rspec
+services:
+  - mongodb
 deploy:
   provider: openshift
   user: federico.aloi@gmail.com
