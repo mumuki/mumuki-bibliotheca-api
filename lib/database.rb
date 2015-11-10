@@ -4,7 +4,9 @@ require 'json/ext'
 module Database
   def self.client
     config = get_config
-    @client ||= Mongo::Client.new(["#{config[:host]}:#{config[:port]}"], {user: config[:user], password: config[:password], database: 'content'})
+    @client ||= Mongo::Client.new(
+        ["#{config[:host]}:#{config[:port]}"],
+        {user: config[:user], password: config[:password], database: config[:database]})
   end
 
   def self.get_config

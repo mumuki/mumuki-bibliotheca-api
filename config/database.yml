@@ -3,7 +3,14 @@ production:
   port: <%=ENV['OPENSHIFT_MONGODB_DB_PORT']%>
   user: <%=ENV['OPENSHIFT_MONGODB_DB_USERNAME']%>
   password: <%=ENV['OPENSHIFT_MONGODB_DB_PASSWORD']%>
+  database: content
 
 development:
   host: localhost
   port: 27017
+  database: content
+
+development:
+  host: localhost
+  port: 27017
+  database: content-test

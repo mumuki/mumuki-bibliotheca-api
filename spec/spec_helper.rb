@@ -8,4 +8,8 @@ require_relative './factories/language_factory'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
+
+  config.after(:each) do
+    Database.client.database.drop
+  end
 end
