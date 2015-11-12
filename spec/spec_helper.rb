@@ -6,10 +6,6 @@ require_relative './factories/language_factory'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
-
-  config.after(:each) do
-    Database.client[:guides].drop
-  end
 end
 
 RSpec::Matchers.define :json_eq do |expected_json_hash|

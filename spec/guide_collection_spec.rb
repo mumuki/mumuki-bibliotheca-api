@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe GuideCollection do
 
+  after do
+    Database.client[:guides].drop
+  end
+
   describe '#insert' do
     let!(:id) { GuideCollection.insert({name: 'foo', language: 'haskell', exercises: []})[:id] }
     let(:inserted) { GuideCollection.find(id) }
