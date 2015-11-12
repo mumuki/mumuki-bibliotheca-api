@@ -19,39 +19,42 @@ before do
   content_type 'application/json'
 end
 
+after do
+  response.body = JSON.dump(response.body)
+end
+
 get '/guides/:id/raw' do
-  GuideCollection.find(params['id']).raw.to_json
+  GuideCollection.find(params['id']).raw
 end
 
 get '/guides/:id' do
-  GuideCollection.find(params['id']).to_json
+  GuideCollection.find(params['id'])
 end
 
 get '/guides/:organization/:repository/raw' do
-  GuideCollection.find_by_slug(params['organization'], params['repository']).raw.to_json
+  GuideCollection.find_by_slug(params['organization'], params['repository']).raw
 end
 
 get '/guides/:organization/:repository' do
-  GuideCollection.find_by_slug(params['organization'], params['repository']).to_json
+  GuideCollection.find_by_slug(params['organization'], params['repository'])
 end
 
 post '/guides' do
   with_json_body do |body|
-    GuideCollection.insert(body).to_json
+    GuideCollection.insert(body)
   end
 end
 
 put '/guides/:id' do
   with_json_body do |body|
-    GuideCollection.update(params[:id], body).to_json
+    GuideCollection.update(params[:id], body)
   end
 end
 
 post '/guides/import/:organization/:name' do
   repo = GitIo::Repo.new(params[:organization], params[:name])
   guide = GitIo::Operation::Import.new(GitIo::Bot.from_env, repo, guides).run!
-
-  guide.to_json
+  guide
 end
 
 
