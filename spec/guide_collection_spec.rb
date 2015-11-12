@@ -14,9 +14,19 @@ describe GuideCollection do
     it { expect(inserted.exercises).to eq [] }
     it { expect(GuideCollection.count).to eq 1 }
 
-    it { expect(inserted.to_json).to eq %Q{{"beta":false,"learning":false,"original_id_format":"%05d","name":"foo","language":"haskell","exercises":[],"id":"#{id}"}} }
+    it { expect(inserted.to_json).to json_eq ({
+        beta: false,
+        learning: false,
+        original_id_format: '%05d',
+        name: 'foo',
+        language: 'haskell',
+        exercises: [], id: id}) }
 
-    it { expect(inserted.raw.to_json).to eq %Q{{"name":"foo","language":"haskell","exercises":[],"id":"#{id}"}} }
+    it { expect(inserted.raw.to_json).to json_eq ({
+        name: 'foo',
+        language: 'haskell',
+        exercises: [],
+        id: id}) }
 
   end
 
