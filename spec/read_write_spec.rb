@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'read-write' do
   let(:haskell) { GitIo::Language.find_by_name(:haskell) }
-  let(:repo) { GitIo::Repo.new('functional-haskell-guide-1', 'mumuki') }
+  let(:repo) { GitIo::Repo.new('mumuki', 'functional-haskell-guide-1') }
   let(:export_log) { GitIo::Operation::ExportLog.new }
   let(:import_log) { GitIo::Operation::ImportLog.new }
   let(:guide) { GitIo::Guide.new(

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe GitIo::Operation::GuideReader do
   let(:log) { GitIo::Operation::ImportLog.new }
-  let(:repo) { GitIo::Repo.new('functional-haskell-guide-1', 'mumuki') }
+  let(:repo) { GitIo::Repo.new('mumuki', 'functional-haskell-guide-1') }
   let(:haskell) { build(:haskell) }
 
   describe 'read_exercises' do
