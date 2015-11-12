@@ -44,6 +44,7 @@ module GitIo::Operation
 
     def write_meta!(guide)
       write_file! dir, 'meta.yml', {
+          'name' => guide.name,
           'locale' => guide.locale,
           'learning' => guide.learning,
           'beta' => guide.beta,
