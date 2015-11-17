@@ -12,6 +12,8 @@ gem 'octokit', '~> 4.1'
 
 gem 'activesupport', '~> 4.2'
 
+gem 'jwt'
+
 group :test do
   gem 'rspec', '2.13'
   gem 'factory_girl'
