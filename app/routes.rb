@@ -44,17 +44,17 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
-  protect! body['github_repository']
-
   with_json_body do |body|
+    protect! body['github_repository']
+
     GuideCollection.insert(body)
   end
 end
 
 put '/guides/:id' do
-  protect! body['github_repository']
-
   with_json_body do |body|
+    protect! body['github_repository']
+
     GuideCollection.update(params[:id], body)
   end
 end

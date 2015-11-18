@@ -37,6 +37,8 @@ GEM
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
+    rack-test (0.6.3)
+      rack (>= 1.0)
     rake (10.4.2)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
@@ -69,6 +71,7 @@ DEPENDENCIES
   mongo (~> 2.1)
   mumukit-auth!
   octokit (~> 4.1)
+  rack-test
   rake
   rspec (= 2.13)
   sinatra
