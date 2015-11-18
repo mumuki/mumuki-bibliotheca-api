@@ -23,10 +23,6 @@ helpers do
   def protect!(slug)
     grant.protect! slug
   end
-
-  def to_guides_json(guides)
-    {guides: guides.as_json(only: [:id, :name, :github_repository])}
-  end
 end
 
 before do
@@ -55,11 +51,11 @@ error JSON::ParserError do
 end
 
 get '/guides' do
-  to_guides_json GuideCollection.all
+  GuideCollection.all.as_json
 end
 
 get '/guides/writable' do
-  to_guides_json GuideCollection.allowed(grant)
+  GuideCollection.allowed(grant).as_json
 end
 
 get '/guides/:id/raw' do
