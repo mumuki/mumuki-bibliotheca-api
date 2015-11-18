@@ -24,12 +24,16 @@ helpers do
     env['HTTP_X_MUMUKI_AUTH_TOKEN']
   end
 
-  def protect!(slug)
-    Mumukit::Auth::Token.decode(auth_token).grant.protect! slug
-  rescue RuntimeError => e
-    raise Mumukit::Auth::UnauthorizedAccessError.new(e)
+  def grant
+    @grant ||= Mumukit::Auth::Token.decode(auth_token).grant
   rescue JWT::DecodeError => e
     raise Mumukit::Auth::InvalidTokenError.new(e)
+  end
+
+  def protect!(slug)
+    grant.protect! slug
+  rescue RuntimeError => e
+    raise Mumukit::Auth::UnauthorizedAccessError.new(e)
   end
 end
 
@@ -56,6 +60,14 @@ end
 
 error JSON::ParserError do
   halt 400
+end
+
+get '/guides' do
+  {guides: GuideCollection.all.as_json(only: [:id, :name])}
+end
+
+get '/guides/writable' do
+  {guides: GuideCollection.all.select { |it| grant.allows? it['github_repository'] }.as_json(only: [:id, :name])}
 end
 
 get '/guides/:id/raw' do

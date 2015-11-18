@@ -1,6 +1,10 @@
 module GuideCollection
 
   class << self
+    def all
+      guides.find.projection(_id: 0).map { |it| GuideDocument.new(it) }
+    end
+
     def count
       guides.find.count
     end

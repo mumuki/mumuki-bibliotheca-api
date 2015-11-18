@@ -6,6 +6,10 @@ describe 'routes' do
   let!(:guide_id) {
     GuideCollection.insert({name: 'foo', language: 'haskell', github_repository: 'foo/bar', exercises: []})[:id]
   }
+  before do
+    GuideCollection.insert({name: 'foo2', language: 'haskell', github_repository: 'foo/bar2', exercises: []})[:id]
+    GuideCollection.insert({name: 'foo3', language: 'haskell', github_repository: 'baz/foo', exercises: []})[:id]
+  end
 
   after do
     Database.client[:guides].drop
@@ -15,36 +19,55 @@ describe 'routes' do
     Sinatra::Application
   end
 
-  it "shows guide by id" do
-    get "/guides/#{guide_id}"
+  describe "get /guides/:id" do
+    before { get "/guides/#{guide_id}" }
 
-    expect(last_response).to be_ok
-    expect(last_response).to be_ok
-    expect(last_response.body).to json_eq({beta: false,
-                                           learning: false,
-                                           original_id_format: "%05d",
-                                           name: "foo", language: "haskell",
-                                           github_repository: "foo/bar",
-                                           exercises: [],
-                                           id: guide_id})
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_eq({beta: false,
+                                                learning: false,
+                                                original_id_format: "%05d",
+                                                name: "foo", language: "haskell",
+                                                github_repository: "foo/bar",
+                                                exercises: [],
+                                                id: guide_id}) }
+  end
+
+  describe('get /guides/writable') do
+    before do
+      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('baz/foo').encode
+      get '/guides/writable'
+    end
+
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_eq guides: [{name: 'foo3', github_repository: 'baz/foo'}] }
+  end
+
+  describe('get /guides') do
+    before do
+      get '/guides'
+    end
+
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_eq guides: [{name: 'foo3', github_repository: 'baz/foo'},
+                                                        {name: 'foo3', github_repository: 'baz/foo'},
+                                                        {name: 'foo3', github_repository: 'baz/foo'}] }
   end
 
   describe('get /guides/:slug') do
-    it "shows guide by slug" do
-      get '/guides/foo/bar'
-
-      expect(last_response).to be_ok
-      expect(last_response.body).to json_eq({beta: false,
-                                             learning: false,
-                                             original_id_format: "%05d",
-                                             name: "foo", language: "haskell",
-                                             github_repository: "foo/bar",
-                                             exercises: [],
-                                             id: guide_id})
+    describe "shows guide by slug" do
+      before { get '/guides/foo/bar' }
+      it { expect(last_response).to be_ok }
+      it { expect(last_response.body).to json_eq({beta: false,
+                                                  learning: false,
+                                                  original_id_format: "%05d",
+                                                  name: "foo", language: "haskell",
+                                                  github_repository: "foo/bar",
+                                                  exercises: [],
+                                                  id: guide_id}) }
     end
   end
 
-  describe 'guide creation' do
+  describe 'post /guides' do
     it 'accepts valid requests' do
       header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 
