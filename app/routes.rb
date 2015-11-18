@@ -59,7 +59,7 @@ get '/guides' do
 end
 
 get '/guides/writable' do
-  to_guides_json GuideCollection.all.select { |it| grant.allows? it.github_repository }
+  to_guides_json GuideCollection.allowed(grant)
 end
 
 get '/guides/:id/raw' do

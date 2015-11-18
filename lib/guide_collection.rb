@@ -5,6 +5,10 @@ module GuideCollection
       guides.find.projection(_id: 0).map { |it| GuideDocument.new(it) }
     end
 
+    def allowed(grant)
+      all.select { |it| grant.allows? it.github_repository }
+    end
+
     def count
       guides.find.count
     end
