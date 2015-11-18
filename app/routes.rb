@@ -7,15 +7,29 @@ require 'mumukit/auth'
 
 require_relative '../lib/content_server'
 
+module Mumukit::Auth
+  class InvalidTokenError < StandardError
+  end
+
+  class UnauthorizedAccessError < StandardError
+  end
+end
+
 helpers do
   def with_json_body
     yield JSON.parse(request.body.read)
-  rescue JSON::ParserError => e
-    error 400
+  end
+
+  def auth_token
+    env['HTTP_X_MUMUKI_AUTH_TOKEN']
   end
 
   def protect!(slug)
-    Mumukit::Auth::Token.decode(headers['MUMUKI_AUTH_TOKEN']).grant.protect! slug
+    Mumukit::Auth::Token.decode(auth_token).grant.protect! slug
+  rescue RuntimeError => e
+    raise Mumukit::Auth::UnauthorizedAccessError.new(e)
+  rescue JWT::DecodeError => e
+    raise Mumukit::Auth::InvalidTokenError.new(e)
   end
 end
 
@@ -24,7 +38,24 @@ before do
 end
 
 after do
-  response.body = JSON.dump(response.body)
+  error_message = env['sinatra.error']
+  if error_message.blank?
+    response.body = response.body.to_json
+  else
+    response.body = {message: env['sinatra.error'].message}.to_json
+  end
+end
+
+error Mumukit::Auth::InvalidTokenError do
+  halt 412
+end
+
+error Mumukit::Auth::UnauthorizedAccessError do
+  halt 403
+end
+
+error JSON::ParserError do
+  halt 400
 end
 
 get '/guides/:id/raw' do
@@ -32,7 +63,7 @@ get '/guides/:id/raw' do
 end
 
 get '/guides/:id' do
-  GuideCollection.find(params['id'])
+  GuideCollection.find(params['id']).as_json
 end
 
 get '/guides/:organization/:repository/raw' do
@@ -40,7 +71,7 @@ get '/guides/:organization/:repository/raw' do
 end
 
 get '/guides/:organization/:repository' do
-  GuideCollection.find_by_slug(params['organization'], params['repository'])
+  GuideCollection.find_by_slug(params['organization'], params['repository']).as_json
 end
 
 post '/guides' do
