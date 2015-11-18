@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/mumuki/mumukit-auth.git
+  revision: bedee2df2fce0ceb1db3008e3dd71dc48619e446
+  branch: master
+  specs:
+    mumukit-auth (0.1.0)
+      activesupport
+      jwt
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -57,8 +66,8 @@ DEPENDENCIES
   bson_ext
   factory_girl
   git
-  jwt
   mongo (~> 2.1)
+  mumukit-auth!
   octokit (~> 4.1)
   rake
   rspec (= 2.13)

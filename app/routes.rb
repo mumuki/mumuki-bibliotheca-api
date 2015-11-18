@@ -2,16 +2,20 @@ require 'sinatra'
 
 require 'json'
 require 'yaml'
-require 'active_support/all'
+
+require 'mumukit/auth'
 
 require_relative '../lib/content_server'
-
 
 helpers do
   def with_json_body
     yield JSON.parse(request.body.read)
   rescue JSON::ParserError => e
     error 400
+  end
+
+  def protect!(slug)
+    Mumukit::Auth::Token.decode(headers['MUMUKI_AUTH_TOKEN']).grant.protect! slug
   end
 end
 
@@ -40,12 +44,16 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
+  protect! body['github_repository']
+
   with_json_body do |body|
     GuideCollection.insert(body)
   end
 end
 
 put '/guides/:id' do
+  protect! body['github_repository']
+
   with_json_body do |body|
     GuideCollection.update(params[:id], body)
   end

@@ -12,7 +12,7 @@ gem 'octokit', '~> 4.1'
 
 gem 'activesupport', '~> 4.2'
 
-gem 'jwt'
+gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
 
 group :test do
   gem 'rspec', '2.13'
