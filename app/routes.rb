@@ -51,11 +51,11 @@ error JSON::ParserError do
 end
 
 get '/guides' do
-  {guides: GuideCollection.all.as_json(only: [:id, :name])}
+  {guides: GuideCollection.all.as_json(only: [:id, :name, :github_repository])}
 end
 
 get '/guides/writable' do
-  {guides: GuideCollection.all.select { |it| grant.allows? it['github_repository'] }.as_json(only: [:id, :name])}
+  {guides: GuideCollection.all.select { |it| grant.allows? it.github_repository }.as_json(only: [:id, :name, :github_repository])}
 end
 
 get '/guides/:id/raw' do

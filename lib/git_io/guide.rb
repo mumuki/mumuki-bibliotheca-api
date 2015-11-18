@@ -1,7 +1,7 @@
 module GitIo
   class JsonWrapper
     def initialize(json)
-      json = json.symbolize_keys
+      json = json.to_h.symbolize_keys
       @json = defaults.
           merge(json).
           merge(transforms(json))
