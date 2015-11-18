@@ -2,16 +2,26 @@ require 'sinatra'
 
 require 'json'
 require 'yaml'
-require 'active_support/all'
+
+require 'mumukit/auth'
 
 require_relative '../lib/content_server'
-
 
 helpers do
   def with_json_body
     yield JSON.parse(request.body.read)
-  rescue JSON::ParserError => e
-    error 400
+  end
+
+  def auth_token
+    env['HTTP_X_MUMUKI_AUTH_TOKEN']
+  end
+
+  def grant
+    @grant ||= Mumukit::Auth::Token.decode(auth_token).grant
+  end
+
+  def protect!(slug)
+    grant.protect! slug
   end
 end
 
@@ -20,7 +30,32 @@ before do
 end
 
 after do
-  response.body = JSON.dump(response.body)
+  error_message = env['sinatra.error']
+  if error_message.blank?
+    response.body = response.body.to_json
+  else
+    response.body = {message: env['sinatra.error'].message}.to_json
+  end
+end
+
+error Mumukit::Auth::InvalidTokenError do
+  halt 412
+end
+
+error Mumukit::Auth::UnauthorizedAccessError do
+  halt 403
+end
+
+error JSON::ParserError do
+  halt 400
+end
+
+get '/guides' do
+  GuideCollection.all.as_json
+end
+
+get '/guides/writable' do
+  GuideCollection.allowed(grant).as_json
 end
 
 get '/guides/:id/raw' do
@@ -28,7 +63,7 @@ get '/guides/:id/raw' do
 end
 
 get '/guides/:id' do
-  GuideCollection.find(params['id'])
+  GuideCollection.find(params['id']).as_json
 end
 
 get '/guides/:organization/:repository/raw' do
@@ -36,17 +71,21 @@ get '/guides/:organization/:repository/raw' do
 end
 
 get '/guides/:organization/:repository' do
-  GuideCollection.find_by_slug(params['organization'], params['repository'])
+  GuideCollection.find_by_slug(params['organization'], params['repository']).as_json
 end
 
 post '/guides' do
   with_json_body do |body|
+    protect! body['github_repository']
+
     GuideCollection.insert(body)
   end
 end
 
 put '/guides/:id' do
   with_json_body do |body|
+    protect! body['github_repository']
+
     GuideCollection.update(params[:id], body)
   end
 end

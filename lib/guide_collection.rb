@@ -1,6 +1,14 @@
 module GuideCollection
 
   class << self
+    def all
+      GuideArray.new _all
+    end
+
+    def allowed(grant)
+      GuideArray.new _all.select { |it| grant.allows? it.github_repository }
+    end
+
     def count
       guides.find.count
     end
@@ -42,6 +50,10 @@ module GuideCollection
 
     private
 
+    def _all
+      guides.find.projection(_id: 0).map { |it| GuideDocument.new(it) }
+    end
+
     def id_for_slug(slug)
       guides.find({github_repository: slug}).projection(id: 1).first.try { |it| it[:id] }
     end
@@ -65,6 +77,16 @@ module GuideCollection
       id_object
     end
 
+  end
+end
+
+class GuideArray
+  def initialize(array)
+    @array = array
+  end
+
+  def as_json(options={})
+    {guides: @array.as_json({only: [:id, :name, :github_repository]}.merge(options))}
   end
 end
 
