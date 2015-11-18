@@ -7,14 +7,6 @@ require 'mumukit/auth'
 
 require_relative '../lib/content_server'
 
-module Mumukit::Auth
-  class InvalidTokenError < StandardError
-  end
-
-  class UnauthorizedAccessError < StandardError
-  end
-end
-
 helpers do
   def with_json_body
     yield JSON.parse(request.body.read)
@@ -26,14 +18,10 @@ helpers do
 
   def grant
     @grant ||= Mumukit::Auth::Token.decode(auth_token).grant
-  rescue JWT::DecodeError => e
-    raise Mumukit::Auth::InvalidTokenError.new(e)
   end
 
   def protect!(slug)
     grant.protect! slug
-  rescue RuntimeError => e
-    raise Mumukit::Auth::UnauthorizedAccessError.new(e)
   end
 end
 

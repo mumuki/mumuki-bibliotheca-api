@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mumuki/mumukit-auth.git
-  revision: bedee2df2fce0ceb1db3008e3dd71dc48619e446
+  revision: 10c5a0de2633332e12944d81c6a88a7d56ad24f6
   branch: master
   specs:
     mumukit-auth (0.1.0)
@@ -10,7 +10,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.4)
+    activesupport (4.2.5)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -28,7 +28,7 @@ GEM
     i18n (0.7.0)
     json (1.8.3)
     jwt (1.5.2)
-    minitest (5.8.1)
+    minitest (5.8.3)
     mongo (2.1.2)
       bson (~> 3.0)
     multipart-post (2.0.0)
