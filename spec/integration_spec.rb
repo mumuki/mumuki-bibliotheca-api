@@ -19,15 +19,33 @@ describe 'routes' do
     Sinatra::Application
   end
 
-  describe "get /guides/:id" do
+  describe('get /languages') do
+    before do
+      get '/languages'
+    end
+
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_eq({languages: [
+        {name: 'haskell', extension: 'hs'},
+        {name: 'java', extension: 'java'},
+        {name: 'wollok', extension: 'wlk'},
+        {name: 'c', extension: 'c'},
+        {name: 'prolog', extension: 'pl'},
+        {name: 'ruby', extension: 'rb'},
+        {name: 'gobstones', extension: 'gbs'},
+        {name: 'javascript', extension: 'js'}]}) }
+  end
+
+
+  describe 'get /guides/:id' do
     before { get "/guides/#{guide_id}" }
 
     it { expect(last_response).to be_ok }
     it { expect(last_response.body).to json_eq({beta: false,
                                                 learning: false,
-                                                original_id_format: "%05d",
-                                                name: "foo", language: "haskell",
-                                                github_repository: "foo/bar",
+                                                original_id_format: '%05d',
+                                                name: 'foo', language: 'haskell',
+                                                github_repository: 'foo/bar',
                                                 exercises: [],
                                                 id: guide_id}) }
   end
@@ -52,14 +70,14 @@ describe 'routes' do
   end
 
   describe('get /guides/:slug') do
-    describe "shows guide by slug" do
+    describe 'shows guide by slug' do
       before { get '/guides/foo/bar' }
       it { expect(last_response).to be_ok }
       it { expect(last_response.body).to json_eq({beta: false,
                                                   learning: false,
-                                                  original_id_format: "%05d",
-                                                  name: "foo", language: "haskell",
-                                                  github_repository: "foo/bar",
+                                                  original_id_format: '%05d',
+                                                  name: 'foo', language: 'haskell',
+                                                  github_repository: 'foo/bar',
                                                   exercises: [],
                                                   id: guide_id}) }
     end

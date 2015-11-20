@@ -1,13 +1,13 @@
 module LanguageCollection
   class << self
     def all
-      GuideArray.new GitIo::Language::LANGUAGES
+      LanguageArray.new GitIo::Language::LANGUAGES
     end
   end
 end
 
 
-class GuideArray
+class LanguageArray
   def initialize(array)
     @array = array
   end

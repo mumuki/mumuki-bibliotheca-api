@@ -50,6 +50,11 @@ error JSON::ParserError do
   halt 400
 end
 
+get '/languages' do
+  LanguageCollection.all.as_json
+end
+
+
 get '/guides' do
   GuideCollection.all.as_json
 end

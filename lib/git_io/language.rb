@@ -9,7 +9,11 @@ module GitIo
     end
 
     def as_json(options={})
-      name
+      if options[:full_language]
+        {name: name, extension: extension}
+      else
+        name
+      end
     end
 
     def self.find_by_name(name)
