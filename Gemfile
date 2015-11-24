@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'rake'
 
 gem 'sinatra'
+gem 'sinatra-cross_origin', '~> 0.3.1'
+
 
 gem 'mongo', '~> 2.1'
 gem 'bson_ext'

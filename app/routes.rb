@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/cross_origin'
 
 require 'json'
 require 'yaml'
@@ -6,6 +7,10 @@ require 'yaml'
 require 'mumukit/auth'
 
 require_relative '../lib/content_server'
+
+configure do
+  enable :cross_origin
+end
 
 helpers do
   def with_json_body
@@ -48,6 +53,12 @@ end
 
 error JSON::ParserError do
   halt 400
+end
+
+options '*' do
+  response.headers['Allow'] = 'HEAD,GET,PUT,POST,DELETE,OPTIONS'
+  response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept'
+  200
 end
 
 get '/languages' do
