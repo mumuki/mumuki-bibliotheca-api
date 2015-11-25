@@ -6,7 +6,7 @@ module GuideCollection
     end
 
     def allowed(grant)
-      GuideArray.new _all.select { |it| grant.allows? it.github_repository }
+      GuideArray.new _all.select { |it| grant.allows? it.slug }
     end
 
     def count
@@ -25,7 +25,7 @@ module GuideCollection
 
     def find_by_slug(organization_or_slug, repository=nil)
       slug = repository ? GitIo::Repo.new(organization_or_slug, repository).full_name : organization_or_slug
-      find_by(github_repository: slug)
+      find_by(slug: slug)
     end
 
     def insert(guide_json)
@@ -37,7 +37,7 @@ module GuideCollection
     def upsert_by_slug(slug, guide_json)
       consistent! 'slug', slug, guide_json
       with_id(id_for_slug(slug) || new_id) do |id|
-        guides.update_one({github_repository: slug}, guide_json.as_json.merge(id), {upsert: true})
+        guides.update_one({slug: slug}, guide_json.as_json.merge(id), {upsert: true})
       end
     end
 
@@ -48,7 +48,7 @@ module GuideCollection
     end
 
     def id_for_slug(slug)
-      guides.find({github_repository: slug}).projection(id: 1).first.try { |it| it[:id] }
+      guides.find({slug: slug}).projection(id: 1).first.try { |it| it[:id] }
     end
 
     def new_id
@@ -79,7 +79,7 @@ class GuideArray
   end
 
   def as_json(options={})
-    {guides: @array.as_json({only: [:id, :name, :github_repository]}.merge(options))}
+    {guides: @array.as_json({only: [:id, :name, :slug, :language, :type]}.merge(options))}
   end
 end
 

@@ -5,7 +5,7 @@ module GitIo::Operation
     end
 
     def postprocess
-      GuideCollection.upsert_by_slug(@guide.github_repository, @guide.as_json)
+      GuideCollection.upsert_by_slug(@guide.slug, @guide.as_json)
     end
   end
 end

@@ -84,7 +84,7 @@ end
 
 post '/guides' do
   with_json_body do |body|
-    slug = body['github_repository']
+    slug = body['slug']
     protect! slug
 
     GuideCollection.upsert_by_slug(slug, body)

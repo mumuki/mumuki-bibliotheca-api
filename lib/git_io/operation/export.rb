@@ -9,7 +9,7 @@ module GitIo::Operation
     end
 
     def repo
-      @repo ||= GitIo::Repo.from_full_name(guide[:github_repository])
+      @repo ||= GitIo::Repo.from_full_name(guide[:slug])
     end
 
     def run!

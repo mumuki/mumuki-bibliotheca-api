@@ -33,7 +33,7 @@ module GitIo::Operation
        extra: extra,
        beta: beta,
        original_id_format: original_id_format,
-       github_repository: slug,
+       slug: slug,
        expectations: expectations || [],
        exercises: exercises.sort_by { |e| order.position_for(e[:original_id]) }}
     end

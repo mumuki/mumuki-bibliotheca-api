@@ -4,11 +4,11 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let!(:guide_id) {
-    GuideCollection.insert({name: 'foo', language: 'haskell', github_repository: 'foo/bar', exercises: []})[:id]
+    GuideCollection.insert({name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []})[:id]
   }
   before do
-    GuideCollection.insert({name: 'foo2', language: 'haskell', github_repository: 'baz/bar2', exercises: []})[:id]
-    GuideCollection.insert({name: 'foo3', language: 'haskell', github_repository: 'baz/foo', exercises: []})[:id]
+    GuideCollection.insert({name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []})[:id]
+    GuideCollection.insert({name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []})[:id]
   end
 
   after do
@@ -44,7 +44,7 @@ describe 'routes' do
     end
 
     it { expect(last_response).to be_ok }
-    it { expect(last_response.body).to json_eq guides: [{name: 'foo', github_repository: 'foo/bar', id: guide_id}] }
+    it { expect(last_response.body).to json_eq guides: [{name: 'foo', slug: 'foo/bar', id: guide_id}] }
   end
 
   describe('get /guides') do
@@ -64,7 +64,7 @@ describe 'routes' do
                                                   learning: false,
                                                   original_id_format: '%05d',
                                                   name: 'foo', language: 'haskell',
-                                                  github_repository: 'foo/bar',
+                                                  slug: 'foo/bar',
                                                   exercises: [],
                                                   id: guide_id}) }
     end
@@ -74,7 +74,7 @@ describe 'routes' do
     it 'accepts valid requests' do
       header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 
-      post '/guides', {github_repository: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
       expect(last_response).to be_ok
       expect(JSON.parse(last_response.body)['id']).to_not be nil
@@ -83,7 +83,7 @@ describe 'routes' do
     it 'reject unauthorized requests' do
       header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('goo/foo').encode
 
-      post '/guides', {github_repository: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
       expect(last_response).to_not be_ok
       expect(last_response.status).to eq 403
@@ -92,7 +92,7 @@ describe 'routes' do
     end
 
     it 'reject unauthenticated requests' do
-      post '/guides', {github_repository: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
       expect(last_response).to_not be_ok
       expect(last_response.status).to eq 412
@@ -103,7 +103,7 @@ describe 'routes' do
     it 'reject invalid tokens' do
       header 'X-Mumuki-Auth-Token', 'fooo'
 
-      post '/guides', {github_repository: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
       expect(last_response).to_not be_ok
       expect(last_response.status).to eq 412
@@ -113,10 +113,10 @@ describe 'routes' do
     it 'accepts re posts' do
       header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 
-      post '/guides', {github_repository: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
       id = JSON.parse(last_response.body)['id']
 
-      post '/guides', {github_repository: 'bar/baz', name: 'Bar Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      post '/guides', {slug: 'bar/baz', name: 'Bar Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
       expect(last_response).to be_ok
       expect(JSON.parse(last_response.body)['id']).to eq id

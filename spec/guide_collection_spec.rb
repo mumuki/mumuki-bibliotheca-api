@@ -40,14 +40,14 @@ describe GuideCollection do
     context 'slug exists' do
       let!(:original_id) { GuideCollection.insert(
           {name: 'baz',
-           github_repository: 'foo/goo',
+           slug: 'foo/goo',
            language: 'haskell',
            exercises: [{name: 'baz', description: '#goo'}]})[:id] }
 
       let!(:id) { GuideCollection.upsert_by_slug(
           'foo/goo',
           {name: 'foobaz',
-           github_repository: 'foo/goo',
+           slug: 'foo/goo',
            language: 'haskell',
            exercises: [{name: 'baz', description: '#goo'}]})[:id] }
 
@@ -55,7 +55,7 @@ describe GuideCollection do
       it { expect(id).to eq original_id }
 
       it { expect(upserted.id).to eq id }
-      it { expect(upserted.github_repository).to eq 'foo/goo' }
+      it { expect(upserted.slug).to eq 'foo/goo' }
       it { expect(upserted.name).to eq 'foobaz' }
       it { expect(GuideCollection.count).to eq 1 }
     end
@@ -64,13 +64,13 @@ describe GuideCollection do
       let!(:id) { GuideCollection.upsert_by_slug(
           'foo/goo',
           {name: 'foobaz',
-           github_repository: 'foo/goo',
+           slug: 'foo/goo',
            language: 'haskell',
            exercises: [{name: 'baz', description: '#goo'}]})[:id] }
 
       it { expect(id).to_not be nil }
       it { expect(upserted.id).to eq id }
-      it { expect(upserted.github_repository).to eq 'foo/goo' }
+      it { expect(upserted.slug).to eq 'foo/goo' }
       it { expect(upserted.name).to eq 'foobaz' }
       it { expect(GuideCollection.count).to eq 1 }
     end
@@ -80,7 +80,7 @@ describe GuideCollection do
   describe '#find_by_slug' do
     let!(:id) { GuideCollection.insert(
         {name: 'baz',
-         github_repository: 'foo/goo',
+         slug: 'foo/goo',
          language: 'haskell',
          exercises: [{name: 'baz', description: '#goo'}]})[:id] }
     context 'exists' do
@@ -93,7 +93,7 @@ describe GuideCollection do
     end
 
     context 'not exists' do
-      it { expect { GuideCollection.find_by_slug('foo', 'bar') }.to raise_error('guide {"github_repository":"foo/bar"} not found') }
+      it { expect { GuideCollection.find_by_slug('foo', 'bar') }.to raise_error('guide {"slug":"foo/bar"} not found') }
     end
   end
 end

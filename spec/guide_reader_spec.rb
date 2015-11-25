@@ -22,7 +22,7 @@ describe GitIo::Operation::GuideReader do
       let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', repo, log) }
       let(:guide) { reader.read_guide! }
 
-      it { expect(guide.github_repository).to eq 'mumuki/functional-haskell-guide-1'}
+      it { expect(guide.slug).to eq 'mumuki/functional-haskell-guide-1'}
       it { expect(guide.exercises.count).to eq 4 }
       it { expect(guide.description).to eq "Awesome guide\n" }
       it { expect(guide.language).to eq haskell }

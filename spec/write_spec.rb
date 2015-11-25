@@ -11,7 +11,7 @@ describe GitIo::Operation::GuideWriter do
   let(:guide) { GitIo::Guide.new(
       name: 'Guide Name',
       description: 'Baz',
-      github_repository: 'flbulgarelli/never-existent-repo',
+      slug: 'flbulgarelli/never-existent-repo',
       language: 'haskell',
       locale: 'en',
       original_id_format: '%05d',

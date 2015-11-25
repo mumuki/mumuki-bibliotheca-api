@@ -4,7 +4,7 @@ describe GitIo::Guide do
   let(:json) {
     {name: 'my guide',
      description: 'Baz',
-     github_repository: 'flbulgarelli/never-existent-repo',
+     slug: 'flbulgarelli/never-existent-repo',
      language: 'haskell',
      locale: 'en',
      exercises: [

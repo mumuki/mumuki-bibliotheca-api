@@ -7,7 +7,7 @@ describe 'read-write' do
   let(:import_log) { GitIo::Operation::ImportLog.new }
   let(:guide) { GitIo::Guide.new(
       description: 'Baz',
-      github_repository: 'flbulgarelli/never-existent-repo',
+      slug: 'flbulgarelli/never-existent-repo',
       language: haskell.name,
       locale: 'en',
       original_id_format: '%05d',
