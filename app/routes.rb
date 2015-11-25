@@ -74,14 +74,6 @@ get '/guides/writable' do
   GuideCollection.allowed(grant).as_json
 end
 
-get '/guides/:id/raw' do
-  GuideCollection.find(params['id']).raw
-end
-
-get '/guides/:id' do
-  GuideCollection.find(params['id']).as_json
-end
-
 get '/guides/:organization/:repository/raw' do
   GuideCollection.find_by_slug(params['organization'], params['repository']).raw
 end
@@ -92,17 +84,10 @@ end
 
 post '/guides' do
   with_json_body do |body|
-    protect! body['github_repository']
+    slug = body['github_repository']
+    protect! slug
 
-    GuideCollection.insert(body)
-  end
-end
-
-put '/guides/:id' do
-  with_json_body do |body|
-    protect! body['github_repository']
-
-    GuideCollection.update(params[:id], body)
+    GuideCollection.upsert_by_slug(slug, body)
   end
 end
 

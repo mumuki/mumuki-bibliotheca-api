@@ -37,19 +37,6 @@ describe 'routes' do
   end
 
 
-  describe 'get /guides/:id' do
-    before { get "/guides/#{guide_id}" }
-
-    it { expect(last_response).to be_ok }
-    it { expect(last_response.body).to json_eq({beta: false,
-                                                learning: false,
-                                                original_id_format: '%05d',
-                                                name: 'foo', language: 'haskell',
-                                                github_repository: 'foo/bar',
-                                                exercises: [],
-                                                id: guide_id}) }
-  end
-
   describe('get /guides/writable') do
     before do
       header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('foo/*').encode
@@ -123,6 +110,17 @@ describe 'routes' do
       expect(last_response.body).to json_eq message: 'Not enough or too many segments'
     end
 
+    it 'accepts re posts' do
+      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+
+      post '/guides', {github_repository: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      id = JSON.parse(last_response.body)['id']
+
+      post '/guides', {github_repository: 'bar/baz', name: 'Bar Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+
+      expect(last_response).to be_ok
+      expect(JSON.parse(last_response.body)['id']).to eq id
+    end
 
   end
 end

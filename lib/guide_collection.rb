@@ -13,12 +13,6 @@ module GuideCollection
       guides.find.count
     end
 
-    def insert(guide_json)
-      with_id new_id do |id|
-        guides.insert_one guide_json.merge(id)
-      end
-    end
-
     def find(id)
       find_by(id: id)
     end
@@ -34,10 +28,9 @@ module GuideCollection
       find_by(github_repository: slug)
     end
 
-    def update(id, guide_json)
-      consistent! 'id', id, guide_json
-      with_id id do |_id|
-        guides.update_one _id, guide_json.merge(_id)
+    def insert(guide_json)
+      with_id new_id do |id|
+        guides.insert_one guide_json.merge(id)
       end
     end
 

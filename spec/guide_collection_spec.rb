@@ -34,18 +34,6 @@ describe GuideCollection do
 
   end
 
-  describe '#update' do
-    let!(:id) { GuideCollection.insert({name: 'foo', language: 'haskell', exercises: []})[:id] }
-    before { GuideCollection.update(id, {name: 'bar', language: 'haskell', exercises: [{name: 'e1'}]}) }
-    let(:updated) { GuideCollection.find(id) }
-
-    it { expect(updated.raw).to_not be_empty }
-    it { expect(updated.exercises.count).to eq 1 }
-    it { expect(updated.name).to eq 'bar' }
-    it { expect(updated.language.name).to eq 'haskell' }
-    it { expect(GuideCollection.count).to eq 1 }
-  end
-
   describe '#upsert_by_slug' do
     let(:upserted) { GuideCollection.find_by_slug('foo', 'goo') }
 
