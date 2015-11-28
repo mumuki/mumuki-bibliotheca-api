@@ -10,6 +10,8 @@ require_relative '../lib/content_server'
 
 configure do
   enable :cross_origin
+
+  Mongo::Logger.logger       = ::Logger.new('mongo.log')
 end
 
 helpers do

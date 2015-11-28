@@ -7,6 +7,8 @@ require_relative './factories/language_factory'
 
 ENV['RACK_ENV'] = 'test'
 
+Mongo::Logger.logger.level = ::Logger::INFO
+
 RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.include FactoryGirl::Syntax::Methods
