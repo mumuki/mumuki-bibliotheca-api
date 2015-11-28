@@ -44,7 +44,7 @@ describe 'routes' do
     end
 
     it { expect(last_response).to be_ok }
-    it { expect(last_response.body).to json_eq guides: [{name: 'foo', slug: 'foo/bar', id: guide_id}] }
+    it { expect(last_response.body).to json_eq guides: [{name: 'foo', slug: 'foo/bar', id: guide_id, language: 'haskell'}] }
   end
 
   describe('get /guides') do
