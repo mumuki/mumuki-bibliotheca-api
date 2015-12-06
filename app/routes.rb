@@ -99,7 +99,7 @@ end
 
 post '/guides/import/:organization/:name' do
   repo = GitIo::Repo.new(params[:organization], params[:name])
-  guide = GitIo::Operation::Import.new(GitIo::Bot.from_env, repo, guides).run!
+  guide = GitIo::Operation::Import.new(GitIo::Bot.from_env, repo).run!
   guide
 end
 

@@ -131,4 +131,12 @@ describe 'routes' do
     end
 
   end
+
+  describe 'post /guides/import' do
+    it 'accepts valid requests' do
+      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+      post '/guides/import/pdep-utn/mumuki-funcional-guia-0'
+      expect(last_response).to be_ok
+    end
+  end
 end
