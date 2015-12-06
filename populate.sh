@@ -28,5 +28,5 @@ for i in \
 "gcrespi/mumuki-logico-pulp-fiction" \
 "arquitecturas-concurrentes/mumuki-funcional-guia-monadas" \
 "sagrado-corazon-alcal/mumuki-fundamentos-gobstones-guia-1-primeros-programas"; do
-  curl -XPOST http://content-mumuki.rhcloud.com/guides/import/$i
+  curl -X POST http://bibliotheca.mumuki.io/guides/import/$i
 done
