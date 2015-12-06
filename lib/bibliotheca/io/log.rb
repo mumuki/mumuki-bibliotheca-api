@@ -1,4 +1,4 @@
-module GitIo::Operation
+module Bibliotheca::IO
   class Log
     attr_accessor :messages
 

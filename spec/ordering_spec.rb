@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-include GitIo
+include Bibliotheca
 
 def position_after_ordering(ordering, position)
   ordering.position_for(position)

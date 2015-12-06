@@ -1,4 +1,4 @@
-module GitIo
+module Bibliotheca
   class Language
     attr_accessor :name, :extension, :test_extension, :ace_mode, :devicon
 

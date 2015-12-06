@@ -1,4 +1,4 @@
-module GitIo::Operation
+module Bibliotheca::IO
   class Operation
     attr_accessor :log, :bot
 

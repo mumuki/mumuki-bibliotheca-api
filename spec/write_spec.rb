@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe GitIo::Operation::GuideWriter do
-  let(:bot) { GitIo::Bot.new('mumukibot', 'zaraza') }
+describe Bibliotheca::IO::GuideWriter do
+  let(:bot) { Bibliotheca::Bot.new('mumukibot', 'zaraza') }
   let(:haskell) { build(:haskell) }
-  let(:log) { GitIo::Operation::ExportLog.new }
+  let(:log) { Bibliotheca::IO::ExportLog.new }
 
   let!(:exercise_1) { guide.exercises.first }
   let(:exercise_2) { guide.exercises.second }
 
-  let(:guide) { GitIo::Guide.new(
+  let(:guide) { Bibliotheca::Guide.new(
       name: 'Guide Name',
       description: 'Baz',
       slug: 'flbulgarelli/never-existent-repo',
@@ -35,7 +35,7 @@ describe GitIo::Operation::GuideWriter do
            layout: 'editor_right',
            test: 'foo bar'}]) }
 
-  let(:writer) { GitIo::Operation::GuideWriter.new(dir, log) }
+  let(:writer) { Bibliotheca::IO::GuideWriter.new(dir, log) }
 
   describe 'write methods' do
     let(:dir) { 'spec/data/export' }

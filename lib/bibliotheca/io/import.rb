@@ -1,5 +1,5 @@
-module GitIo::Operation
-  class Import < GitIo::Operation::Operation
+module Bibliotheca::IO
+  class Import < Bibliotheca::IO::Operation
     attr_accessor :repo
 
     def initialize(bot, repo)
@@ -12,7 +12,7 @@ module GitIo::Operation
     end
 
     def postprocess
-      GuideCollection.upsert_by_slug(@guide.slug, @guide.as_json)
+      Bibliotheca::Collection::Guides.upsert_by_slug(@guide.slug, @guide.as_json)
     end
   end
 end

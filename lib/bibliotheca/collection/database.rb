@@ -1,7 +1,4 @@
-require 'mongo'
-require 'json/ext'
-
-module Database
+module Bibliotheca::Collection::Database
   def self.client
     config = get_config
     @client ||= Mongo::Client.new(

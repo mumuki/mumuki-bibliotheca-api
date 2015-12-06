@@ -2,7 +2,7 @@ require 'factory_girl'
 
 require 'rack/test'
 
-require_relative '../lib/content_server'
+require_relative '../lib/bibliotheca'
 require_relative './factories/language_factory'
 
 ENV['RACK_ENV'] = 'test'

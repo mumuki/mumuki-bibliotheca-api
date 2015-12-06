@@ -1,6 +1,6 @@
-module GitIo::Operation
+module Bibliotheca::IO
   class GuideReader
-    include GitIo::Operation::WithFileReading
+    include Bibliotheca::IO::WithFileReading
 
     attr_reader :dir, :log
 
@@ -39,7 +39,7 @@ module GitIo::Operation
     def read_meta!(builder)
       meta = read_yaml_file(File.join(dir, 'meta.yml'))
 
-      builder.language = GitIo::Language.find_by_name meta['language']
+      builder.language = Bibliotheca::Language.find_by_name meta['language']
       builder.locale = meta['locale']
 
       read! 'name', builder, meta
@@ -47,7 +47,7 @@ module GitIo::Operation
       read! 'learning', builder, meta
       read! 'beta', builder, meta
 
-      builder.order = GitIo::Ordering.from meta['order']
+      builder.order = Bibliotheca::Ordering.from meta['order']
     end
 
     def read!(key, builder, meta)

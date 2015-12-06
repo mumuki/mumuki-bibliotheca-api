@@ -4,15 +4,15 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let!(:guide_id) {
-    GuideCollection.insert({name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []})[:id]
+    Bibliotheca::Collection::Guides.insert({name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []})[:id]
   }
   before do
-    GuideCollection.insert({name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []})[:id]
-    GuideCollection.insert({name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []})[:id]
+    Bibliotheca::Collection::Guides.insert({name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []})[:id]
+    Bibliotheca::Collection::Guides.insert({name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []})[:id]
   end
 
   after do
-    Database.client[:guides].drop
+    Bibliotheca::Collection::Database.client[:guides].drop
   end
 
   def app
@@ -82,7 +82,7 @@ describe 'routes' do
     context 'when request is valid' do
 
       it 'accepts valid requests' do
-        expect_any_instance_of(GitIo::Operation::Export).to receive(:run!)
+        expect_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
 
         header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 
@@ -96,7 +96,7 @@ describe 'routes' do
       end
 
       it 'accepts re posts' do
-        allow_any_instance_of(GitIo::Operation::Export).to receive(:run!)
+        allow_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
 
         header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 

@@ -1,6 +1,6 @@
 require 'git'
 
-class GitIo::Bot
+class Bibliotheca::Bot
   attr_accessor :token, :name, :email
 
   def initialize(name, email, token)
