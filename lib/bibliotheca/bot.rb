@@ -32,7 +32,6 @@ class Bibliotheca::Bot
   end
 
   def create!(repo)
-    Rails.logger.info "Creating repository #{repo}"
     octokit.create_repository(repo.name, organization: repo.organization)
   end
 
