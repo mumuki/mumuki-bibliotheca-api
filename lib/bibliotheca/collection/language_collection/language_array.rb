@@ -1,13 +1,4 @@
-module LanguageCollection
-  class << self
-    def all
-      LanguageArray.new GitIo::Language::LANGUAGES
-    end
-  end
-end
-
-
-class LanguageArray
+class Bibliotheca::Collection::Languages::LanguageArray
   def initialize(array)
     @array = array
   end

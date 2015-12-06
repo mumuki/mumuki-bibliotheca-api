@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'read-write' do
-  let(:haskell) { GitIo::Language.find_by_name(:haskell) }
-  let(:repo) { GitIo::Repo.new('mumuki', 'functional-haskell-guide-1') }
-  let(:export_log) { GitIo::Operation::ExportLog.new }
-  let(:import_log) { GitIo::Operation::ImportLog.new }
-  let(:guide) { GitIo::Guide.new(
+  let(:haskell) { Bibliotheca::Language.find_by_name(:haskell) }
+  let(:repo) { Bibliotheca::Repo.new('mumuki', 'functional-haskell-guide-1') }
+  let(:export_log) { Bibliotheca::IO::ExportLog.new }
+  let(:import_log) { Bibliotheca::IO::ImportLog.new }
+  let(:guide) { Bibliotheca::Guide.new(
       description: 'Baz',
       slug: 'flbulgarelli/never-existent-repo',
       language: haskell.name,
@@ -35,8 +35,8 @@ describe 'read-write' do
 
   let(:imported_guide) do
     FileUtils.mkdir_p dir
-    GitIo::Operation::GuideWriter.new(dir, export_log).write_guide! guide
-    GitIo::Operation::GuideReader.new(dir, repo, import_log).read_guide!
+    Bibliotheca::IO::GuideWriter.new(dir, export_log).write_guide! guide
+    Bibliotheca::IO::GuideReader.new(dir, repo, import_log).read_guide!
   end
 
   after do

@@ -1,5 +1,5 @@
-module GitIo::Operation
-  class ImportLog < GitIo::Operation::Log
+module Bibliotheca::IO
+  class ImportLog < Bibliotheca::IO::Log
     def no_description(name)
       messages << "Description does not exist for #{name}"
     end

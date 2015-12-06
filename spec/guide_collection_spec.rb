@@ -1,14 +1,13 @@
 require 'spec_helper'
 
-describe GuideCollection do
-
+describe Bibliotheca::Collection::Guides do
   after do
-    Database.client[:guides].drop
+    Bibliotheca::Collection::Database.client[:guides].drop
   end
 
   describe '#insert' do
-    let!(:id) { GuideCollection.insert({name: 'foo', language: 'haskell', exercises: []})[:id] }
-    let(:inserted) { GuideCollection.find(id) }
+    let!(:id) { Bibliotheca::Collection::Guides.insert({name: 'foo', language: 'haskell', exercises: []})[:id] }
+    let(:inserted) { Bibliotheca::Collection::Guides.find(id) }
 
     it { expect(id).to_not be nil }
     it { expect(inserted).to_not be nil }
@@ -16,7 +15,7 @@ describe GuideCollection do
     it { expect(inserted.id).to eq id }
     it { expect(inserted.name).to eq 'foo' }
     it { expect(inserted.exercises).to eq [] }
-    it { expect(GuideCollection.count).to eq 1 }
+    it { expect(Bibliotheca::Collection::Guides.count).to eq 1 }
 
     it { expect(inserted.to_json).to json_eq ({
         beta: false,
@@ -35,16 +34,16 @@ describe GuideCollection do
   end
 
   describe '#upsert_by_slug' do
-    let(:upserted) { GuideCollection.find_by_slug('foo', 'goo') }
+    let(:upserted) { Bibliotheca::Collection::Guides.find_by_slug('foo', 'goo') }
 
     context 'slug exists' do
-      let!(:original_id) { GuideCollection.insert(
+      let!(:original_id) { Bibliotheca::Collection::Guides.insert(
           {name: 'baz',
            slug: 'foo/goo',
            language: 'haskell',
            exercises: [{name: 'baz', description: '#goo'}]})[:id] }
 
-      let!(:id) { GuideCollection.upsert_by_slug(
+      let!(:id) { Bibliotheca::Collection::Guides.upsert_by_slug(
           'foo/goo',
           {name: 'foobaz',
            slug: 'foo/goo',
@@ -57,11 +56,11 @@ describe GuideCollection do
       it { expect(upserted.id).to eq id }
       it { expect(upserted.slug).to eq 'foo/goo' }
       it { expect(upserted.name).to eq 'foobaz' }
-      it { expect(GuideCollection.count).to eq 1 }
+      it { expect(Bibliotheca::Collection::Guides.count).to eq 1 }
     end
 
     context 'slugs does not exits' do
-      let!(:id) { GuideCollection.upsert_by_slug(
+      let!(:id) { Bibliotheca::Collection::Guides.upsert_by_slug(
           'foo/goo',
           {name: 'foobaz',
            slug: 'foo/goo',
@@ -72,28 +71,28 @@ describe GuideCollection do
       it { expect(upserted.id).to eq id }
       it { expect(upserted.slug).to eq 'foo/goo' }
       it { expect(upserted.name).to eq 'foobaz' }
-      it { expect(GuideCollection.count).to eq 1 }
+      it { expect(Bibliotheca::Collection::Guides.count).to eq 1 }
     end
   end
 
 
   describe '#find_by_slug' do
-    let!(:id) { GuideCollection.insert(
+    let!(:id) { Bibliotheca::Collection::Guides.insert(
         {name: 'baz',
          slug: 'foo/goo',
          language: 'haskell',
          exercises: [{name: 'baz', description: '#goo'}]})[:id] }
     context 'exists' do
-      let(:guide) { GuideCollection.find_by_slug('foo', 'goo') }
+      let(:guide) { Bibliotheca::Collection::Guides.find_by_slug('foo', 'goo') }
 
       it { expect(guide.raw).to_not be_empty }
       it { expect(guide.exercises.count).to eq 1 }
       it { expect(guide.name).to eq 'baz' }
-      it { expect(GuideCollection.count).to eq 1 }
+      it { expect(Bibliotheca::Collection::Guides.count).to eq 1 }
     end
 
     context 'not exists' do
-      it { expect { GuideCollection.find_by_slug('foo', 'bar') }.to raise_error('guide {"slug":"foo/bar"} not found') }
+      it { expect { Bibliotheca::Collection::Guides.find_by_slug('foo', 'bar') }.to raise_error('guide {"slug":"foo/bar"} not found') }
     end
   end
 end

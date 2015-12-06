@@ -1,6 +1,6 @@
 require 'yaml'
 
-module GitIo::Operation
+module Bibliotheca::IO
   module WithFileReading
     def read_code_file(root, filename)
       files = Dir.glob("#{root}/#{filename}.*")

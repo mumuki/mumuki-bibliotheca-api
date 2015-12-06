@@ -1,5 +1,5 @@
-module GitIo::Operation
-  class Export < GitIo::Operation::Operation
+module Bibliotheca::IO
+  class Export < Bibliotheca::IO::Operation
 
     attr_accessor :guide, :bot
 
@@ -9,7 +9,7 @@ module GitIo::Operation
     end
 
     def repo
-      @repo ||= GitIo::Repo.from_full_name(guide[:slug])
+      @repo ||= Bibliotheca::Repo.from_full_name(guide[:slug])
     end
 
     def run!

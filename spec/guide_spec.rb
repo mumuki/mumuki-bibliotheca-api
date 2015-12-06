@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GitIo::Guide do
+describe Bibliotheca::Guide do
   let(:json) {
     {name: 'my guide',
      description: 'Baz',
@@ -28,7 +28,7 @@ describe GitIo::Guide do
 
   context 'stringified keys' do
     let(:stringified) { json.stringify_keys }
-    let(:guide) { GitIo::Guide.new stringified }
+    let(:guide) { Bibliotheca::Guide.new stringified }
 
     it { expect(guide.name).to eq 'my guide' }
     it { expect(guide.exercises.first.name).to eq 'Bar' }
@@ -36,7 +36,7 @@ describe GitIo::Guide do
   end
 
   context 'symbolized keys' do
-    let(:guide) { GitIo::Guide.new json }
+    let(:guide) { Bibliotheca::Guide.new json }
 
     it { expect(guide.name).to eq 'my guide' }
     it { expect(guide.exercises.first.name).to eq 'Bar' }

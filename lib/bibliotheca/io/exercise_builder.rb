@@ -1,6 +1,6 @@
 require 'ostruct'
 
-module GitIo::Operation
+module Bibliotheca::IO
   class ExerciseBuilder < OpenStruct
     def type
       meta['type']

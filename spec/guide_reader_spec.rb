@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe GitIo::Operation::GuideReader do
-  let(:log) { GitIo::Operation::ImportLog.new }
-  let(:repo) { GitIo::Repo.new('mumuki', 'functional-haskell-guide-1') }
+describe Bibliotheca::IO::GuideReader do
+  let(:log) { Bibliotheca::IO::ImportLog.new }
+  let(:repo) { Bibliotheca::Repo.new('mumuki', 'functional-haskell-guide-1') }
   let(:haskell) { build(:haskell) }
 
   describe 'read_exercises' do
     let(:results) { [] }
-    let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', repo, log) }
+    let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/simple-guide', repo, log) }
 
     before { reader.read_exercises { |it| results << it } }
 
@@ -16,10 +16,10 @@ describe GitIo::Operation::GuideReader do
   end
 
   describe '#read_guide!' do
-    let!(:haskell) { GitIo::Language.find_by_name(:haskell) }
+    let!(:haskell) { Bibliotheca::Language.find_by_name(:haskell) }
 
     context 'when guide is ok' do
-      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/simple-guide', repo, log) }
+      let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/simple-guide', repo, log) }
       let(:guide) { reader.read_guide! }
 
       it { expect(guide.slug).to eq 'mumuki/functional-haskell-guide-1'}
@@ -78,14 +78,14 @@ describe GitIo::Operation::GuideReader do
       end
     end
     context 'when guide is incomplete' do
-      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/incompelete-guide', repo, log) }
+      let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/incompelete-guide', repo, log) }
 
       it 'fails' do
         expect { reader.read_guide! }.to raise_exception
       end
     end
     context 'when guide has full data' do
-      let(:reader) { GitIo::Operation::GuideReader.new('spec/data/full-guide', repo, log) }
+      let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/full-guide', repo, log) }
       let!(:guide) { reader.read_guide! }
 
       it { expect(guide.name).to eq 'Introduction' }

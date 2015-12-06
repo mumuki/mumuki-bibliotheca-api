@@ -6,7 +6,7 @@ require 'yaml'
 
 require 'mumukit/auth'
 
-require_relative '../lib/content_server'
+require_relative '../lib/bibliotheca'
 
 configure do
   enable :cross_origin
@@ -28,7 +28,7 @@ helpers do
   end
 
   def bot
-    GitIo::Bot.from_env
+    Bibliotheca::Bot.from_env
   end
 
   def protect!(slug)
@@ -57,7 +57,7 @@ error Mumukit::Auth::UnauthorizedAccessError do
   halt 403
 end
 
-error GuideNotFoundError do
+error Bibliotheca::Collection::GuideNotFoundError do
   halt 404
 end
 
@@ -72,24 +72,24 @@ options '*' do
 end
 
 get '/languages' do
-  LanguageCollection.all.as_json
+  Bibliotheca::Collection::Languages.all.as_json
 end
 
 
 get '/guides' do
-  GuideCollection.all.as_json
+  Bibliotheca::Collection::Guides.all.as_json
 end
 
 get '/guides/writable' do
-  GuideCollection.allowed(grant).as_json
+  Bibliotheca::Collection::Guides.allowed(grant).as_json
 end
 
 get '/guides/:organization/:repository/raw' do
-  GuideCollection.find_by_slug(params['organization'], params['repository']).raw
+  Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).raw
 end
 
 get '/guides/:organization/:repository' do
-  GuideCollection.find_by_slug(params['organization'], params['repository']).as_json
+  Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).as_json
 end
 
 post '/guides' do
@@ -97,15 +97,15 @@ post '/guides' do
     slug = body['slug']
     protect! slug
 
-    GuideCollection.upsert_by_slug(slug, body).tap do
-      GitIo::Operation::Export.new(GitIo::Guide.new(body), bot).run!
+    Bibliotheca::Collection::Guides.upsert_by_slug(slug, body).tap do
+      Bibliotheca::IO::Export.new(Bibliotheca::Guide.new(body), bot).run!
     end
   end
 end
 
 post '/guides/import/:organization/:name' do
-  repo = GitIo::Repo.new(params[:organization], params[:name])
-  GitIo::Operation::Import.new(bot, repo).run!
+  repo = Bibliotheca::Repo.new(params[:organization], params[:name])
+  Bibliotheca::IO::Import.new(bot, repo).run!
 end
 
 

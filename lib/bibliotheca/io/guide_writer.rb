@@ -1,4 +1,4 @@
-module GitIo::Operation
+module Bibliotheca::IO
   class GuideWriter
     attr_accessor :dir, :log
 

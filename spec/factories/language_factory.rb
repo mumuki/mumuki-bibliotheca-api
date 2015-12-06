@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory :language, class: GitIo::Language do
+  factory :language, class: Bibliotheca::Language do
     sequence(:name) { |n| "lang#{n}" }
     sequence(:extension) { |n| "ext#{n}" }
     sequence(:test_extension) { |n| "ext#{n}" }

@@ -1,4 +1,4 @@
-module GitIo
+module Bibliotheca
   module Ordering
     def self.from(order)
       order ? FixedOrdering.new(order) : NaturalOrdering

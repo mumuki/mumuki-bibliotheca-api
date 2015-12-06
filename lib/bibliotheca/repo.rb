@@ -1,4 +1,4 @@
-class GitIo::Repo
+class Bibliotheca::Repo
   attr_accessor :organization, :name
 
   def initialize(organization, name)

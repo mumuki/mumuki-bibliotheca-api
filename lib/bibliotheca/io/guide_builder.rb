@@ -1,6 +1,6 @@
 require 'ostruct'
 
-module GitIo::Operation
+module Bibliotheca::IO
   class GuideBuilder < OpenStruct
     attr_writer :exercises
 
@@ -14,7 +14,7 @@ module GitIo::Operation
     end
 
     def build
-      GitIo::Guide.new(build_json.compact)
+      Bibliotheca::Guide.new(build_json.compact)
     end
 
     def add_exercise(exercise)

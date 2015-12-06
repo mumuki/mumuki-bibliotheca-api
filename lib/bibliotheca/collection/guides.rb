@@ -1,4 +1,4 @@
-module GuideCollection
+module Bibliotheca::Collection::Guides
 
   class << self
     def all
@@ -19,12 +19,12 @@ module GuideCollection
 
     def find_by(args)
       first = guides.find(args).projection(_id: 0).first
-      raise GuideNotFoundError.new("guide #{args.to_json} not found") unless first
+      raise Bibliotheca::Collection::GuideNotFoundError.new("guide #{args.to_json} not found") unless first
       GuideDocument.new first.to_h
     end
 
     def find_by_slug(organization_or_slug, repository=nil)
-      slug = repository ? GitIo::Repo.new(organization_or_slug, repository).full_name : organization_or_slug
+      slug = repository ? Bibliotheca::Repo.new(organization_or_slug, repository).full_name : organization_or_slug
       find_by(slug: slug)
     end
 
@@ -56,7 +56,7 @@ module GuideCollection
     end
 
     def guides
-      Database.client[:guides]
+      Bibliotheca::Collection::Database.client[:guides]
     end
 
     def consistent!(field, original_value, guide_json)
@@ -69,44 +69,8 @@ module GuideCollection
       yield id_object
       id_object
     end
-
   end
 end
 
-class GuideArray
-  def initialize(array)
-    @array = array
-  end
-
-  def as_json(options={})
-    {guides: @array.as_json({only: [:id, :name, :slug, :language, :type]}.merge(options))}
-  end
-end
-
-class GuideDocument
-
-  def initialize(document)
-    @document = document
-  end
-
-  def method_missing(name, *args, &block)
-    wrapped.send name, *args, &block
-  end
-
-  def as_json(options={})
-    wrapped.as_json(options)
-  end
-
-  def raw
-    @document
-  end
-
-  private
-
-  def wrapped
-    @wrapped ||= GitIo::Guide.new(@document)
-  end
-
-end
-
-
+require_relative './guide_collection/guide_array'
+require_relative './guide_collection/guide_document'
