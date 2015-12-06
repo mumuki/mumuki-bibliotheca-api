@@ -52,7 +52,7 @@ module Bibliotheca::Collection::Guides
     end
 
     def new_id
-      IdGenerator.next
+      Bibliotheca::IdGenerator.next
     end
 
     def guides

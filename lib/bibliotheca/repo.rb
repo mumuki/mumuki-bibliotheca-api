@@ -10,6 +10,10 @@ class Bibliotheca::Repo
     "#{organization}/#{name}"
   end
 
+  def web_hook_url
+    "http://bibliotheca.mumuki.io/guides/import/#{full_name}"
+  end
+
   def self.from_full_name(full_name)
     self.new *full_name.split('/')
   end

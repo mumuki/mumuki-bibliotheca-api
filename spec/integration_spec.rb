@@ -154,6 +154,10 @@ describe 'routes' do
   end
 
   describe 'post /guides/import' do
+    before do
+      expect_any_instance_of(Bibliotheca::IO::Import).to receive(:run!)
+      expect_any_instance_of(Bibliotheca::Bot).to receive(:register_post_commit_hook!)
+    end
     it 'accepts valid requests' do
       header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
       post '/guides/import/pdep-utn/mumuki-funcional-guia-0'
