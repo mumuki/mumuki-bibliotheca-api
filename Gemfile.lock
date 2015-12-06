@@ -19,7 +19,10 @@ GEM
     addressable (2.3.8)
     bson (3.2.6)
     bson_ext (1.5.1)
+    codeclimate-test-reporter (0.4.8)
+      simplecov (>= 0.7.1, < 1.0.0)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     faraday (0.9.1)
@@ -51,6 +54,11 @@ GEM
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -67,6 +75,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (~> 4.2)
   bson_ext
+  codeclimate-test-reporter
   factory_girl
   git
   mongo (~> 2.1)

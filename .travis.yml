@@ -8,6 +8,9 @@ script:
 services:
   - mongodb
 env: RACK_ENV=test
+addons:
+  code_climate:
+    repo_token: fc99046bbbd5bab2e17c7ce37e57a8ed9d04b79fce6d0d8904fb983bccb009e2
 deploy:
   provider: openshift
   user: federico.aloi@gmail.com

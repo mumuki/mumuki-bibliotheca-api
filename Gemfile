@@ -20,4 +20,5 @@ group :test do
   gem 'rspec', '~> 2.99'
   gem 'rack-test'
   gem 'factory_girl'
+  gem 'codeclimate-test-reporter', require: nil
 end
