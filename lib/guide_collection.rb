@@ -19,7 +19,7 @@ module GuideCollection
 
     def find_by(args)
       first = guides.find(args).projection(_id: 0).first
-      raise "guide #{args.to_json} not found" unless first
+      raise GuideNotFoundError.new("guide #{args.to_json} not found") unless first
       GuideDocument.new first.to_h
     end
 

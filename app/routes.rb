@@ -53,6 +53,10 @@ error Mumukit::Auth::UnauthorizedAccessError do
   halt 403
 end
 
+error GuideNotFoundError do
+  halt 404
+end
+
 error JSON::ParserError do
   halt 400
 end

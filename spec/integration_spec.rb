@@ -58,15 +58,23 @@ describe 'routes' do
 
   describe('get /guides/:slug') do
     describe 'shows guide by slug' do
-      before { get '/guides/foo/bar' }
-      it { expect(last_response).to be_ok }
-      it { expect(last_response.body).to json_eq({beta: false,
-                                                  learning: false,
-                                                  original_id_format: '%05d',
-                                                  name: 'foo', language: 'haskell',
-                                                  slug: 'foo/bar',
-                                                  exercises: [],
-                                                  id: guide_id}) }
+      context 'When guide exists' do
+        before { get '/guides/foo/bar' }
+        it { expect(last_response).to be_ok }
+        it { expect(last_response.body).to json_eq({beta: false,
+                                                    learning: false,
+                                                    original_id_format: '%05d',
+                                                    name: 'foo', language: 'haskell',
+                                                    slug: 'foo/bar',
+                                                    exercises: [],
+                                                    id: guide_id}) }
+      end
+    end
+    context 'When guide does not exist' do
+      before { get '/guides/foo/bar2' }
+      it { expect(last_response).to_not be_ok }
+      it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+      it { expect(last_response.status).to be(404) }
     end
   end
 

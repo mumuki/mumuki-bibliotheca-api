@@ -1,0 +1,2 @@
+class GuideNotFoundError < StandardError
+end
