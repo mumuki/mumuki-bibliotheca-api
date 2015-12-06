@@ -17,7 +17,7 @@ gem 'activesupport', '~> 4.2'
 gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
 
 group :test do
-  gem 'rspec', '2.13'
+  gem 'rspec', '~> 2.99'
   gem 'rack-test'
   gem 'factory_girl'
 end

@@ -24,7 +24,7 @@ module GitIo
 
     def self.find_by_name(name)
       name = name.to_s.downcase
-      LANGUAGES.find { |l| l.name == name } || (raise "Unsupported language #{name}")
+      LANGUAGES.find { |l| l.name == name } || (raise "Unsupported language `#{name}`")
     end
 
     LANGUAGES = [

@@ -79,57 +79,78 @@ describe 'routes' do
   end
 
   describe 'post /guides' do
-    it 'accepts valid requests' do
-      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+    context 'when request is valid' do
 
-      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+      it 'accepts valid requests' do
+        expect_any_instance_of(GitIo::Operation::Export).to receive(:run!)
 
-      expect(last_response).to be_ok
-      expect(JSON.parse(last_response.body)['id']).to_not be nil
+        header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+
+        post '/guides', {slug: 'bar/baz',
+                         language: 'haskell',
+                         name: 'Baz Guide',
+                         exercises: [{name: 'Exercise 1'}]}.to_json
+
+        expect(last_response).to be_ok
+        expect(JSON.parse(last_response.body)['id']).to_not be nil
+      end
+
+      it 'accepts re posts' do
+        allow_any_instance_of(GitIo::Operation::Export).to receive(:run!)
+
+        header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+
+        post '/guides', {slug: 'bar/baz',
+                         name: 'Baz Guide',
+                         language: 'haskell',
+                         exercises: [{name: 'Exercise 1'}]}.to_json
+        id = JSON.parse(last_response.body)['id']
+
+        post '/guides', {slug: 'bar/baz',
+                         name: 'Bar Baz Guide',
+                         language: 'haskell',
+                         exercises: [{name: 'Exercise 1'}]}.to_json
+
+        expect(last_response).to be_ok
+        expect(JSON.parse(last_response.body)['id']).to eq id
+      end
     end
 
-    it 'reject unauthorized requests' do
-      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('goo/foo').encode
+    context 'when request is invalid' do
+      it 'reject unauthorized requests' do
+        header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('goo/foo').encode
 
-      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+        post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 403
-      expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz. Permissions are goo/foo'
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq 403
+        expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz. Permissions are goo/foo'
 
+      end
+
+      it 'reject unauthenticated requests' do
+        post '/guides', {slug: 'bar/baz',
+                         name: 'Baz Guide',
+                         exercises: [{name: 'Exercise 1'}]}.to_json
+
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq 412
+        expect(last_response.body).to json_eq message: 'Nil JSON web token'
+
+      end
+
+      it 'reject invalid tokens' do
+        header 'X-Mumuki-Auth-Token', 'fooo'
+
+        post '/guides', {slug: 'bar/baz',
+                         name: 'Baz Guide',
+                         exercises: [{name: 'Exercise 1'}]}.to_json
+
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq 412
+        expect(last_response.body).to json_eq message: 'Not enough or too many segments'
+      end
     end
-
-    it 'reject unauthenticated requests' do
-      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
-
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 412
-      expect(last_response.body).to json_eq message: 'Nil JSON web token'
-
-    end
-
-    it 'reject invalid tokens' do
-      header 'X-Mumuki-Auth-Token', 'fooo'
-
-      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
-
-      expect(last_response).to_not be_ok
-      expect(last_response.status).to eq 412
-      expect(last_response.body).to json_eq message: 'Not enough or too many segments'
-    end
-
-    it 'accepts re posts' do
-      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
-
-      post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
-      id = JSON.parse(last_response.body)['id']
-
-      post '/guides', {slug: 'bar/baz', name: 'Bar Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
-
-      expect(last_response).to be_ok
-      expect(JSON.parse(last_response.body)['id']).to eq id
-    end
-
   end
 
   describe 'post /guides/import' do

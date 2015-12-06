@@ -27,6 +27,10 @@ helpers do
     @grant ||= Mumukit::Auth::Token.decode(auth_token).grant
   end
 
+  def bot
+    GitIo::Bot.from_env
+  end
+
   def protect!(slug)
     grant.protect! slug
   end
@@ -93,14 +97,15 @@ post '/guides' do
     slug = body['slug']
     protect! slug
 
-    GuideCollection.upsert_by_slug(slug, body)
+    GuideCollection.upsert_by_slug(slug, body).tap do
+      GitIo::Operation::Export.new(GitIo::Guide.new(body), bot).run!
+    end
   end
 end
 
 post '/guides/import/:organization/:name' do
   repo = GitIo::Repo.new(params[:organization], params[:name])
-  guide = GitIo::Operation::Import.new(GitIo::Bot.from_env, repo).run!
-  guide
+  GitIo::Operation::Import.new(bot, repo).run!
 end
 
 
