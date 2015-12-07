@@ -1,4 +1,5 @@
 require 'git'
+require 'octokit'
 
 class Bibliotheca::Bot
   attr_accessor :token, :name, :email
@@ -32,7 +33,6 @@ class Bibliotheca::Bot
   end
 
   def create!(repo)
-    Rails.logger.info "Creating repository #{repo}"
     octokit.create_repository(repo.name, organization: repo.organization)
   end
 
@@ -59,10 +59,10 @@ class Bibliotheca::Bot
     false
   end
 
-  def register_post_commit_hook!(repo, web_hook)
+  def register_post_commit_hook!(repo)
     octokit.create_hook(
         repo.full_name, 'web',
-        {url: web_hook, content_type: 'json'},
+        {url: repo.web_hook_url, content_type: 'json'},
         {events: ['push'],
          active: true})
   end
