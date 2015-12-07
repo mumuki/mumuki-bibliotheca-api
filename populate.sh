@@ -25,7 +25,7 @@ for i in \
 "pdep-utn/mumuki-funcional-guia-0" \
 "mumuki/mumuki-guia-desafios-gobstones" \
 "sagrado-corazon-alcal/mumuki-fundamentos-gobstones-tp-procedimientos" \
-"gcrespi/mumuki-logico-pulp-fiction" \
+"pdep-utn/mumuki-logico-pulp-fiction" \
 "arquitecturas-concurrentes/mumuki-funcional-guia-monadas" \
 "sagrado-corazon-alcal/mumuki-fundamentos-gobstones-guia-1-primeros-programas"; do
   curl -X POST http://bibliotheca.mumuki.io/guides/import/$i
