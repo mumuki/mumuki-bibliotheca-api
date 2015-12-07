@@ -1,4 +1,5 @@
 require 'git'
+require 'octokit'
 
 class Bibliotheca::Bot
   attr_accessor :token, :name, :email
