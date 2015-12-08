@@ -23,8 +23,8 @@ helpers do
     env['HTTP_X_MUMUKI_AUTH_TOKEN']
   end
 
-  def grant
-    @grant ||= Mumukit::Auth::Token.decode(auth_token).grant
+  def permissions
+    @permissions ||= Mumukit::Auth::Token.decode(auth_token).permissions
   end
 
   def bot
@@ -32,7 +32,7 @@ helpers do
   end
 
   def protect!(slug)
-    grant.protect! slug
+    permissions.protect! slug
   end
 end
 
@@ -81,7 +81,7 @@ get '/guides' do
 end
 
 get '/guides/writable' do
-  Bibliotheca::Collection::Guides.allowed(grant).as_json
+  Bibliotheca::Collection::Guides.allowed(permissions).as_json
 end
 
 get '/guides/:organization/:repository/raw' do

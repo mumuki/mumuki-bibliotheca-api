@@ -5,8 +5,8 @@ module Bibliotheca::Collection::Guides
       GuideArray.new _all
     end
 
-    def allowed(grant)
-      GuideArray.new _all.select { |it| grant.allows? it.slug }
+    def allowed(permissions)
+      GuideArray.new _all.select { |it| permissions.allows? it.slug }
     end
 
     def count
