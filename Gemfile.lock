@@ -23,18 +23,24 @@ GEM
       simplecov (>= 0.7.1, < 1.0.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     git (1.2.9.1)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
     jwt (1.5.2)
+    mime-types (2.6.2)
     minitest (5.8.3)
     mongo (2.1.2)
       bson (~> 3.0)
     multipart-post (2.0.0)
+    netrc (0.10.3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
     rack (1.6.4)
@@ -43,6 +49,10 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (10.4.2)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rspec (2.99.0)
       rspec-core (~> 2.99.0)
       rspec-expectations (~> 2.99.0)
@@ -68,6 +78,9 @@ GEM
     tilt (2.0.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
 
 PLATFORMS
   ruby
@@ -83,6 +96,7 @@ DEPENDENCIES
   octokit (~> 4.1)
   rack-test
   rake
+  rest-client
   rspec (~> 2.99)
   sinatra
   sinatra-cross_origin (~> 0.3.1)

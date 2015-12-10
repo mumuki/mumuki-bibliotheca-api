@@ -14,6 +14,8 @@ gem 'octokit', '~> 4.1'
 
 gem 'activesupport', '~> 4.2'
 
+gem 'rest-client'
+
 gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
 
 group :test do

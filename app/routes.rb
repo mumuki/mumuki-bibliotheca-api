@@ -3,6 +3,7 @@ require 'sinatra/cross_origin'
 
 require 'json'
 require 'yaml'
+require 'rest-client'
 
 require 'mumukit/auth'
 
