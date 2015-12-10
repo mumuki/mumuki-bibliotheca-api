@@ -21,7 +21,7 @@ module Bibliotheca::IO
         local_repo.add(all: true)
         local_repo.commit("Mumuki Export on #{Time.now}")
         local_repo.push
-        Bibliotheca::IO::AtheneumExporter.new("http://central.localmumuki.io:3000/api/guides").run!(guide)
+        Bibliotheca::IO::AtheneumExporter.new(ENV['ATHENEUM_URL']).run!(guide)
       end
     end
   end
