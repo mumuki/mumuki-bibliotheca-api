@@ -16,6 +16,8 @@ require_relative './io/operation'
 require_relative './io/export'
 require_relative './io/import'
 
+require_relative './io/atheneum_exporter'
+
 require_relative './io/log'
 require_relative './io/import_log'
 require_relative './io/export_log'

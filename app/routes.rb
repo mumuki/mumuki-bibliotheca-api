@@ -100,8 +100,6 @@ post '/guides' do
 
     Bibliotheca::Collection::Guides.upsert_by_slug(slug, body).tap do
       Bibliotheca::IO::Export.new(Bibliotheca::Guide.new(body), bot).run!
-      url = "http://central.localmumuki.io:3000/api/guides"
-      RestClient::Request.execute(method: :post, url: url, user: ENV['ATHENEUM_USER'], password: ENV['ATHENEUM_PASSWORD'], payload: body)
     end
   end
 end

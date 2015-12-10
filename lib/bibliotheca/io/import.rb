@@ -13,6 +13,7 @@ module Bibliotheca::IO
 
     def postprocess
       Bibliotheca::Collection::Guides.upsert_by_slug(@guide.slug, @guide.as_json)
+      Bibliotheca::IO::AtheneumExporter.new("http://central.localmumuki.io:3000/api/guides").run!(@guide.as_json)
     end
   end
 end
