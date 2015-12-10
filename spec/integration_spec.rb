@@ -83,6 +83,7 @@ describe 'routes' do
 
       it 'accepts valid requests' do
         expect_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
+        allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 
@@ -97,6 +98,7 @@ describe 'routes' do
 
       it 'accepts re posts' do
         allow_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
+        allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
 
