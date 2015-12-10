@@ -13,7 +13,7 @@ module Bibliotheca::IO
 
     def postprocess
       Bibliotheca::Collection::Guides.upsert_by_slug(@guide.slug, @guide.as_json)
-      Bibliotheca::IO::AtheneumExporter.new(ENV['ATHENEUM_URL']).run!(@guide.as_json)
+      Bibliotheca::IO::AtheneumExporter.new_from_env.run!(@guide.as_json)
     end
   end
 end
