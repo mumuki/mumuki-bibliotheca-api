@@ -18,16 +18,6 @@ class Bibliotheca::Bot
     "https://#{token}:@github.com/#{repo.full_name}"
   end
 
-  def contributors_for(repo)
-    Rails.logger.info "Fetching contributors for repo #{repo}"
-    bot.octokit.contribs(repo.full_name)
-  end
-
-  def collaborators_for(repo)
-    Rails.logger.info "Fetching collaboratos for guide #{repo}"
-    bot.octokit.collabs(repo.full_name)
-  end
-
   def ensure_exists!(repo)
     create!(repo) unless exists?(repo)
   end
