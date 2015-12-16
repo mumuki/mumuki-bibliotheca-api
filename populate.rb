@@ -17,7 +17,7 @@ end.each do |slug|
   begin
     RestClient.post "http://bibliotheca.mumuki.io/guides/import/#{slug}", {}
   rescue => e
-    puts e
+    puts e.response
   end
 end
 
