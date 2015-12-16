@@ -17,7 +17,11 @@ module Bibliotheca::IO
     end
 
     def self.run!(guide)
-      new_from_env.run!(guide) if atheneum_url
+      if atheneum_url
+        new_from_env.run!(guide)
+      else
+        puts "Warning: Atheneum credentials not set. Not going to export #{guide}"
+      end
     end
 
     private
