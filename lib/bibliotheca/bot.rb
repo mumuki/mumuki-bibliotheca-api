@@ -55,6 +55,8 @@ class Bibliotheca::Bot
         {url: repo.web_hook_url, content_type: 'json'},
         {events: ['push'],
          active: true})
+  rescue => e
+    puts "not registering post commit hook: #{e.message}"
   end
 
 
