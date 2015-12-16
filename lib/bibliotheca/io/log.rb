@@ -9,7 +9,8 @@ module Bibliotheca::IO
     def with_error_logging
       yield
     rescue => e
-      messages << e.inspect #TODO add stacktrace
+      messages << e.inspect
+      raise e
     end
 
     def to_s
