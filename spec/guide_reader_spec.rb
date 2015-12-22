@@ -33,6 +33,7 @@ describe Bibliotheca::IO::GuideReader do
         let(:imported_exercise) { guide.find_exercise_by_original_id(1) }
 
         it { expect(imported_exercise).to_not be nil }
+        it { expect(imported_exercise.default_content).to_not be nil }
         it { expect(imported_exercise.author).to eq guide.author }
         it { expect(imported_exercise.name).to eq 'sample_title' }
         it { expect(imported_exercise.description).to eq '##Sample Description' }

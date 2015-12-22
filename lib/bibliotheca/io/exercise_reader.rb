@@ -19,6 +19,10 @@ module Bibliotheca::IO
       read_code_file(root, 'extra')
     end
 
+    def default_content(root)
+      read_code_file(root, 'default')
+    end
+
     def yaml(root, filename)
       read_yaml_file "#{root}/#{filename}.yml"
     end

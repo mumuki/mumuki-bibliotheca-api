@@ -16,6 +16,7 @@ describe 'read-write' do
            name: 'Bar',
            description: 'a description',
            test: 'foo bar',
+           default_content: '--type here',
            tag_list: %w(baz bar),
            layout: 'no_editor',
            original_id: 1},
@@ -50,6 +51,7 @@ describe 'read-write' do
   it { expect(imported_guide.exercises.first.name).to eq 'Bar' }
   it { expect(imported_guide.exercises.second.name).to eq 'Foo' }
   it { expect(imported_guide.exercises.third.name).to eq 'Baz' }
+  it { expect(imported_guide.exercises.first.default_content).to eq '--type here' }
   it { expect(imported_guide.exercises.first.layout).to eq 'no_editor' }
   it { expect(imported_guide.exercises.second.layout).to eq 'editor_right' }
 

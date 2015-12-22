@@ -73,6 +73,7 @@ module Bibliotheca::IO
         builder.corollary = exercise_reader.markdown(root, 'corollary')
         builder.test = exercise_reader.test_code(root)
         builder.extra_code = exercise_reader.extra_code(root)
+        builder.default_content = exercise_reader.default_content(root)
         builder.expectations = exercise_reader.expectations(root).try { |it| it['expectations'] }
         yield builder
       end

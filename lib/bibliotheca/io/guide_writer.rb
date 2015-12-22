@@ -29,6 +29,7 @@ module Bibliotheca::IO
 
       write_file!(dirname, 'hint.md', e.hint) if e.hint.present?
       write_file!(dirname, extra_filename(guide), e.extra_code) if e.extra_code.present?
+      write_file!(dirname, default_filename(guide), e.default_content) if e.default_content.present?
       write_file!(dirname, 'expectations.yml', expectations_yaml(e)) if e.expectations.present?
       write_file!(dirname, 'corollary.md', e.corollary) if e.corollary.present?
 
@@ -70,6 +71,10 @@ module Bibliotheca::IO
 
     def extra_filename(guide)
       "extra.#{guide.language.extension}"
+    end
+
+    def default_filename(guide)
+      "default.#{guide.language.extension}"
     end
 
     def write_file!(dirname, name, content)

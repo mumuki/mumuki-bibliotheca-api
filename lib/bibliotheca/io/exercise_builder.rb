@@ -38,6 +38,7 @@ module Bibliotheca::IO
        extra_code: extra_code,
        expectations: expectations_list,
        tag_list: tag_list,
+       default_content: default_content,
        layout: layout,
        original_id: original_id}.compact
     end
