@@ -109,7 +109,6 @@ post '/guides' do
     Bibliotheca::Collection::Guides.upsert_by_slug(slug, body).tap do
       guide = Bibliotheca::Guide.new(body)
       Bibliotheca::IO::Export.new(guide, bot).run!
-      Bibliotheca::IO::AtheneumExporter.run!(guide)
     end
   end
 end

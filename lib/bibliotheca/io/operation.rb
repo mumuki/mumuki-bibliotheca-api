@@ -25,6 +25,8 @@ module Bibliotheca::IO
       end
 
       postprocess
+
+      Bibliotheca::IO::AtheneumExporter.run!(guide)
     end
 
     def postprocess

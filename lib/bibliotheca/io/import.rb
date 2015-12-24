@@ -1,6 +1,6 @@
 module Bibliotheca::IO
   class Import < Bibliotheca::IO::Operation
-    attr_accessor :repo
+    attr_accessor :repo, :guide
 
     def initialize(bot, repo)
       super(bot)
@@ -12,8 +12,7 @@ module Bibliotheca::IO
     end
 
     def postprocess
-      Bibliotheca::Collection::Guides.upsert_by_slug(@guide.slug, @guide.as_json)
-      Bibliotheca::IO::AtheneumExporter.run!(@guide.as_json)
+      Bibliotheca::Collection::Guides.upsert_by_slug(guide.slug, guide)
     end
   end
 end
