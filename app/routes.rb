@@ -12,7 +12,8 @@ require_relative '../lib/bibliotheca'
 configure do
   enable :cross_origin
 
-  Mongo::Logger.logger       = ::Logger.new('mongo.log')
+  Mongo::Logger.logger = ::Logger.new('mongo.log')
+
 end
 
 helpers do
@@ -20,12 +21,14 @@ helpers do
     yield JSON.parse(request.body.read)
   end
 
-  def auth_token
-    env['HTTP_X_MUMUKI_AUTH_TOKEN']
+  def permissions
+    token = Mumukit::Auth::Token.decode_header(authorization_header)
+    token.verify_client!
+    @permissions ||= token.permissions 'bibliotheca'
   end
 
-  def permissions
-    @permissions ||= Mumukit::Auth::Token.decode(auth_token).permissions
+  def authorization_header
+    env['HTTP_AUTHORIZATION']
   end
 
   def bot
