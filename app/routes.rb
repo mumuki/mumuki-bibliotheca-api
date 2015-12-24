@@ -107,7 +107,9 @@ post '/guides' do
     protect! slug
 
     Bibliotheca::Collection::Guides.upsert_by_slug(slug, body).tap do
-      Bibliotheca::IO::Export.new(Bibliotheca::Guide.new(body), bot).run!
+      guide = Bibliotheca::Guide.new(body)
+      Bibliotheca::IO::Export.new(guide, bot).run!
+      Bibliotheca::IO::AtheneumExporter.run!(guide)
     end
   end
 end

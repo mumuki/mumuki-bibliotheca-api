@@ -15,14 +15,13 @@ module Bibliotheca::IO
     def run!
       bot.ensure_exists! repo
       with_local_repo do |dir, local_repo|
-
         GuideWriter.new(dir, log).write_guide! guide
-
         local_repo.add(all: true)
         local_repo.commit("Mumuki Export on #{Time.now}")
         local_repo.push
-        Bibliotheca::IO::AtheneumExporter.run!(guide)
       end
+    rescue Git::GitExecuteError => e
+      puts "Could not export guide #{guide.slug} to git #{e}"
     end
   end
 end
