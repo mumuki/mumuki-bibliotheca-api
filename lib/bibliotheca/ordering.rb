@@ -10,14 +10,14 @@ module Bibliotheca
       @order = order
     end
 
-    def position_for(original_id)
-      @order.index(original_id) + 1
+    def position_for(id)
+      @order.index(id) + 1
     end
   end
 
   module NaturalOrdering
-    def self.position_for(original_id)
-      original_id
+    def self.position_for(id)
+      id
     end
   end
 end

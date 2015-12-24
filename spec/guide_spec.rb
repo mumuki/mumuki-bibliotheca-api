@@ -12,18 +12,18 @@ describe Bibliotheca::Guide do
           description: 'a description',
           test: 'foo bar',
           layout: 'no_editor',
-          original_id: 1},
+          id: 1},
 
          {type: 'problem',
           name: 'Foo',
           tag_list: %w(foo bar),
-          original_id: 4},
+          id: 4},
 
          {type: 'playground',
           name: 'Baz',
           tag_list: %w(baz bar),
           layout: 'editor_bottom',
-          original_id: 2}]} }
+          id: 2}]} }
 
 
   context 'stringified keys' do
@@ -44,7 +44,7 @@ describe Bibliotheca::Guide do
     it { expect(guide.exercises.second.type).to eq 'problem' }
     it { expect(guide.exercises.third.type).to eq 'playground' }
     it { expect(guide.exercises.first.tag_list).to eq [] }
-    it { expect(guide.original_id_format).to eq '%05d' }
+    it { expect(guide.id_format).to eq '%05d' }
 
     describe 'as_json' do
       let(:exported) { guide.as_json }

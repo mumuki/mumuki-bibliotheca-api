@@ -20,7 +20,7 @@ describe Bibliotheca::Collection::Guides do
     it { expect(inserted.to_json).to json_eq ({
         beta: false,
         learning: false,
-        original_id_format: '%05d',
+        id_format: '%05d',
         name: 'foo',
         language: 'haskell',
         exercises: [], id: id}) }

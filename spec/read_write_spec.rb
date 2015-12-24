@@ -10,7 +10,7 @@ describe 'read-write' do
       slug: 'flbulgarelli/never-existent-repo',
       language: haskell.name,
       locale: 'en',
-      original_id_format: '%05d',
+      id_format: '%05d',
       exercises: [
           {type: 'problem',
            name: 'Bar',
@@ -19,18 +19,18 @@ describe 'read-write' do
            default_content: '--type here',
            tag_list: %w(baz bar),
            layout: 'no_editor',
-           original_id: 1},
+           id: 1},
 
           {type: 'problem',
            name: 'Foo',
            tag_list: %w(foo bar),
-           original_id: 4},
+           id: 4},
 
           {name: 'Baz',
            tag_list: %w(baz bar),
            layout: 'editor_bottom',
            type: 'problem',
-           original_id: 2}]) }
+           id: 2}]) }
 
   let(:dir) { 'spec/data/import-export' }
 

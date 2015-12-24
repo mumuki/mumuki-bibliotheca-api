@@ -43,7 +43,7 @@ module Bibliotheca::IO
       builder.locale = meta['locale']
 
       read! 'name', builder, meta
-      read! 'original_id_format', builder, meta
+      read! 'id_format', builder, meta
       read! 'learning', builder, meta
       read! 'beta', builder, meta
 
@@ -61,12 +61,12 @@ module Bibliotheca::IO
     end
 
     def read_exercises
-      each_exercise_file do |root, position, original_id, name|
+      each_exercise_file do |root, position, id, name|
         builder = ExerciseBuilder.new
         exercise_reader = ExerciseReader.new(dir)
 
         builder.meta = exercise_reader.meta(root) || (log.no_meta(name); next)
-        builder.original_id = original_id
+        builder.id = id
         builder.name = name
         builder.description = exercise_reader.markdown(root, 'description') || (log.no_description name; next)
         builder.hint = exercise_reader.markdown(root, 'hint')

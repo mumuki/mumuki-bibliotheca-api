@@ -40,7 +40,7 @@ module Bibliotheca::IO
        tag_list: tag_list,
        default_content: default_content,
        layout: layout,
-       original_id: original_id}.compact
+       id: id}.compact
     end
   end
 end

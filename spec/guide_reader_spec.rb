@@ -30,7 +30,7 @@ describe Bibliotheca::IO::GuideReader do
       pending { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
 
       context 'when importing basic exercise' do
-        let(:imported_exercise) { guide.find_exercise_by_original_id(1) }
+        let(:imported_exercise) { guide.find_exercise_by_id(1) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.default_content).to_not be nil }
@@ -49,13 +49,13 @@ describe Bibliotheca::IO::GuideReader do
       end
 
       context 'when importing exercise with errors' do
-        let(:imported_exercise) { guide.find_exercise_by_original_id(2) }
+        let(:imported_exercise) { guide.find_exercise_by_id(2) }
 
         it { expect(imported_exercise).to be nil }
       end
 
       context 'when importing exercise with hint and corollary' do
-        let(:imported_exercise) { guide.find_exercise_by_original_id(3) }
+        let(:imported_exercise) { guide.find_exercise_by_id(3) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.hint).to eq "Try this: blah blah\n" }
@@ -63,14 +63,14 @@ describe Bibliotheca::IO::GuideReader do
       end
 
       context 'when importing with layout' do
-        let(:imported_exercise) { guide.find_exercise_by_original_id(4) }
+        let(:imported_exercise) { guide.find_exercise_by_id(4) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.layout).to eq 'editor_bottom' }
       end
 
       context 'when importing playground' do
-        let(:imported_exercise) { guide.find_exercise_by_original_id(5) }
+        let(:imported_exercise) { guide.find_exercise_by_id(5) }
 
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.name).to eq 'playground' }

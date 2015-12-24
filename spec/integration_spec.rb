@@ -63,7 +63,7 @@ describe 'routes' do
         it { expect(last_response).to be_ok }
         it { expect(last_response.body).to json_eq({beta: false,
                                                     learning: false,
-                                                    original_id_format: '%05d',
+                                                    id_format: '%05d',
                                                     name: 'foo', language: 'haskell',
                                                     slug: 'foo/bar',
                                                     exercises: [],

@@ -14,12 +14,12 @@ describe Bibliotheca::IO::GuideWriter do
       slug: 'flbulgarelli/never-existent-repo',
       language: 'haskell',
       locale: 'en',
-      original_id_format: '%05d',
+      id_format: '%05d',
       extra_code: 'Foo',
       exercises: [
 
           {name: 'foo',
-           original_id: 100,
+           id: 100,
            position: 1,
            locale: 'en',
            tag_list: %w(foo bar),
@@ -29,7 +29,7 @@ describe Bibliotheca::IO::GuideWriter do
           {description: 'a description',
            name: 'bar',
            tag_list: %w(baz bar),
-           original_id: 200,
+           id: 200,
            position: 2,
            type: 'problem',
            layout: 'editor_right',
@@ -47,7 +47,7 @@ describe Bibliotheca::IO::GuideWriter do
       before { writer.write_meta! guide }
 
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
-      it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\nlearning: false\nbeta: false\nlanguage: haskell\noriginal_id_format: '%05d'\norder:\n- 100\n- 200\n" }
+      it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\nlearning: false\nbeta: false\nlanguage: haskell\nid_format: '%05d'\norder:\n- 100\n- 200\n" }
     end
 
     describe '#write_description' do

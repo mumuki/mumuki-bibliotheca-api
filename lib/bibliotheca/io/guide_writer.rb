@@ -19,7 +19,7 @@ module Bibliotheca::IO
 
 
     def write_exercise!(guide, e)
-      dirname = File.join dir, "#{guide.format_original_id(e)}_#{e.name}"
+      dirname = File.join dir, "#{guide.format_id(e)}_#{e.name}"
 
       FileUtils.mkdir_p dirname
 
@@ -50,8 +50,8 @@ module Bibliotheca::IO
           'learning' => guide.learning,
           'beta' => guide.beta,
           'language' => guide.language.name,
-          'original_id_format' => guide.original_id_format,
-          'order' => guide.exercises.map { |e| e.original_id }
+          'id_format' => guide.id_format,
+          'order' => guide.exercises.map { |e| e.id }
       }.to_yaml
     end
 

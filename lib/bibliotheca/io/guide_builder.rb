@@ -32,10 +32,10 @@ module Bibliotheca::IO
        learning: learning,
        extra: extra,
        beta: beta,
-       original_id_format: original_id_format,
+       id_format: id_format,
        slug: slug,
        expectations: expectations || [],
-       exercises: exercises.sort_by { |e| order.position_for(e[:original_id]) }}
+       exercises: exercises.sort_by { |e| order.position_for(e[:id]) }}
     end
 
   end
