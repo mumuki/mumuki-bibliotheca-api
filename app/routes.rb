@@ -85,6 +85,14 @@ get '/guides/writable' do
   Bibliotheca::Collection::Guides.allowed(permissions).as_json
 end
 
+get '/guides/:id/raw' do
+  Bibliotheca::Collection::Guides.find(params['id']).raw
+end
+
+get '/guides/:id' do
+  Bibliotheca::Collection::Guides.find(params['id']).as_json
+end
+
 get '/guides/:organization/:repository/raw' do
   Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).raw
 end
