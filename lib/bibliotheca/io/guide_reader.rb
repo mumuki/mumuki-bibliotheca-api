@@ -44,10 +44,17 @@ module Bibliotheca::IO
 
       read! 'name', builder, meta
       read! 'id_format', builder, meta
-      read! 'learning', builder, meta
+      read! 'type', builder, meta
       read! 'beta', builder, meta
 
+      read_legacy! builder, meta
+
       builder.order = Bibliotheca::Ordering.from meta['order']
+    end
+
+    def read_legacy!(builder, meta)
+      builder.id_format ||= meta['original_id_format']
+      builder.type ||= meta['learning'] ? 'learning' : 'practice'
     end
 
     def read!(key, builder, meta)
