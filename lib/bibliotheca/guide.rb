@@ -2,7 +2,7 @@ module Bibliotheca
   class Guide < JsonWrapper
     def defaults
       {beta: false,
-       learning: false,
+       type: 'practice',
        id_format: '%05d'}
     end
 

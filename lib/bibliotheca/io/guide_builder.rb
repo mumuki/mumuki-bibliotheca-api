@@ -29,7 +29,7 @@ module Bibliotheca::IO
        corollary: corollary,
        language: language.name,
        locale: locale,
-       learning: learning,
+       type: type,
        extra: extra,
        beta: beta,
        id_format: id_format,

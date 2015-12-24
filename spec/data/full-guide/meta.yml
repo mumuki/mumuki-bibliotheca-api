@@ -1,7 +1,7 @@
 name: Introduction
 language: Haskell
 locale: en
-learning: true
+type: learning
 beta: true
 order:
 - 1
