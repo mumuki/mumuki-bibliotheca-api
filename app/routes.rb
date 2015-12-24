@@ -51,7 +51,7 @@ after do
 end
 
 error Mumukit::Auth::InvalidTokenError do
-  halt 412
+  halt 400
 end
 
 error Mumukit::Auth::UnauthorizedAccessError do

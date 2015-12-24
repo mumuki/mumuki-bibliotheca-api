@@ -136,7 +136,7 @@ describe 'routes' do
                          exercises: [{name: 'Exercise 1'}]}.to_json
 
         expect(last_response).to_not be_ok
-        expect(last_response.status).to eq 412
+        expect(last_response.status).to eq 400
         expect(last_response.body).to json_eq message: 'Nil JSON web token'
 
       end
@@ -149,7 +149,7 @@ describe 'routes' do
                          exercises: [{name: 'Exercise 1'}]}.to_json
 
         expect(last_response).to_not be_ok
-        expect(last_response.status).to eq 412
+        expect(last_response.status).to eq 400
         expect(last_response.body).to json_eq message: 'Not enough or too many segments'
       end
     end
