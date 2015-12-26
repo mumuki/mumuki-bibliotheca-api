@@ -47,7 +47,7 @@ module Bibliotheca::IO
       write_file! dir, 'meta.yml', {
           'name' => guide.name,
           'locale' => guide.locale,
-          'learning' => guide.learning,
+          'type' => guide.type,
           'beta' => guide.beta,
           'language' => guide.language.name,
           'id_format' => guide.id_format,

@@ -12,7 +12,7 @@ describe Bibliotheca::IO::GuideReader do
       let!(:guide) { reader.read_guide! }
 
       it { expect(guide.id_format).to eq '%05d' }
-      it { expect(guide.learning).to be false }
+      it { expect(guide.type).to eq 'practice' }
       it { expect(guide.beta).to be false }
     end
   end

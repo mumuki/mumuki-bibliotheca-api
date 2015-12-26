@@ -92,7 +92,22 @@ describe Bibliotheca::IO::GuideReader do
       it { expect(guide.name).to eq 'Introduction' }
       it { expect(guide.exercises.size).to eq 1 }
       it { expect(guide.corollary).to eq "A guide's corollary\n" }
-      it { expect(guide.learning).to be true }
+      it { expect(guide.type).to eq 'learning' }
+      it { expect(guide.id_format).to eq '%05d' }
+      it { expect(guide.beta).to eq true }
+      it { expect(guide.extra).to eq "A guide's extra code\n" }
+    end
+
+    context 'when guide has legacy data' do
+      let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/legacy-guide', repo, log) }
+      let!(:guide) { reader.read_guide! }
+
+      it { expect(guide.name).to eq 'Introduction' }
+      it { expect(guide.exercises.size).to eq 1 }
+      it { expect(guide.corollary).to eq "A guide's corollary\n" }
+      it { expect(
+          guide.type).to eq 'learning' }
+      it { expect(guide.id_format).to eq '%03d' }
       it { expect(guide.beta).to eq true }
       it { expect(guide.extra).to eq "A guide's extra code\n" }
     end
