@@ -39,7 +39,7 @@ describe 'routes' do
 
   describe('get /guides/writable') do
     before do
-      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('foo/*').encode
+      header 'Authorization', build_auth_header('foo/*')
       get '/guides/writable'
     end
 
@@ -85,7 +85,7 @@ describe 'routes' do
         expect_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
-        header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+        header 'Authorization', build_auth_header('*')
 
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
@@ -100,7 +100,7 @@ describe 'routes' do
         allow_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
-        header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+        header 'Authorization', build_auth_header('*')
 
         post '/guides', {slug: 'bar/baz',
                          name: 'Baz Guide',
@@ -120,7 +120,7 @@ describe 'routes' do
 
     context 'when request is invalid' do
       it 'reject unauthorized requests' do
-        header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('goo/foo').encode
+        header 'Authorization', build_auth_header('goo/foo')
 
         post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
@@ -137,12 +137,12 @@ describe 'routes' do
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 400
-        expect(last_response.body).to json_eq message: 'Nil JSON web token'
+        expect(last_response.body).to json_eq message: 'missing authorization header'
 
       end
 
       it 'reject invalid tokens' do
-        header 'X-Mumuki-Auth-Token', 'fooo'
+        header 'Authorization', 'fooo'
 
         post '/guides', {slug: 'bar/baz',
                          name: 'Baz Guide',
@@ -161,7 +161,7 @@ describe 'routes' do
       expect_any_instance_of(Bibliotheca::Bot).to receive(:register_post_commit_hook!)
     end
     it 'accepts valid requests' do
-      header 'X-Mumuki-Auth-Token', Mumukit::Auth::Token.build('*').encode
+      header 'X-Mumuki-Auth-Token', build_auth_header('*')
       post '/guides/import/pdep-utn/mumuki-funcional-guia-0'
       expect(last_response).to be_ok
     end
