@@ -14,7 +14,20 @@ class Bibliotheca::Repo
     "http://bibliotheca.mumuki.io/guides/import/#{full_name}"
   end
 
-  def self.from_full_name(full_name)
-    self.new *full_name.split('/')
+  def self.from_full_name(slug)
+    validate_slug! slug
+
+    self.new *slug.split('/')
   end
+
+  private
+
+  def self.validate_slug!(slug)
+    unless slug =~ /.*\/.*/
+      raise Bibliotheca::InvalidSlugFormatError.new('Slug must be in organization/repository format')
+    end
+  end
+end
+
+class Bibliotheca::InvalidSlugFormatError < StandardError
 end

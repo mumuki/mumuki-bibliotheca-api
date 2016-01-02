@@ -53,7 +53,15 @@ after do
   end
 end
 
+error JSON::ParserError do
+  halt 400
+end
+
 error Mumukit::Auth::InvalidTokenError do
+  halt 400
+end
+
+error Bibliotheca::InvalidSlugFormatError do
   halt 400
 end
 
@@ -67,10 +75,6 @@ end
 
 error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
-end
-
-error JSON::ParserError do
-  halt 400
 end
 
 options '*' do
