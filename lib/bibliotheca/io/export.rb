@@ -22,6 +22,11 @@ module Bibliotheca::IO
       end
     rescue Git::GitExecuteError => e
       puts "Could not export guide #{guide.slug} to git #{e}"
+    rescue Octokit::NotFound => e
+      raise OrganizationNotFoundError.new("Organization #{repo.organization} does not exist")
     end
+  end
+
+  class OrganizationNotFoundError < StandardError
   end
 end

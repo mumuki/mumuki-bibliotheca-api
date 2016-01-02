@@ -11,9 +11,9 @@ require_relative '../lib/bibliotheca'
 
 configure do
   enable :cross_origin
+  set :show_exceptions, false
 
   Mongo::Logger.logger = ::Logger.new('mongo.log')
-
 end
 
 helpers do
@@ -62,6 +62,10 @@ error Mumukit::Auth::UnauthorizedAccessError do
 end
 
 error Bibliotheca::Collection::GuideNotFoundError do
+  halt 404
+end
+
+error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
 end
 
