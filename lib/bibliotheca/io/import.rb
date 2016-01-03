@@ -9,6 +9,7 @@ module Bibliotheca::IO
 
     def run_in_local_repo(dir, repo, local_repo)
       @guide = GuideReader.new(dir, repo, log).read_guide!
+      @guide.validate!
     end
 
     def postprocess

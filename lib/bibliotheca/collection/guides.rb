@@ -20,7 +20,7 @@ module Bibliotheca::Collection::Guides
     def find_by(args)
       first = guides.find(args).projection(_id: 0).first
       raise Bibliotheca::Collection::GuideNotFoundError.new("guide #{args.to_json} not found") unless first
-      GuideDocument.new first.to_h
+      Bibliotheca::Guide.new first.to_h
     end
 
     def find_by_slug(organization_or_slug, repository=nil)
@@ -28,23 +28,27 @@ module Bibliotheca::Collection::Guides
       find_by(slug: slug)
     end
 
-    def insert(guide_json)
+    def insert(guide)
+      guide.validate!
+
       with_id new_id do |id|
-        guides.insert_one guide_json.merge(id)
+        guides.insert_one guide.raw.merge(id)
       end
     end
 
-    def upsert_by_slug(slug, guide_json)
-      consistent! 'slug', slug, guide_json
+    def upsert_by_slug(slug, guide)
+      guide.validate!
+      guide.consistent_slug! slug
+
       with_id(id_for_slug(slug) || new_id) do |id|
-        guides.update_one({slug: slug}, guide_json.as_json.merge(id), {upsert: true})
+        guides.update_one({slug: slug}, guide.raw.merge(id), {upsert: true})
       end
     end
 
     private
 
     def _all
-      guides.find.projection(_id: 0).map { |it| GuideDocument.new(it) }
+      guides.find.projection(_id: 0).map { |it| Bibliotheca::Guide.new(it) }
     end
 
     def id_for_slug(slug)
@@ -59,11 +63,6 @@ module Bibliotheca::Collection::Guides
       Bibliotheca::Collection::Database.client[:guides]
     end
 
-    def consistent!(field, original_value, guide_json)
-      guide_value = guide_json[field]
-      raise "inconsistent #{field} #{original_value} and #{guide_value}" if guide_value.present? && guide_value != original_value
-    end
-
     def with_id(id)
       id_object = {id: id}
       yield id_object
@@ -73,4 +72,3 @@ module Bibliotheca::Collection::Guides
 end
 
 require_relative './guide_collection/guide_array'
-require_relative './guide_collection/guide_document'

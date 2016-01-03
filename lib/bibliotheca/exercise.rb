@@ -8,10 +8,10 @@ module Bibliotheca
 
     def errors
       [
-        ("Invalid layout #{layout}" unless ['editor_right', 'editor_bottom', 'no_editor'].include? layout),
+        ("Invalid layout #{layout}" unless [nil, 'editor_right', 'editor_bottom', 'no_editor'].include? layout),
         ('Name must be present' unless name.present?),
-        ('Name must not contain a \ character' if name.include? '/'),
-        ("Invalid exercise type #{type}" unless ['problem', 'playground'].include? type)
+        ('Name must not contain a / character' if name.include? '/'),
+        ("Invalid exercise type #{type}" unless [nil, 'problem', 'playground'].include? type)
       ].compact
     end
   end

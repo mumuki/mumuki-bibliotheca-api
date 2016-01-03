@@ -6,7 +6,10 @@ describe Bibliotheca::Collection::Guides do
   end
 
   describe '#insert' do
-    let!(:id) { Bibliotheca::Collection::Guides.insert({name: 'foo', language: 'haskell', exercises: []})[:id] }
+    let!(:id) { Bibliotheca::Collection::Guides.insert(Bibliotheca::Guide.new(
+          name: 'foo',
+          language: 'haskell',
+          exercises: []))[:id] }
     let(:inserted) { Bibliotheca::Collection::Guides.find(id) }
 
     it { expect(id).to_not be nil }
@@ -38,17 +41,19 @@ describe Bibliotheca::Collection::Guides do
 
     context 'slug exists' do
       let!(:original_id) { Bibliotheca::Collection::Guides.insert(
-          {name: 'baz',
-           slug: 'foo/goo',
-           language: 'haskell',
-           exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+          Bibliotheca::Guide.new(
+            name: 'baz',
+            slug: 'foo/goo',
+            language: 'haskell',
+            exercises: [{name: 'baz', description: '#goo'}]))[:id] }
 
       let!(:id) { Bibliotheca::Collection::Guides.upsert_by_slug(
           'foo/goo',
-          {name: 'foobaz',
-           slug: 'foo/goo',
-           language: 'haskell',
-           exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+          Bibliotheca::Guide.new(
+            name: 'foobaz',
+            slug: 'foo/goo',
+            language: 'haskell',
+            exercises: [{name: 'baz', description: '#goo'}]))[:id] }
 
       it { expect(id).to_not be nil }
       it { expect(id).to eq original_id }
@@ -62,10 +67,10 @@ describe Bibliotheca::Collection::Guides do
     context 'slugs does not exits' do
       let!(:id) { Bibliotheca::Collection::Guides.upsert_by_slug(
           'foo/goo',
-          {name: 'foobaz',
-           slug: 'foo/goo',
-           language: 'haskell',
-           exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+          build(:guide,
+            name: 'foobaz',
+            slug: 'foo/goo',
+            exercises: [{name: 'baz', description: '#goo'}]))[:id] }
 
       it { expect(id).to_not be nil }
       it { expect(upserted.id).to eq id }
@@ -78,10 +83,10 @@ describe Bibliotheca::Collection::Guides do
 
   describe '#find_by_slug' do
     let!(:id) { Bibliotheca::Collection::Guides.insert(
-        {name: 'baz',
-         slug: 'foo/goo',
-         language: 'haskell',
-         exercises: [{name: 'baz', description: '#goo'}]})[:id] }
+        build(:guide,
+          name: 'baz',
+          slug: 'foo/goo',
+          exercises: [{name: 'baz', description: '#goo'}]))[:id] }
     context 'exists' do
       let(:guide) { Bibliotheca::Collection::Guides.find_by_slug('foo', 'goo') }
 

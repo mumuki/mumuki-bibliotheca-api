@@ -1,7 +1,6 @@
 module Bibliotheca
 end
 
-
 require 'active_support/all'
 
 require_relative './bibliotheca/bot'

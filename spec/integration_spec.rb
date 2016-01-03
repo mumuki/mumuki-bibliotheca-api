@@ -4,11 +4,14 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let!(:guide_id) {
-    Bibliotheca::Collection::Guides.insert({name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []})[:id]
+    Bibliotheca::Collection::Guides.insert(
+      build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []))[:id]
   }
   before do
-    Bibliotheca::Collection::Guides.insert({name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []})[:id]
-    Bibliotheca::Collection::Guides.insert({name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []})[:id]
+    Bibliotheca::Collection::Guides.insert(
+      build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
+    Bibliotheca::Collection::Guides.insert(
+      build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
   end
 
   after do
@@ -119,6 +122,19 @@ describe 'routes' do
     end
 
     context 'when request is invalid' do
+      it 'rejects invalid exercises' do
+        header 'Authorization', build_auth_header('*')
+
+        post '/guides', {slug: 'bar/baz',
+                         language: 'haskell',
+                         name: 'Baz Guide',
+                         exercises: [{name: 'Exercise 1/fdf'}]}.to_json
+
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to be 400
+        expect(last_response.body).to json_eq message: 'Name must not contain a / character'
+      end
+
       it 'reject unauthorized requests' do
         header 'Authorization', build_auth_header('goo/foo')
 

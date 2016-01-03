@@ -21,15 +21,20 @@ module Bibliotheca
 
     def errors
       [
-        ("Unrecognized guide type #{type}" unless ['practice', 'learning'].include? type),
-        ("Beta flag must be boolean" unless [true, false].include? beta),
+        ("Unrecognized guide type #{type}" unless [nil, 'practice', 'learning'].include? type),
+        ("Beta flag must be boolean" unless [nil, true, false].include? beta),
         ("Name must be present" unless name.present?),
         ("Language must be present" unless language.present?)
       ].compact
     end
 
     def validate!
-      e = errors + exercises.flat_map(&:erros)
+      puts errors
+    exercises_errors =  exercises.flat_map(&:errors)
+
+      puts exercises_errors
+
+      e = errors + exercises.flat_map(&:errors)
       raise InvalidGuideFormatError.new(e.join(', ')) unless e.empty?
     end
 

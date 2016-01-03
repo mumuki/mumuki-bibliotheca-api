@@ -3,7 +3,7 @@ FactoryGirl.define do
     name 'my guide'
     slug 'foo/bar'
     exercises []
-    type 'learning'
+    type 'practice'
     language 'haskell'
 
     initialize_with do

@@ -65,6 +65,10 @@ error Bibliotheca::InvalidSlugFormatError do
   halt 400
 end
 
+error Bibliotheca::InvalidGuideFormatError do
+  halt 400
+end
+
 error Mumukit::Auth::UnauthorizedAccessError do
   halt 403
 end
@@ -116,9 +120,9 @@ post '/guides' do
   with_json_body do |body|
     slug = body['slug']
     protect! slug
+    guide = Bibliotheca::Guide.new(body)
 
-    Bibliotheca::Collection::Guides.upsert_by_slug(slug, body).tap do
-      guide = Bibliotheca::Guide.new(body)
+    Bibliotheca::Collection::Guides.upsert_by_slug(slug, guide).tap do
       Bibliotheca::IO::Export.new(guide, bot).run!
     end
   end
