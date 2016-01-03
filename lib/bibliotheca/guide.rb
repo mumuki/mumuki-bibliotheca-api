@@ -29,12 +29,7 @@ module Bibliotheca
     end
 
     def validate!
-      puts errors
-    exercises_errors =  exercises.flat_map(&:errors)
-
-      puts exercises_errors
-
-      e = errors + exercises.flat_map(&:errors)
+      e = errors + exercises.flat_map(&:errors).each_with_index.map {|it, i| "in exercise #{i+1}: #{it}"}
       raise InvalidGuideFormatError.new(e.join(', ')) unless e.empty?
     end
 

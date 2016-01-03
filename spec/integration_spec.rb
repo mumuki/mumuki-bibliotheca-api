@@ -132,7 +132,7 @@ describe 'routes' do
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to be 400
-        expect(last_response.body).to json_eq message: 'Name must not contain a / character'
+        expect(last_response.body).to json_eq message: 'in exercise 1: Name must not contain a / character'
       end
 
       it 'reject unauthorized requests' do
