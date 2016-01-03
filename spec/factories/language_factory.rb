@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   factory :language, class: Bibliotheca::Language do
     sequence(:name) { |n| "lang#{n}" }
     sequence(:extension) { |n| "ext#{n}" }

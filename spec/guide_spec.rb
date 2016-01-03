@@ -55,4 +55,34 @@ describe Bibliotheca::Guide do
     end
   end
 
+  describe 'validations' do
+    context 'no name' do
+      let(:guide) { build(:guide, name: nil) }
+
+      it { expect(guide.errors).to include 'Name must be present' }
+      it { expect(guide.errors.size).to eq 1 }
+    end
+
+    context 'bad type' do
+      let(:guide) { build(:guide, type: 'fdfd') }
+
+      it { expect(guide.errors).to include 'Unrecognized guide type fdfd' }
+      it { expect(guide.errors.size).to eq 1 }
+
+    end
+
+    context 'bad beta' do
+      let(:guide) { build(:guide, beta: 'true') }
+
+      it { expect(guide.errors).to include 'Beta flag must be boolean' }
+      it { expect(guide.errors.size).to eq 1 }
+    end
+
+    context 'no language' do
+      let(:guide) { build(:guide, language: nil) }
+
+      it { expect(guide.errors).to include 'Language must be present' }
+      it { expect(guide.errors.size).to eq 1 }
+    end
+  end
 end
