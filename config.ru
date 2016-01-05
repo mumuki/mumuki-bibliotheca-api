@@ -1,5 +1,6 @@
 require 'mumukit/auth'
 
+require_relative './lib/bibliotheca'
 
 raise 'Missing auth0 client_id' unless Bibliotheca::Env.auth0_client_id
 raise 'Missing auth0 client_secret' unless Bibliotheca::Env.auth0_client_secret
@@ -12,6 +13,6 @@ Mumukit::Auth.configure do |c|
   c.client_secret = Bibliotheca::Env.auth0_client_secret
 end
 
-require './app/routes'
+require_relative './app/routes'
 
 run Sinatra::Application
