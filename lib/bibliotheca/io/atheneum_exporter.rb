@@ -25,7 +25,7 @@ module Bibliotheca::IO
 
     def self.guides_url(url)
       url += '/' unless url.end_with? '/'
-      "#{url}guides"
+      "#{url}api/guides"
     end
 
     def self.run!(guide)
