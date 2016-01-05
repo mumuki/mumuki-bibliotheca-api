@@ -3,13 +3,16 @@ module Bibliotheca::IO
     attr_accessor :url, :client_id, :client_secret
 
     def initialize(url, client_id, client_secret)
+      ensure_present! url, client_id, client_secret
       @url = url
       @client_id = client_id
       @client_secret = client_secret
     end
 
     def self.from_env
-      new atheneum_url, atheneum_client_id, atheneum_client_secret
+      new Bibliotheca::Env.atheneum_url,
+          Bibliotheca::Env.atheneum_client_id,
+          Bibliotheca::Env.atheneum_client_secret
     end
 
     def run!(guide)
@@ -24,7 +27,7 @@ module Bibliotheca::IO
     end
 
     def self.run!(guide)
-      if atheneum_url
+      if env_available?
         from_env.run!(guide)
       else
         puts "Warning: Atheneum credentials not set. Not going to export #{guide}"
@@ -33,16 +36,8 @@ module Bibliotheca::IO
 
     private
 
-    def self.atheneum_url
-      ENV['MUMUKI_ATHENEUM_URL']
-    end
-
-    def self.atheneum_client_secret
-      ENV['MUMUKI_ATHENEUM_CLIENT_SECRET']
-    end
-
-    def self.atheneum_client_id
-      ENV['MUMUKI_ATHENEUM_CLIENT_ID']
+    def self.env_available?
+      Bibliotheca::Env.atheneum_url && Bibliotheca::Env.atheneum_client_id && Bibliotheca::Env.atheneum_client_secret
     end
   end
 end

@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :guide do
+  factory :guide, class: Bibliotheca::Guide do
     name 'my guide'
     slug 'foo/bar'
     exercises []

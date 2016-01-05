@@ -5,13 +5,13 @@ require_relative '../app/routes'
 describe 'routes' do
   let!(:guide_id) {
     Bibliotheca::Collection::Guides.insert(
-      build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []))[:id]
+        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []))[:id]
   }
   before do
     Bibliotheca::Collection::Guides.insert(
-      build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
+        build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert(
-      build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
+        build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
   end
 
   after do
@@ -119,6 +119,20 @@ describe 'routes' do
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['id']).to eq id
       end
+
+      it 'does not export if bot is not authenticated' do
+        expect_any_instance_of(Bibliotheca::Bot).to receive(:authenticated?).and_return(false)
+
+        header 'Authorization', build_auth_header('*')
+
+        post '/guides', {slug: 'bar/baz',
+                         language: 'haskell',
+                         name: 'Baz Guide',
+                         exercises: [{name: 'Exercise 1'}]}.to_json
+
+        expect(last_response).to be_ok
+        expect(JSON.parse(last_response.body)['id']).to_not be nil
+      end
     end
 
     context 'when request is invalid' do
@@ -172,14 +186,26 @@ describe 'routes' do
   end
 
   describe 'post /guides/import' do
-    before do
-      expect_any_instance_of(Bibliotheca::IO::Import).to receive(:run!)
-      expect_any_instance_of(Bibliotheca::Bot).to receive(:register_post_commit_hook!)
+    context 'when bot is authenticated' do
+      before do
+        expect_any_instance_of(Bibliotheca::IO::Import).to receive(:run!)
+        expect_any_instance_of(Bibliotheca::Bot).to receive(:register_post_commit_hook!)
+      end
+      it 'accepts valid requests' do
+        post '/guides/import/pdep-utn/mumuki-funcional-guia-0'
+        expect(last_response).to be_ok
+      end
     end
-    it 'accepts valid requests' do
-      header 'X-Mumuki-Auth-Token', build_auth_header('*')
-      post '/guides/import/pdep-utn/mumuki-funcional-guia-0'
-      expect(last_response).to be_ok
+
+    context 'when bot is not authenticated' do
+      before do
+        expect_any_instance_of(Bibliotheca::IO::Import).to receive(:run!)
+        expect_any_instance_of(Bibliotheca::Bot).to receive(:authenticated?).and_return false
+      end
+      it 'accepts valid requests' do
+        post '/guides/import/pdep-utn/mumuki-funcional-guia-0'
+        expect(last_response).to be_ok
+      end
     end
   end
 end

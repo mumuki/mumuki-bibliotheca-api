@@ -26,6 +26,10 @@ RSpec::Matchers.define :json_eq do |expected_json_hash|
   end
 end
 
+ENV['MUMUKI_BOT_USERNAME'] = 'mumukibot'
+ENV['MUMUKI_BOT_EMAIL'] = 'bot@mumuki.org'
+ENV['MUMUKI_BOT_API_TOKEN'] = 'fake_token'
+
 require 'base64'
 Mumukit::Auth.configure do |c|
   c.client_id = 'foo'
