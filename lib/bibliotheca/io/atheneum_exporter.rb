@@ -13,14 +13,9 @@ module Bibliotheca::IO
     end
 
     def run!(guide)
-      RestClient::Request.execute(
-        method: :post,
-        url: self.class.guides_url(url),
-        headers: {params: {slug: guide.slug}},
-        user: user,
-        password: password,
-        payload: guide
-      )
+      RestClient::Resource
+        .new(self.class.guides_url(url), user, password)
+        .post(guide.to_json, {content_type: 'application/json'})
     end
 
     def self.guides_url(url)
