@@ -15,12 +15,17 @@ module Bibliotheca::IO
     def run!(guide)
       RestClient::Request.execute(
         method: :post,
-        url: "#{url}/guides",
+        url: self.class.guides_url(url),
         headers: {params: {slug: guide.slug}},
         user: user,
         password: password,
         payload: guide
       )
+    end
+
+    def self.guides_url(url)
+      url += '/' unless url.end_with? '/'
+      "#{url}guides"
     end
 
     def self.run!(guide)
