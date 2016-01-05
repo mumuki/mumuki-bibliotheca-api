@@ -59,9 +59,8 @@ class Bibliotheca::Bot
     puts "not registering post commit hook: #{e.message}"
   end
 
-
   def self.from_env
-    self.new 'mumukibot', 'bot@mumuki.org', ENV['MUMUKIBOT_GITHUB_TOKEN']
+    new ENV['MUMUKI_BOT_USERNAME'], ENV['MUMUKI_BOT_EMAIL'], ENV['MUMUKI_BOT_API_TOKEN']
   end
 
   private

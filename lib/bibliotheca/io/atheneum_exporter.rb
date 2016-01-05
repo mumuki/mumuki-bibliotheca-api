@@ -1,20 +1,20 @@
 module Bibliotheca::IO
   class AtheneumExporter
-    attr_accessor :url, :user, :password
+    attr_accessor :url, :client_id, :client_secret
 
-    def initialize(url, user, password)
+    def initialize(url, client_id, client_secret)
       @url = url
-      @user = user
-      @password = password
+      @client_id = client_id
+      @client_secret = client_secret
     end
 
-    def self.new_from_env
-      new atheneum_url, atheneum_user, atheneum_password
+    def self.from_env
+      new atheneum_url, atheneum_client_id, atheneum_client_secret
     end
 
     def run!(guide)
       RestClient::Resource
-        .new(self.class.guides_url(url), user, password)
+        .new(self.class.guides_url(url), client_id, client_secret)
         .post(guide.to_json, {content_type: 'application/json'})
     end
 
@@ -25,7 +25,7 @@ module Bibliotheca::IO
 
     def self.run!(guide)
       if atheneum_url
-        new_from_env.run!(guide)
+        from_env.run!(guide)
       else
         puts "Warning: Atheneum credentials not set. Not going to export #{guide}"
       end
@@ -34,15 +34,15 @@ module Bibliotheca::IO
     private
 
     def self.atheneum_url
-      ENV['ATHENEUM_URL']
+      ENV['MUMUKI_ATHENEUM_URL']
     end
 
-    def self.atheneum_password
-      ENV['ATHENEUM_PASSWORD']
+    def self.atheneum_client_secret
+      ENV['MUMUKI_ATHENEUM_CLIENT_SECRET']
     end
 
-    def self.atheneum_user
-      ENV['ATHENEUM_USER']
+    def self.atheneum_client_id
+      ENV['MUMUKI_ATHENEUM_CLIENT_ID']
     end
   end
 end
