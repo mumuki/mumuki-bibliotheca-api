@@ -13,7 +13,14 @@ module Bibliotheca::IO
     end
 
     def run!(guide)
-      RestClient::Request.execute(method: :post, url: url, user: user, password: password, payload: guide)
+      RestClient::Request.execute(
+        method: :post,
+        url: "#{url}/guides",
+        headers: {params: {slug: guide.slug}},
+        user: user,
+        password: password,
+        payload: guide
+      )
     end
 
     def self.run!(guide)
