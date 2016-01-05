@@ -12,7 +12,7 @@ module Bibliotheca::IO
       @repo ||= Bibliotheca::Repo.from_full_name(guide.slug)
     end
 
-    def run!
+    def postprocess
       bot.ensure_exists! repo
       with_local_repo do |dir, local_repo|
         GuideWriter.new(dir, log).write_guide! guide

@@ -32,6 +32,9 @@ module Bibliotheca::IO
     def postprocess
     end
 
+    def run_in_local_repo(dir, repo, local_repo)
+    end
+
     private
 
     def new_log
