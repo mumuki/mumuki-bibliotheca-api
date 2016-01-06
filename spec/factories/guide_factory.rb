@@ -5,6 +5,7 @@ FactoryGirl.define do
     exercises []
     type 'practice'
     language 'haskell'
+    description 'foo'
 
     initialize_with do
       Bibliotheca::Guide.new(attributes)
