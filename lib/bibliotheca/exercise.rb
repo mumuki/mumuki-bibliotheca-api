@@ -3,7 +3,8 @@ module Bibliotheca
     def defaults
       {type: 'problem',
        tag_list: [],
-       layout: 'editor_right'}
+       layout: 'editor_right',
+       expectations: []}
     end
 
     def errors

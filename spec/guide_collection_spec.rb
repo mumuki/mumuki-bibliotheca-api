@@ -26,7 +26,7 @@ describe Bibliotheca::Collection::Guides do
         id_format: '%05d',
         name: 'foo',
         language: 'haskell',
-        exercises: [], id: id}) }
+        exercises: [], id: id, expectations: []}) }
 
     it { expect(inserted.raw.to_json).to json_eq ({
         name: 'foo',

@@ -45,6 +45,7 @@ describe Bibliotheca::Guide do
     it { expect(guide.exercises.third.type).to eq 'playground' }
     it { expect(guide.exercises.first.tag_list).to eq [] }
     it { expect(guide.id_format).to eq '%05d' }
+    it { expect(guide.expectations).to eq [] }
 
     describe 'as_json' do
       let(:exported) { guide.as_json }

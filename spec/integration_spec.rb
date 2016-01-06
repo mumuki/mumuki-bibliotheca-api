@@ -70,7 +70,8 @@ describe 'routes' do
                                                     name: 'foo', language: 'haskell',
                                                     slug: 'foo/bar',
                                                     exercises: [],
-                                                    id: guide_id}) }
+                                                    id: guide_id,
+                                                    expectations: []}) }
       end
     end
     context 'When guide does not exist' do

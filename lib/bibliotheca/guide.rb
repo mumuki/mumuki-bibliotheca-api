@@ -3,7 +3,8 @@ module Bibliotheca
     def defaults
       {beta: false,
        type: 'practice',
-       id_format: '%05d'}
+       id_format: '%05d',
+       expectations: []}
     end
 
     def transforms(original)
