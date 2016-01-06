@@ -1,13 +1,18 @@
 require 'mumukit/auth'
 
+require_relative './lib/bibliotheca'
+
+raise 'Missing auth0 client_id' unless Bibliotheca::Env.auth0_client_id
+raise 'Missing auth0 client_secret' unless Bibliotheca::Env.auth0_client_secret
+
+raise 'Missing bot username' unless Bibliotheca::Env.bot_username
+raise 'Missing bot email' unless Bibliotheca::Env.bot_email
+
 Mumukit::Auth.configure do |c|
-  c.client_id = ENV['MUMUKI_BIBLIOTHECA_CLIENT_ID']
-  c.client_secret = ENV['MUMUKI_BIBLIOTHECA_CLIENT_SECRET']
+  c.client_id = Bibliotheca::Env.auth0_client_id
+  c.client_secret = Bibliotheca::Env.auth0_client_secret
 end
 
-raise 'Missing auth0 client_id' unless Mumukit::Auth.config.client_id
-raise 'Missing auth0 client_secret' unless Mumukit::Auth.config.client_secret
-
-require './app/routes'
+require_relative './app/routes'
 
 run Sinatra::Application

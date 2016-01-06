@@ -3,6 +3,10 @@ end
 
 require 'active_support/all'
 
+require_relative './bibliotheca/object'
+
+require_relative './bibliotheca/env'
+
 require_relative './bibliotheca/bot'
 require_relative './bibliotheca/repo'
 

@@ -5,32 +5,14 @@ class Bibliotheca::Bot
   attr_accessor :token, :name, :email
 
   def initialize(name, email, token)
+    ensure_present! name, email
     @name = name
     @email = email
     @token = token
   end
 
-  def octokit
-    Octokit::Client.new(access_token: token)
-  end
-
-  def writable_github_url_for(repo)
-    "https://#{token}:@github.com/#{repo.full_name}"
-  end
-
   def ensure_exists!(repo)
     create!(repo) unless exists?(repo)
-  end
-
-  def create!(repo)
-    octokit.create_repository(repo.name, organization: repo.organization)
-  end
-
-  def exists?(repo)
-    Git.ls_remote(writable_github_url_for(repo))
-    true
-  rescue Git::GitExecuteError
-    false
   end
 
   def clone_into(repo, dir)
@@ -43,12 +25,6 @@ class Bibliotheca::Bot
     raise e
   end
 
-  def can_commit_to?(repo)
-    octokit.collaborator?(repo.full_name, name)
-  rescue
-    false
-  end
-
   def register_post_commit_hook!(repo)
     octokit.create_hook(
         repo.full_name, 'web',
@@ -59,12 +35,36 @@ class Bibliotheca::Bot
     puts "not registering post commit hook: #{e.message}"
   end
 
+  def authenticated?
+    !!token
+  end
 
   def self.from_env
-    self.new 'mumukibot', 'bot@mumuki.org', ENV['MUMUKIBOT_GITHUB_TOKEN']
+    new Bibliotheca::Env.bot_username,
+        Bibliotheca::Env.bot_email,
+        Bibliotheca::Env.bot_api_token
   end
 
   private
+
+  def exists?(repo)
+    Git.ls_remote(writable_github_url_for(repo))
+    true
+  rescue Git::GitExecuteError
+    false
+  end
+
+  def create!(repo)
+    octokit.create_repository(repo.name, organization: repo.organization)
+  end
+
+  def writable_github_url_for(repo)
+    "https://#{token}:@github.com/#{repo.full_name}"
+  end
+
+  def octokit
+    Octokit::Client.new(access_token: token)
+  end
 
   def private_repo_error(message)
     ['could not read Username', 'Invalid username or password'].any? { |it| message.include? it }

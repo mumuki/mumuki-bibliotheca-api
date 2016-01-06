@@ -32,9 +32,17 @@ bundle exec rspec
 * Starting the server
 
 ```bash
-MUMUKI_BIBLIOTHECA_CLIENT_ID=... MUMUKI_BIBLIOTHECA_CLIENT_SECRET=... bundle exec rackup 
+MUMUKI_ATHENEUM_URL=... \
+MUMUKI_ATHENEUM_CLIENT_SECRET=... \
+MUMUKI_ATHENEUM_CLIENT_ID=... \
+MUMUKI_BOT_USERNAME=... \
+MUMUKI_BOT_EMAIL=... \
+MUMUKI_BOT_API_TOKEN=... \
+MUMUKI_AUTH0_CLIENT_ID=... \
+MUMUKI_AUTH0_CLIENT_SECRET=... \
+bundle exec rackup
 ```
 
-## Authentication Powered by Auth0 
+## Authentication Powered by Auth0
 
 <a width="150" height="50" href="https://auth0.com/" target="_blank" alt="Single Sign On & Token Based Authentication - Auth0"><img width="150" height="50" alt="JWT Auth for open source projects" src="http://cdn.auth0.com/oss/badges/a0-badge-dark.png"/></a>

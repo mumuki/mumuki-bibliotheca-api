@@ -123,7 +123,7 @@ post '/guides' do
     guide = Bibliotheca::Guide.new(body)
 
     Bibliotheca::Collection::Guides.upsert_by_slug(slug, guide).tap do
-      Bibliotheca::IO::Export.new(guide, bot).run!
+      Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
     end
   end
 end
@@ -131,7 +131,7 @@ end
 post '/guides/import/:organization/:name' do
   repo = Bibliotheca::Repo.new(params[:organization], params[:name])
   Bibliotheca::IO::Import.new(bot, repo).run!
-  bot.register_post_commit_hook!(repo)
+  bot.register_post_commit_hook!(repo) if bot.authenticated?
 end
 
 
