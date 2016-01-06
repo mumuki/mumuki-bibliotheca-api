@@ -9,6 +9,7 @@ describe Bibliotheca::Collection::Guides do
     let!(:id) { Bibliotheca::Collection::Guides.insert(Bibliotheca::Guide.new(
           name: 'foo',
           language: 'haskell',
+          description: 'foo',
           exercises: []))[:id] }
     let(:inserted) { Bibliotheca::Collection::Guides.find(id) }
 
@@ -26,12 +27,14 @@ describe Bibliotheca::Collection::Guides do
         id_format: '%05d',
         name: 'foo',
         language: 'haskell',
+        description: 'foo',
         exercises: [], id: id, expectations: []}) }
 
     it { expect(inserted.raw.to_json).to json_eq ({
         name: 'foo',
         language: 'haskell',
         exercises: [],
+        description: 'foo',
         id: id}) }
 
   end
@@ -45,6 +48,7 @@ describe Bibliotheca::Collection::Guides do
             name: 'baz',
             slug: 'foo/goo',
             language: 'haskell',
+            description: 'foo',
             exercises: [{name: 'baz', description: '#goo'}]))[:id] }
 
       let!(:id) { Bibliotheca::Collection::Guides.upsert_by_slug(
@@ -53,6 +57,7 @@ describe Bibliotheca::Collection::Guides do
             name: 'foobaz',
             slug: 'foo/goo',
             language: 'haskell',
+            description: 'foo',
             exercises: [{name: 'baz', description: '#goo'}]))[:id] }
 
       it { expect(id).to_not be nil }
@@ -70,6 +75,7 @@ describe Bibliotheca::Collection::Guides do
           build(:guide,
             name: 'foobaz',
             slug: 'foo/goo',
+            description: 'foo',
             exercises: [{name: 'baz', description: '#goo'}]))[:id] }
 
       it { expect(id).to_not be nil }
@@ -86,6 +92,7 @@ describe Bibliotheca::Collection::Guides do
         build(:guide,
           name: 'baz',
           slug: 'foo/goo',
+          description: 'foo',
           exercises: [{name: 'baz', description: '#goo'}]))[:id] }
     context 'exists' do
       let(:guide) { Bibliotheca::Collection::Guides.find_by_slug('foo', 'goo') }
