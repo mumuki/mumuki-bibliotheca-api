@@ -69,6 +69,7 @@ describe 'routes' do
                                                     id_format: '%05d',
                                                     name: 'foo', language: 'haskell',
                                                     slug: 'foo/bar',
+                                                    description: 'foo',
                                                     exercises: [],
                                                     id: guide_id,
                                                     expectations: []}) }
@@ -94,7 +95,8 @@ describe 'routes' do
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
                          name: 'Baz Guide',
-                         exercises: [{name: 'Exercise 1'}]}.to_json
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['id']).to_not be nil
@@ -109,13 +111,15 @@ describe 'routes' do
         post '/guides', {slug: 'bar/baz',
                          name: 'Baz Guide',
                          language: 'haskell',
-                         exercises: [{name: 'Exercise 1'}]}.to_json
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
         id = JSON.parse(last_response.body)['id']
 
         post '/guides', {slug: 'bar/baz',
                          name: 'Bar Baz Guide',
                          language: 'haskell',
-                         exercises: [{name: 'Exercise 1'}]}.to_json
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['id']).to eq id
@@ -129,7 +133,8 @@ describe 'routes' do
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
                          name: 'Baz Guide',
-                         exercises: [{name: 'Exercise 1'}]}.to_json
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['id']).to_not be nil
@@ -143,7 +148,8 @@ describe 'routes' do
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
                          name: 'Baz Guide',
-                         exercises: [{name: 'Exercise 1/fdf'}]}.to_json
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1/fdf', description: 'foo'}]}.to_json
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to be 400
