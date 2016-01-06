@@ -15,12 +15,6 @@ module Bibliotheca::IO
           Bibliotheca::Env.atheneum_client_secret
     end
 
-    def run!(guide)
-      RestClient::Resource
-        .new(self.class.guides_url(url), client_id, client_secret)
-        .post(guide.as_json, {content_type: 'json', accept: 'json'})
-    end
-
     def self.guides_url(url)
       url += '/' unless url.end_with? '/'
       "#{url}api/guides"
@@ -30,7 +24,17 @@ module Bibliotheca::IO
       if env_available?
         from_env.run!(guide)
       else
-        puts "Warning: Atheneum credentials not set. Not going to export #{guide}"
+        log_warning "Atheneum credentials not set. Not going to export #{guide}."
+      end
+    end
+
+    def run!(guide)
+      begin
+        RestClient::Resource
+          .new(self.class.guides_url(url), client_id, client_secret)
+          .post(guide.as_json, {content_type: 'json', accept: 'json'})
+      rescue RestClient::Exception => e
+        self.class.log_warning "couldn't update guide #{guide} on Atheneum, reason: #{e.response}."
       end
     end
 
@@ -38,6 +42,10 @@ module Bibliotheca::IO
 
     def self.env_available?
       Bibliotheca::Env.atheneum_url && Bibliotheca::Env.atheneum_client_id && Bibliotheca::Env.atheneum_client_secret
+    end
+
+    def self.log_warning(message)
+      puts "Warning: #{message}"
     end
   end
 end
