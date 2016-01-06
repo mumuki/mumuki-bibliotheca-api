@@ -18,7 +18,7 @@ module Bibliotheca::IO
     def run!(guide)
       RestClient::Resource
         .new(self.class.guides_url(url), client_id, client_secret)
-        .post(guide.to_json, {content_type: 'application/json'})
+        .post(guide.as_json, {content_type: 'json', accept: 'json'})
     end
 
     def self.guides_url(url)
