@@ -25,7 +25,8 @@ module Bibliotheca
         ("Unrecognized guide type #{type}" unless [nil, 'practice', 'learning'].include? type),
         ("Beta flag must be boolean" unless [nil, true, false].include? beta),
         ("Name must be present" unless name.present?),
-        ("Language must be present" unless language.present?)
+        ("Language must be present" unless language.present?),
+        ("Description must be present" unless description.present?)
       ].compact
     end
 
