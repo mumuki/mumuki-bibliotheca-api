@@ -34,7 +34,9 @@ module Bibliotheca::IO
           .new(self.class.guides_url(url), client_id, client_secret)
           .post(guide.to_json, {content_type: 'json', accept: 'json'})
       rescue RestClient::Exception => e
-        self.class.log_warning "couldn't update guide #{guide.slug} on Atheneum, reason: #{e.response}."
+        self.class.log_warning "Atheneum rejected guide #{guide.slug} update, reason: #{e.response}."
+      rescue Exception => e
+        self.class.log_warning "something went wrong while trying to update guide #{guide.slug}, error message is #{e.message}."
       end
     end
 

@@ -20,6 +20,8 @@ describe Bibliotheca::IO::AtheneumExporter do
     before { setup_dummy_atheneum_credentials }
     before { allow_any_instance_of(RestClient::Resource).to receive(:post).and_raise(RestClient::InternalServerError, 'Something went wrong') }
 
-    it { expect { exporter.run!({ name: 'bar', slug: 'foo/bar' }) }.to_not raise_error }
+    let(:guide) { build(:guide) }
+
+    it { expect { exporter.run! guide }.to_not raise_error }
   end
 end
