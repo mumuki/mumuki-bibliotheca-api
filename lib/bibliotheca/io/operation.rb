@@ -15,16 +15,17 @@ module Bibliotheca::IO
     end
 
     def run!
-      puts "#{self.class.name} : repository #{repo.full_name}"
-
+      puts "#{self.class.name} : running before run hook for repository #{repo.full_name}"
       before_run_in_local_repo
 
       log.with_error_logging do
         with_local_repo do |dir, local_repo|
+          puts "#{self.class.name} : running run hook for repository #{repo.full_name}"
           run_in_local_repo dir, local_repo
         end
       end
 
+      puts "#{self.class.name} : running after run hook repository #{repo.full_name}"
       after_run_in_local_repo
 
       Bibliotheca::IO::AtheneumExporter.run!(guide)
