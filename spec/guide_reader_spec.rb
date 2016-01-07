@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Bibliotheca::IO::GuideReader do
-  let(:log) { Bibliotheca::IO::ImportLog.new }
+  let(:log) { Bibliotheca::IO::Log.new }
   let(:repo) { Bibliotheca::Repo.new('mumuki', 'functional-haskell-guide-1') }
   let(:haskell) { build(:haskell) }
 

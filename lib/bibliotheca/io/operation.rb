@@ -38,7 +38,7 @@ module Bibliotheca::IO
     private
 
     def new_log
-      ImportLog.new
+      Bibliotheca::IO::Log.new
     end
   end
 end

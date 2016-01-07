@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Bibliotheca::IO::ImportLog do
-  let(:log) { Bibliotheca::IO::ImportLog.new }
+describe Bibliotheca::IO::Log do
+  let(:log) { Bibliotheca::IO::Log.new }
 
   describe 'pre validation errors' do
     before do

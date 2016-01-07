@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bibliotheca::IO::GuideReader do
   context 'when optional properties are specified' do
-    let(:log) { Bibliotheca::IO::ImportLog.new }
+    let(:log) { Bibliotheca::IO::Log.new }
     let(:repo) { Bibliotheca::Repo.new('mumuki', 'functional-haskell-guide-1') }
     let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/full-guide', repo, log) }
     let!(:guide) { reader.read_guide! }
