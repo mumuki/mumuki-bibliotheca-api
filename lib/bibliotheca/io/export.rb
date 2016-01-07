@@ -12,7 +12,7 @@ module Bibliotheca::IO
       @repo ||= Bibliotheca::Repo.from_full_name(guide.slug)
     end
 
-    def after_run_in_local_repo
+    def before_run_in_local_repo
       bot.ensure_exists! repo
     end
 
