@@ -7,10 +7,9 @@ module Bibliotheca::IO
       @log = new_log
     end
 
-    def with_local_repo
+    def with_local_repo(&block)
       Dir.mktmpdir("mumuki.#{self.class.name}") do |dir|
-        local_repo = bot.clone_into repo, dir
-        yield dir, local_repo
+        bot.clone_into repo, dir, &block
       end
     end
 

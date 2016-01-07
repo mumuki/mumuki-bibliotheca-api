@@ -15,11 +15,11 @@ class Bibliotheca::Bot
     create!(repo) unless exists?(repo)
   end
 
-  def clone_into(repo, dir)
-    g = Git.clone(writable_github_url_for(repo), '.', path: dir)
-    g.config('user.name', name)
-    g.config('user.email', email)
-    g
+  def clone_into(repo, dir, &block)
+    local_repo = Git.clone(writable_github_url_for(repo), '.', path: dir)
+    local_repo.config('user.name', name)
+    local_repo.config('user.email', email)
+    yield dir, local_repo
   rescue Git::GitExecuteError => e
     raise 'Repository is private or does not exist' if private_repo_error(e.message)
     raise e
