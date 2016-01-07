@@ -12,18 +12,17 @@ module Bibliotheca::IO
       @repo ||= Bibliotheca::Repo.from_full_name(guide.slug)
     end
 
-    def postprocess
+    def after_run_in_local_repo
       bot.ensure_exists! repo
-      with_local_repo do |dir, local_repo|
-        GuideWriter.new(dir, log).write_guide! guide
-        local_repo.add(all: true)
-        local_repo.commit("Mumuki Export on #{Time.now}")
-        local_repo.push
-      end
+    end
+
+    def run_in_local_repo(dir, local_repo)
+      GuideWriter.new(dir, log).write_guide! guide
+      local_repo.add(all: true)
+      local_repo.commit("Mumuki Export on #{Time.now}")
+      local_repo.push
     rescue Git::GitExecuteError => e
       puts "Could not export guide #{guide.slug} to git #{e}"
-    rescue Octokit::NotFound => e
-      raise OrganizationNotFoundError.new("Organization #{repo.organization} does not exist")
     end
   end
 

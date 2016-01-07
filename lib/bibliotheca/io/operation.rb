@@ -4,6 +4,7 @@ module Bibliotheca::IO
 
     def initialize(bot)
       @bot = bot
+      @log = new_log
     end
 
     def with_local_repo
@@ -16,23 +17,26 @@ module Bibliotheca::IO
     def run!
       puts "#{self.class.name} : repository #{repo.full_name}"
 
-      @log = new_log
+      before_run_in_local_repo
 
       log.with_error_logging do
         with_local_repo do |dir, local_repo|
-          run_in_local_repo dir, @repo, local_repo
+          run_in_local_repo dir, local_repo
         end
       end
 
-      postprocess
+      after_run_in_local_repo
 
       Bibliotheca::IO::AtheneumExporter.run!(guide)
     end
 
-    def postprocess
+    def before_run_in_local_repo
     end
 
-    def run_in_local_repo(dir, repo, local_repo)
+    def after_run_in_local_repo
+    end
+
+    def run_in_local_repo(dir, local_repo)
     end
 
     private

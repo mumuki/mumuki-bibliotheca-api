@@ -7,12 +7,12 @@ module Bibliotheca::IO
       @repo = repo
     end
 
-    def run_in_local_repo(dir, repo, local_repo)
+    def run_in_local_repo(dir, local_repo)
       @guide = GuideReader.new(dir, repo, log).read_guide!
       @guide.validate!
     end
 
-    def postprocess
+    def after_run_in_local_repo
       Bibliotheca::Collection::Guides.upsert_by_slug(guide.slug, guide)
     end
   end
