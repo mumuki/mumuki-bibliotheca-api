@@ -27,7 +27,7 @@ describe Bibliotheca::IO::GuideReader do
       it { expect(guide.description).to eq "Awesome guide\n" }
       it { expect(guide.language).to eq haskell }
       it { expect(guide.locale).to eq 'en' }
-      pending { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
+      skip { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
 
       context 'when importing basic exercise' do
         let(:imported_exercise) { guide.find_exercise_by_id(1) }
