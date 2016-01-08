@@ -193,9 +193,16 @@ describe 'routes' do
   end
 
   describe 'post /guides/import' do
+    let(:guide) { build(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
+
+    before do
+      allow_any_instance_of(Bibliotheca::IO::GuideReader).to receive(:read_guide!).and_return(guide)
+      allow(Git).to receive(:clone).and_return(Git::Base.new)
+      allow_any_instance_of(Git::Base).to receive(:config)
+    end
+
     context 'when bot is authenticated' do
       before do
-        expect_any_instance_of(Bibliotheca::IO::Import).to receive(:run!)
         expect_any_instance_of(Bibliotheca::Bot).to receive(:register_post_commit_hook!)
       end
       it 'accepts valid requests' do
@@ -206,7 +213,6 @@ describe 'routes' do
 
     context 'when bot is not authenticated' do
       before do
-        expect_any_instance_of(Bibliotheca::IO::Import).to receive(:run!)
         expect_any_instance_of(Bibliotheca::Bot).to receive(:authenticated?).and_return false
       end
       it 'accepts valid requests' do

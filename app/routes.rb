@@ -131,7 +131,6 @@ end
 post '/guides/import/:organization/:name' do
   repo = Bibliotheca::Repo.new(params[:organization], params[:name])
   Bibliotheca::IO::Import.new(bot, repo).run!
-  bot.register_post_commit_hook!(repo) if bot.authenticated?
 end
 
 
