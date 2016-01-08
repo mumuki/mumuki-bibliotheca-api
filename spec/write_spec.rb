@@ -15,7 +15,7 @@ describe Bibliotheca::IO::GuideWriter do
       language: 'haskell',
       locale: 'en',
       id_format: '%05d',
-      extra_code: 'Foo',
+      extra: 'Foo',
       exercises: [
 
           {name: 'foo',
@@ -23,7 +23,7 @@ describe Bibliotheca::IO::GuideWriter do
            position: 1,
            locale: 'en',
            tag_list: %w(foo bar),
-           extra_code: 'foobar',
+           extra: 'foobar',
            expectations: [{binding: 'bar', inspection: 'HasBinding'}]},
 
           {description: 'a description',
