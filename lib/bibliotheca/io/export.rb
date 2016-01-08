@@ -17,6 +17,7 @@ module Bibliotheca::IO
     end
 
     def run_in_local_repo(dir, local_repo)
+      local_repo.remove('*')
       GuideWriter.new(dir, log).write_guide! guide
       local_repo.add(all: true)
       local_repo.commit("Mumuki Export on #{Time.now}")
