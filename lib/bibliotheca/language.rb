@@ -57,6 +57,10 @@ module Bibliotheca
         Language.new(name: 'javascript',
                      extension: 'js',
                      ace_mode: 'javascript',
-                     devicon: 'javascript_badge')]
+                     devicon: 'javascript_badge'),
+        Language.new(name: 'text',
+                     extension: 'txt',
+                     test_extension: 'yml',
+                     devicon: 'code')]
   end
 end
