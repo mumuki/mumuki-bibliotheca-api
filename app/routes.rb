@@ -108,6 +108,17 @@ get '/guides/:id' do
   Bibliotheca::Collection::Guides.find(params['id']).as_json
 end
 
+delete '/guides/:id' do
+  id = params['id']
+  slug = Bibliotheca::Collection::Guides.find(id).slug
+
+  protect! slug
+
+  Bibliotheca::Collection::Guides.delete(id)
+
+  {}
+end
+
 get '/guides/:organization/:repository/raw' do
   Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).raw
 end

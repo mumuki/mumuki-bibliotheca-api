@@ -107,4 +107,12 @@ describe Bibliotheca::Collection::Guides do
       it { expect { Bibliotheca::Collection::Guides.find_by_slug('foo', 'bar') }.to raise_error('guide {"slug":"foo/bar"} not found') }
     end
   end
+
+  describe '#delete' do
+    let!(:id) { Bibliotheca::Collection::Guides.insert(build(:guide))[:id] }
+
+    before { Bibliotheca::Collection::Guides.delete(id) }
+
+    it { expect { Bibliotheca::Collection::Guides.find(id) }.to raise_error(%Q{guide {"id":"#{id}"} not found}) }
+  end
 end

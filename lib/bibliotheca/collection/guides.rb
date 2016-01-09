@@ -28,6 +28,10 @@ module Bibliotheca::Collection::Guides
       find_by(slug: slug)
     end
 
+    def delete(id)
+      guides.delete_one(id: id)
+    end
+
     def insert(guide)
       guide.validate!
 
