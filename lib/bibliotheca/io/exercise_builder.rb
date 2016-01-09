@@ -35,7 +35,7 @@ module Bibliotheca::IO
        hint: hint,
        corollary: corollary,
        test: test,
-       extra_code: extra_code,
+       extra: extra,
        expectations: expectations_list,
        tag_list: tag_list,
        default_content: default_content,

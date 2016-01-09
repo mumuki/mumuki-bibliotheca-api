@@ -28,7 +28,7 @@ module Bibliotheca::IO
       write_file!(dirname, 'meta.yml', metadata_yaml(e))
 
       write_file!(dirname, 'hint.md', e.hint) if e.hint.present?
-      write_file!(dirname, extra_filename(guide), e.extra_code) if e.extra_code.present?
+      write_file!(dirname, extra_filename(guide), e.extra) if e.extra.present?
       write_file!(dirname, default_filename(guide), e.default_content) if e.default_content.present?
       write_file!(dirname, 'expectations.yml', expectations_yaml(e)) if e.expectations.present?
       write_file!(dirname, 'corollary.md', e.corollary) if e.corollary.present?
@@ -56,7 +56,7 @@ module Bibliotheca::IO
     end
 
     def write_extra!(guide)
-      write_file!(dir, extra_filename(guide), guide.extra_code) if guide.extra_code.present?
+      write_file!(dir, extra_filename(guide), guide.extra) if guide.extra.present?
     end
 
     private

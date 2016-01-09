@@ -15,7 +15,7 @@ module Bibliotheca::IO
       read_code_file(root, 'test')
     end
 
-    def extra_code(root)
+    def extra(root)
       read_code_file(root, 'extra')
     end
 
