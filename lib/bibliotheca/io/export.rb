@@ -9,7 +9,7 @@ module Bibliotheca::IO
     end
 
     def repo
-      @repo ||= Bibliotheca::Repo.from_full_name(guide.slug)
+      @repo ||= Bibliotheca::Repo.from_slug(guide.slug)
     end
 
     def before_run_in_local_repo

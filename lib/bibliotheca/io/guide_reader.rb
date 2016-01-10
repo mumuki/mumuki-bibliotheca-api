@@ -6,7 +6,7 @@ module Bibliotheca::IO
 
     def initialize(dir, repo, log)
       @dir = File.expand_path(dir)
-      @slug = repo.full_name
+      @slug = repo.slug
       @log = log
     end
 

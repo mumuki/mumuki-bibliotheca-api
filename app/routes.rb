@@ -17,8 +17,8 @@ configure do
 end
 
 helpers do
-  def with_json_body
-    yield JSON.parse(request.body.read)
+  def json_body
+    @json_body ||= JSON.parse(request.body.read) rescue nil
   end
 
   def permissions
@@ -35,8 +35,20 @@ helpers do
     Bibliotheca::Bot.from_env
   end
 
-  def protect!(slug)
-    permissions.protect! slug
+  def protect!
+    permissions.protect! repo.slug
+  end
+
+  def repo
+    if params[:organization] && params[:repository]
+      Bibliotheca::Repo.new(params[:organization], params[:repository])
+    elsif params[:id]
+      Bibliotheca::Repo.from_slug(Bibliotheca::Collection::Guides.find(params[:id]).slug)
+    elsif json_body
+      Bibliotheca::Repo.from_slug(json_body['slug'])
+    else
+      raise Bibliotheca::InvalidSlugFormatError.new('Slug not available')
+    end
   end
 end
 
@@ -91,7 +103,6 @@ get '/languages' do
   Bibliotheca::Collection::Languages.all.as_json
 end
 
-
 get '/guides' do
   Bibliotheca::Collection::Guides.all.as_json
 end
@@ -108,28 +119,30 @@ get '/guides/:id' do
   Bibliotheca::Collection::Guides.find(params['id']).as_json
 end
 
+delete '/guides/:id' do
+  protect!
+  Bibliotheca::Collection::Guides.delete(params['id'])
+  {}
+end
+
 get '/guides/:organization/:repository/raw' do
-  Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).raw
+  Bibliotheca::Collection::Guides.find_by_slug(repo.slug).raw
 end
 
 get '/guides/:organization/:repository' do
-  Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).as_json
+  Bibliotheca::Collection::Guides.find_by_slug(repo.slug).as_json
 end
 
 post '/guides' do
-  with_json_body do |body|
-    slug = body['slug']
-    protect! slug
-    guide = Bibliotheca::Guide.new(body)
+  protect!
+  guide = Bibliotheca::Guide.new(json_body)
 
-    Bibliotheca::Collection::Guides.upsert_by_slug(slug, guide).tap do
-      Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
-    end
+  Bibliotheca::Collection::Guides.upsert_by_slug(repo.slug, guide).tap do
+    Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
   end
 end
 
-post '/guides/import/:organization/:name' do
-  repo = Bibliotheca::Repo.new(params[:organization], params[:name])
+post '/guides/import/:organization/:repository' do
   Bibliotheca::IO::Import.new(bot, repo).run!
 end
 

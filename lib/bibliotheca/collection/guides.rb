@@ -13,6 +13,10 @@ module Bibliotheca::Collection::Guides
       guides.find.count
     end
 
+    def exists?(id)
+      guides.find({id: id}).count > 0
+    end
+
     def find(id)
       find_by(id: id)
     end
@@ -23,9 +27,12 @@ module Bibliotheca::Collection::Guides
       Bibliotheca::Guide.new first.to_h
     end
 
-    def find_by_slug(organization_or_slug, repository=nil)
-      slug = repository ? Bibliotheca::Repo.new(organization_or_slug, repository).full_name : organization_or_slug
+    def find_by_slug(slug)
       find_by(slug: slug)
+    end
+
+    def delete(id)
+      guides.delete_one(id: id)
     end
 
     def insert(guide)
