@@ -17,8 +17,8 @@ configure do
 end
 
 helpers do
-  def with_json_body
-    yield JSON.parse(request.body.read)
+  def json_body
+    @json_body ||= JSON.parse(request.body.read)
   end
 
   def permissions
@@ -132,14 +132,12 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
-  with_json_body do |body|
-    slug = body['slug']
-    protect! slug
-    guide = Bibliotheca::Guide.new(body)
+  slug = json_body['slug']
+  protect! slug
+  guide = Bibliotheca::Guide.new(json_body)
 
-    Bibliotheca::Collection::Guides.upsert_by_slug(slug, guide).tap do
-      Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
-    end
+  Bibliotheca::Collection::Guides.upsert_by_slug(slug, guide).tap do
+    Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
   end
 end
 
