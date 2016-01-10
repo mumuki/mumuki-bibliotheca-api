@@ -221,4 +221,29 @@ describe 'routes' do
       end
     end
   end
+
+  describe 'delete /guides/:id' do
+    let(:guide) { build(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
+    let(:id) { Bibliotheca::Collection::Guides.insert(guide)[:id] }
+
+    context 'when user is authenticated' do
+
+      before do
+        header 'Authorization', build_auth_header('*')
+
+        delete "/guides/#{id}"
+      end
+
+      it { expect(last_response).to be_ok }
+      it { expect(Bibliotheca::Collection::Guides.exists? id).to be false }
+    end
+
+    context 'when user is not authenticated' do
+      before { delete "/guides/#{id}"  }
+
+      it { expect(last_response).to_not be_ok }
+      it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
+    end
+
+  end
 end

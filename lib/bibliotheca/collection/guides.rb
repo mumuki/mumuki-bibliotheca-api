@@ -13,6 +13,10 @@ module Bibliotheca::Collection::Guides
       guides.find.count
     end
 
+    def exists?(id)
+      guides.find({id: id}).count > 0
+    end
+
     def find(id)
       find_by(id: id)
     end
