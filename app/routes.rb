@@ -18,7 +18,7 @@ end
 
 helpers do
   def json_body
-    @json_body ||= JSON.parse(request.body.read)
+    @json_body ||= JSON.parse(request.body.read) rescue nil
   end
 
   def permissions
@@ -35,12 +35,20 @@ helpers do
     Bibliotheca::Bot.from_env
   end
 
-  def protect!(slug)
-    permissions.protect! slug
+  def protect!
+    permissions.protect! repo.slug
   end
 
   def repo
-    Bibliotheca::Repo.new(params[:organization], params[:repository])
+    if params[:organization] && params[:repository]
+      Bibliotheca::Repo.new(params[:organization], params[:repository])
+    elsif params[:id]
+      Bibliotheca::Repo.from_slug(Bibliotheca::Collection::Guides.find(params[:id]).slug)
+    elsif json_body
+      Bibliotheca::Repo.from_slug(json_body['slug'])
+    else
+      raise Bibliotheca::InvalidSlugFormatError.new('Slug not available')
+    end
   end
 end
 
@@ -95,7 +103,6 @@ get '/languages' do
   Bibliotheca::Collection::Languages.all.as_json
 end
 
-
 get '/guides' do
   Bibliotheca::Collection::Guides.all.as_json
 end
@@ -113,13 +120,8 @@ get '/guides/:id' do
 end
 
 delete '/guides/:id' do
-  id = params['id']
-  slug = Bibliotheca::Collection::Guides.find(id).slug
-
-  protect! slug
-
-  Bibliotheca::Collection::Guides.delete(id)
-
+  protect!
+  Bibliotheca::Collection::Guides.delete(params['id'])
   {}
 end
 
@@ -132,11 +134,10 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
-  slug = json_body['slug']
-  protect! slug
+  protect!
   guide = Bibliotheca::Guide.new(json_body)
 
-  Bibliotheca::Collection::Guides.upsert_by_slug(slug, guide).tap do
+  Bibliotheca::Collection::Guides.upsert_by_slug(repo.slug, guide).tap do
     Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
   end
 end

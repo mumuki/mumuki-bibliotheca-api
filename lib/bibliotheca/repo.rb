@@ -14,7 +14,7 @@ class Bibliotheca::Repo
     "http://bibliotheca.mumuki.io/guides/import/#{slug}"
   end
 
-  def self.from_full_name(slug)
+  def self.from_slug(slug)
     validate_slug! slug
 
     self.new *slug.split('/')

@@ -9,6 +9,6 @@ describe Bibliotheca::Repo do
     expect(repo.slug).to eq('mumuki/functional-haskell-guide-1')
   end
 
-  it { expect { Bibliotheca::Repo.from_full_name 'fo' }.to raise_error(Bibliotheca::InvalidSlugFormatError) }
-  it { expect { Bibliotheca::Repo.from_full_name 'fo/bar' }.to_not raise_error }
+  it { expect { Bibliotheca::Repo.from_slug 'fo' }.to raise_error(Bibliotheca::InvalidSlugFormatError) }
+  it { expect { Bibliotheca::Repo.from_slug 'fo/bar' }.to_not raise_error }
 end
