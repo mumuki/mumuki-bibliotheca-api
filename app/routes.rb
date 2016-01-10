@@ -38,6 +38,10 @@ helpers do
   def protect!(slug)
     permissions.protect! slug
   end
+
+  def repo
+    Bibliotheca::Repo.new(params[:organization], params[:repository])
+  end
 end
 
 before do
@@ -120,11 +124,11 @@ delete '/guides/:id' do
 end
 
 get '/guides/:organization/:repository/raw' do
-  Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).raw
+  Bibliotheca::Collection::Guides.find_by_slug(repo.slug).raw
 end
 
 get '/guides/:organization/:repository' do
-  Bibliotheca::Collection::Guides.find_by_slug(params['organization'], params['repository']).as_json
+  Bibliotheca::Collection::Guides.find_by_slug(repo.slug).as_json
 end
 
 post '/guides' do
@@ -139,8 +143,7 @@ post '/guides' do
   end
 end
 
-post '/guides/import/:organization/:name' do
-  repo = Bibliotheca::Repo.new(params[:organization], params[:name])
+post '/guides/import/:organization/:repository' do
   Bibliotheca::IO::Import.new(bot, repo).run!
 end
 

@@ -27,8 +27,7 @@ module Bibliotheca::Collection::Guides
       Bibliotheca::Guide.new first.to_h
     end
 
-    def find_by_slug(organization_or_slug, repository=nil)
-      slug = repository ? Bibliotheca::Repo.new(organization_or_slug, repository).slug : organization_or_slug
+    def find_by_slug(slug)
       find_by(slug: slug)
     end
 
