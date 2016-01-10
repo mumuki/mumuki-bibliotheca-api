@@ -27,7 +27,7 @@ class Bibliotheca::Bot
 
   def register_post_commit_hook!(repo)
     octokit.create_hook(
-        repo.full_name, 'web',
+        repo.slug, 'web',
         {url: repo.web_hook_url, content_type: 'json'},
         {events: ['push'],
          active: true})
@@ -59,7 +59,7 @@ class Bibliotheca::Bot
   end
 
   def writable_github_url_for(repo)
-    "https://#{token}:@github.com/#{repo.full_name}"
+    "https://#{token}:@github.com/#{repo.slug}"
   end
 
   def octokit

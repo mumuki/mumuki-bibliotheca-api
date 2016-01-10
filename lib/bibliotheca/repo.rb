@@ -6,12 +6,12 @@ class Bibliotheca::Repo
     @name = name
   end
 
-  def full_name
+  def slug
     "#{organization}/#{name}"
   end
 
   def web_hook_url
-    "http://bibliotheca.mumuki.io/guides/import/#{full_name}"
+    "http://bibliotheca.mumuki.io/guides/import/#{slug}"
   end
 
   def self.from_full_name(slug)
