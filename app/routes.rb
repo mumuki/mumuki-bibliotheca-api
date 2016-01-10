@@ -41,7 +41,7 @@ helpers do
 end
 
 before do
-  content_type 'application/json'
+  content_type 'application/json', 'charset' => 'utf-8'
 end
 
 after do
