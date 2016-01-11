@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mumuki/mumukit-auth.git
-  revision: 641f1d671e4944c8203bb160c26a41ede79ba819
+  revision: 422a50b49b7617dc2188ae8cbae30e8ed42befa4
   branch: master
   specs:
     mumukit-auth (0.1.0)
