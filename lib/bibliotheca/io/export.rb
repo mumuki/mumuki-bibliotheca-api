@@ -29,7 +29,7 @@ module Bibliotheca::IO
     private
 
     def clear_repo(local_repo)
-      local_repo.remove('*')
+      local_repo.remove %w(description.md corollary.md meta.yml extra.yml expectations.* *_*)
     rescue Git::GitExecuteError => e
       puts 'Nothing to clean, repo seems to be empty'
     end
