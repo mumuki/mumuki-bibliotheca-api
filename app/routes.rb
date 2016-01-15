@@ -11,6 +11,7 @@ require_relative '../lib/bibliotheca'
 
 configure do
   enable :cross_origin
+  set :allow_methods, [:get, :put, :post, :options, :delete]
   set :show_exceptions, false
 
   Mongo::Logger.logger = ::Logger.new('mongo.log')
@@ -94,7 +95,7 @@ error Bibliotheca::IO::OrganizationNotFoundError do
 end
 
 options '*' do
-  response.headers['Allow'] = 'HEAD,GET,PUT,POST,DELETE,OPTIONS'
+  response.headers['Allow'] = settings.allow_methods.map { |it| it.to_s.upcase }.join(',')
   response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization'
   200
 end
