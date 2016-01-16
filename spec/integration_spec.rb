@@ -239,11 +239,18 @@ describe 'routes' do
     end
 
     context 'when user is not authenticated' do
-      before { delete "/guides/#{id}"  }
+      before { delete "/guides/#{id}" }
 
       it { expect(last_response).to_not be_ok }
       it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
     end
 
+  end
+
+  describe 'options /' do
+    before do
+      options '/'
+    end
+    it { expect(last_response.headers['Allow']).to include 'DELETE' }
   end
 end
