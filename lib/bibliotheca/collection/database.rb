@@ -10,4 +10,8 @@ module Bibliotheca::Collection::Database
     environment ||= ENV['RACK_ENV'] || 'development'
     YAML.load(ERB.new(File.read('config/database.yml')).result).with_indifferent_access[environment]
   end
+
+  def self.clean!
+    client[:guides].drop
+  end
 end

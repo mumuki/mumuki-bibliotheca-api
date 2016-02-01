@@ -15,7 +15,7 @@ describe 'routes' do
   end
 
   after do
-    Bibliotheca::Collection::Database.client[:guides].drop
+    Bibliotheca::Collection::Database.clean!
   end
 
   def app
