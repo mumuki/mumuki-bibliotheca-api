@@ -18,6 +18,8 @@ gem 'rest-client'
 
 gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
 
+gem 'thin'
+
 group :test do
   gem 'rspec', '~> 2.99'
   gem 'rack-test'
