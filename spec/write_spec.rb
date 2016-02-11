@@ -123,7 +123,7 @@ describe Bibliotheca::IO::GuideWriter do
       end
       context 'with license' do
         it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
-        it { expect(File.read 'spec/data/export/LICENSE.txt', 40).to eq 'Attribution-ShareAlike 4.0 International' }
+        it { expect(File.read 'spec/data/export/LICENSE.txt').to include 'Attribution-ShareAlike 4.0 International' }
       end
     end
 
