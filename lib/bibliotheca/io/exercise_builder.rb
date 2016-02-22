@@ -2,20 +2,8 @@ require 'ostruct'
 
 module Bibliotheca::IO
   class ExerciseBuilder < OpenStruct
-    def type
-      meta['type']
-    end
-
-    def tag_list
-      meta['tags']
-    end
-
     def locale
       meta['locale']
-    end
-
-    def layout
-      meta['layout']
     end
 
     def expectations_list
@@ -29,7 +17,7 @@ module Bibliotheca::IO
     end
 
     def build
-      {type: type,
+      {type: meta['type'],
        name: name,
        description: description,
        hint: hint,
@@ -37,10 +25,10 @@ module Bibliotheca::IO
        test: test,
        extra: extra,
        expectations: expectations_list,
-       tag_list: tag_list,
+       tag_list: meta['tags'],
        extra_visible: meta['extra_visible'],
        default_content: default_content,
-       layout: layout,
+       layout: meta['layout'],
        id: id}.compact
     end
   end
