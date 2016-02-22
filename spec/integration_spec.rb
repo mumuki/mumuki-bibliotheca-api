@@ -3,9 +3,15 @@ require 'spec_helper'
 require_relative '../app/routes'
 
 describe 'routes' do
+  let(:exercise) {
+      {:id => 1, :name => 'foo', :type => 'problem', :layout => 'editor_right',
+       :description => 'foo', :test => %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
+       :solution => 'foo = True', :expectations => [], :tag_list => []}
+  }
+
   let!(:guide_id) {
     Bibliotheca::Collection::Guides.insert(
-        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []))[:id]
+        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id]
   }
   before do
     Bibliotheca::Collection::Guides.insert(
@@ -70,7 +76,7 @@ describe 'routes' do
                                                     name: 'foo', language: 'haskell',
                                                     slug: 'foo/bar',
                                                     description: 'foo',
-                                                    exercises: [],
+                                                    exercises: [exercise],
                                                     id: guide_id,
                                                     expectations: []}) }
       end
