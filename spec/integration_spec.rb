@@ -89,6 +89,32 @@ describe 'routes' do
     end
   end
 
+  describe('get /guides/:gid/exercises/:eid/test') do
+    describe 'run tests for specific guide\'s exercise' do
+      describe 'When guide exists' do
+        context 'and exercise exists too' do
+          let(:response) { {:status => :passed} }
+          before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).and_return(response) }
+          before { get "/guides/#{guide_id}/exercises/1/test" }
+          it { expect(last_response).to be_ok }
+          it { expect(last_response.body).to json_eq(response) }
+        end
+        context 'and exercise does not exist' do
+          before { get "/guides/#{guide_id}/exercises/2/test" }
+          it { expect(last_response).to_not be_ok }
+          it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+          it { expect(last_response.status).to be(404) }
+        end
+      end
+    end
+    context 'When guide does not exist' do
+      before { get '/guides/0123456789abcdef/exercises/1/test' }
+      it { expect(last_response).to_not be_ok }
+      it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+      it { expect(last_response.status).to be(404) }
+    end
+  end
+
   describe 'post /guides' do
     context 'when request is valid' do
 
