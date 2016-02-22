@@ -62,7 +62,7 @@ module Bibliotheca::IO
     private
 
     def metadata_yaml(e)
-      {'tags' => e.tag_list.to_a,  'layout' => e.layout, 'type' => e.type}.to_yaml
+      {'tags' => e.tag_list.to_a,  'layout' => e.layout, 'type' => e.type, 'extra_visible' => e.extra_visible}.to_yaml
     end
 
     def expectations_yaml(e)

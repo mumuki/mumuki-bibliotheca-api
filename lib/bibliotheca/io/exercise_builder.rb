@@ -38,6 +38,7 @@ module Bibliotheca::IO
        extra: extra,
        expectations: expectations_list,
        tag_list: tag_list,
+       extra_visible: meta['extra_visible'],
        default_content: default_content,
        layout: layout,
        id: id}.compact
