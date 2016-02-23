@@ -1,5 +1,5 @@
 module Bibliotheca::IO
-  class Import < Bibliotheca::IO::Operation
+  class GuideImport < Bibliotheca::IO::Operation
     attr_accessor :repo, :guide
 
     def initialize(bot, repo)

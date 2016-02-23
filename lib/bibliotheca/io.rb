@@ -15,8 +15,8 @@ require_relative './io/guide_writer'
 
 require_relative './io/operation'
 
-require_relative './io/export'
-require_relative './io/import'
+require_relative './io/guide_export'
+require_relative './io/guide_import'
 
 require_relative './io/atheneum_exporter'
 
