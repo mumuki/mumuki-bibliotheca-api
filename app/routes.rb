@@ -40,6 +40,15 @@ helpers do
     permissions.protect! repo.slug
   end
 
+  def upsert!(document_class, collection_class, export_class)
+    protect!
+    document = document_class.new(json_body)
+
+    collection_class.upsert_by_slug(repo.slug, document).tap do
+      export_class.new(document, bot).run! if bot.authenticated?
+    end
+  end
+
   def repo
     if params[:organization] && params[:repository]
       Bibliotheca::Repo.new(params[:organization], params[:repository])
@@ -139,16 +148,18 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
-  protect!
-  guide = Bibliotheca::Guide.new(json_body)
+  upsert! Bibliotheca::Guide, Bibliotheca::Collection::Guides, Bibliotheca::IO::GuideExport
+end
 
-  Bibliotheca::Collection::Guides.upsert_by_slug(repo.slug, guide).tap do
-    Bibliotheca::IO::Export.new(guide, bot).run! if bot.authenticated?
-  end
+post '/books' do
+  upsert! Bibliotheca::Book, Bibliotheca::Collection::Books, Bibliotheca::IO::BookExport
 end
 
 post '/guides/import/:organization/:repository' do
-  Bibliotheca::IO::Import.new(bot, repo).run!
+  Bibliotheca::IO::GuideImport.new(bot, repo).run!
 end
 
+post '/books/import/:organization/:repository' do
+  Bibliotheca::IO::BookImport.new(bot, repo).run!
+end
 

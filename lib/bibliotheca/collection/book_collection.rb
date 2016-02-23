@@ -1,5 +1,6 @@
 module Bibliotheca::Collection::Books
   extend Mumukit::Service::Collection
+  extend Bibliotheca::Collection::WithSlug
 
   private
 

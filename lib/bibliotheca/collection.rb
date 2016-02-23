@@ -5,6 +5,7 @@ require 'mongo'
 require 'json/ext'
 
 require_relative './collection/database'
+require_relative './collection/with_slug'
 require_relative './collection/guide_array'
 require_relative './collection/guide_collection'
 require_relative './collection/language_array'
