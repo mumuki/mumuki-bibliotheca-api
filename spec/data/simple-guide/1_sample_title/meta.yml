@@ -3,3 +3,4 @@ tags:
   - bar
   - baz
 locale: en
+extra_visible: true

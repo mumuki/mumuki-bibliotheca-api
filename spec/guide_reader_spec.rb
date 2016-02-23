@@ -36,6 +36,7 @@ describe Bibliotheca::IO::GuideReader do
         it { expect(imported_exercise.default_content).to_not be nil }
         it { expect(imported_exercise.author).to eq guide.author }
         it { expect(imported_exercise.name).to eq 'sample_title' }
+        it { expect(imported_exercise.extra_visible).to be true }
         it { expect(imported_exercise.description).to eq '##Sample Description' }
         it { expect(imported_exercise.test).to eq 'pending' }
         it { expect(imported_exercise.extra).to eq "extra\n" }
