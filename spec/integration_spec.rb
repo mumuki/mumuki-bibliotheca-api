@@ -12,6 +12,11 @@ describe 'routes' do
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
+
+    Bibliotheca::Collection::Books.insert!(
+        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: [
+            {name: 'first chapter', lessons: %w(baz/bar baz/bar2)},
+            {name: 'second chapter', lessons: ['bar/foo']}]))
   end
 
   after do
@@ -39,6 +44,14 @@ describe 'routes' do
         {name: 'javascript', extension: 'js'}]}) }
   end
 
+  describe('get /books') do
+    before do
+      get '/books'
+    end
+
+    it { expect(last_response).to be_ok }
+    it { expect(JSON.parse(last_response.body)['books'].count).to eq 1 }
+  end
 
   describe('get /guides/writable') do
     before do
@@ -58,6 +71,7 @@ describe 'routes' do
     it { expect(last_response).to be_ok }
     it { expect(JSON.parse(last_response.body)['guides'].count).to eq 3 }
   end
+
 
   describe('get /guides/:slug') do
     describe 'shows guide by slug' do
