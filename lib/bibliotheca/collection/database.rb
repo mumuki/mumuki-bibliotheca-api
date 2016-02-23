@@ -13,5 +13,6 @@ module Bibliotheca::Collection::Database
 
   def self.clean!
     client[:guides].drop
+    client[:books].drop
   end
 end

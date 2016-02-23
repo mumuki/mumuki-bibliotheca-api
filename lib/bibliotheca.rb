@@ -15,6 +15,7 @@ require_relative './bibliotheca/repo'
 
 require_relative './bibliotheca/exercise'
 require_relative './bibliotheca/guide'
+require_relative './bibliotheca/book'
 require_relative './bibliotheca/language'
 require_relative './bibliotheca/ordering'
 
