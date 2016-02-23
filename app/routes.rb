@@ -78,7 +78,7 @@ error Bibliotheca::InvalidSlugFormatError do
   halt 400
 end
 
-error Bibliotheca::InvalidGuideFormatError do
+error Mumukit::Service::DocumentValidationError do
   halt 400
 end
 
@@ -86,7 +86,7 @@ error Mumukit::Auth::UnauthorizedAccessError do
   halt 403
 end
 
-error Bibliotheca::Collection::GuideNotFoundError do
+error Mumukit::Service::DocumentNotFoundError do
   halt 404
 end
 
@@ -134,7 +134,7 @@ end
 
 delete '/guides/:id' do
   protect!
-  Bibliotheca::Collection::Guides.delete(params['id'])
+  Bibliotheca::Collection::Guides.delete!(params['id'])
   {}
 end
 

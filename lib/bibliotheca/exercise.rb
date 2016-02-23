@@ -1,5 +1,5 @@
 module Bibliotheca
-  class Exercise < JsonWrapper
+  class Exercise < Mumukit::Service::JsonWrapper
     def defaults
       {type: 'problem',
        tag_list: [],
