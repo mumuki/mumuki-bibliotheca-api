@@ -4,11 +4,11 @@ module Bibliotheca::Collection::Books
   private
 
   def self.mongo_collection_name
-    :guides
+    :books
   end
 
-  def self.mongo_collection_database
-    Mumukit::Service::Database
+  def self.mongo_database
+    Bibliotheca::Collection::Database
   end
 
   def self.wrap(it)
@@ -16,7 +16,7 @@ module Bibliotheca::Collection::Books
   end
 
   def self.wrap_array(it)
-    Bibliotheca::BookArray.new(it)
+    Bibliotheca::Collection::BookArray.new(it)
   end
 end
 
