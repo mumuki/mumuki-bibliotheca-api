@@ -6,7 +6,7 @@ describe Bibliotheca::Collection::Guides do
   end
 
   describe '#insert' do
-    let!(:id) { Bibliotheca::Collection::Guides.insert(Bibliotheca::Guide.new(
+    let!(:id) { Bibliotheca::Collection::Guides.insert!(Bibliotheca::Guide.new(
           name: 'foo',
           language: 'haskell',
           description: 'foo',
@@ -43,7 +43,7 @@ describe Bibliotheca::Collection::Guides do
     let(:upserted) { Bibliotheca::Collection::Guides.find_by_slug('foo/goo') }
 
     context 'slug exists' do
-      let!(:original_id) { Bibliotheca::Collection::Guides.insert(
+      let!(:original_id) { Bibliotheca::Collection::Guides.insert!(
           Bibliotheca::Guide.new(
             name: 'baz',
             slug: 'foo/goo',
@@ -88,7 +88,7 @@ describe Bibliotheca::Collection::Guides do
 
 
   describe '#find_by_slug' do
-    let!(:id) { Bibliotheca::Collection::Guides.insert(
+    let!(:id) { Bibliotheca::Collection::Guides.insert!(
         build(:guide,
           name: 'baz',
           slug: 'foo/goo',
@@ -104,15 +104,15 @@ describe Bibliotheca::Collection::Guides do
     end
 
     context 'not exists' do
-      it { expect { Bibliotheca::Collection::Guides.find_by_slug('foo/bar') }.to raise_error('guide {"slug":"foo/bar"} not found') }
+      it { expect { Bibliotheca::Collection::Guides.find_by_slug('foo/bar') }.to raise_error('document {"slug":"foo/bar"} not found') }
     end
   end
 
   describe '#delete' do
-    let!(:id) { Bibliotheca::Collection::Guides.insert(build(:guide))[:id] }
+    let!(:id) { Bibliotheca::Collection::Guides.insert!(build(:guide))[:id] }
 
-    before { Bibliotheca::Collection::Guides.delete(id) }
+    before { Bibliotheca::Collection::Guides.delete!(id) }
 
-    it { expect { Bibliotheca::Collection::Guides.find(id) }.to raise_error(%Q{guide {"id":"#{id}"} not found}) }
+    it { expect { Bibliotheca::Collection::Guides.find(id) }.to raise_error(%Q{document {"id":"#{id}"} not found}) }
   end
 end
