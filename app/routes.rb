@@ -112,6 +112,10 @@ get '/guides' do
   Bibliotheca::Collection::Guides.all.as_json
 end
 
+get '/books' do
+  Bibliotheca::Collection::Books.all.as_json
+end
+
 get '/guides/writable' do
   Bibliotheca::Collection::Guides.allowed(permissions).as_json
 end
