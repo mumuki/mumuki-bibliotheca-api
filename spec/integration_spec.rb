@@ -134,7 +134,7 @@ describe 'routes' do
     context 'when request is valid' do
 
       it 'accepts valid requests' do
-        expect_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
+        expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header('*')
@@ -150,7 +150,7 @@ describe 'routes' do
       end
 
       it 'accepts re posts' do
-        allow_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
+        allow_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header('*')

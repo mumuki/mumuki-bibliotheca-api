@@ -1,5 +1,5 @@
 module Bibliotheca::IO
-  class Export < Bibliotheca::IO::Operation
+  class GuideExport < Bibliotheca::IO::Operation
 
     attr_accessor :guide, :bot
 
