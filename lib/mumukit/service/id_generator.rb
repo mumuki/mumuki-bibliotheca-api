@@ -1,6 +1,6 @@
 require 'securerandom'
 
-class Bibliotheca::IdGenerator
+class Mumukit::Service::IdGenerator
   def self.next
     SecureRandom.hex(8)
   end

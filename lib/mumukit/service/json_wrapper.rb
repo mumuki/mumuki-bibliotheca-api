@@ -1,4 +1,4 @@
-module Bibliotheca
+module Mumukit::Service
   class JsonWrapper
     attr_accessor :raw
 
@@ -18,10 +18,25 @@ module Bibliotheca
       {}
     end
 
+    def defaults
+      {}
+    end
+
+    def errors
+      []
+    end
+
+    def validate!
+      e = errors
+      raise DocumentValidationError, e.join(', ') unless e.empty?
+    end
+
     def json
       @json ||= defaults.
                 merge(@raw).
                 merge(transforms(@raw))
     end
   end
+
+
 end
