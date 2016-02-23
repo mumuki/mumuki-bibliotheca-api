@@ -4,13 +4,13 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let!(:guide_id) {
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: []))[:id]
   }
   before do
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
   end
 
@@ -78,7 +78,7 @@ describe 'routes' do
     context 'When guide does not exist' do
       before { get '/guides/foo/bar2' }
       it { expect(last_response).to_not be_ok }
-      it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+      it { expect(last_response.body).to json_eq(message: 'document {"slug":"foo/bar2"} not found') }
       it { expect(last_response.status).to be(404) }
     end
   end
@@ -224,7 +224,7 @@ describe 'routes' do
 
   describe 'delete /guides/:id' do
     let(:guide) { build(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
-    let(:id) { Bibliotheca::Collection::Guides.insert(guide)[:id] }
+    let(:id) { Bibliotheca::Collection::Guides.insert!(guide)[:id] }
 
     context 'when user is authenticated' do
 
