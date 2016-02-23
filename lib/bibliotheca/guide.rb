@@ -44,6 +44,18 @@ module Bibliotheca
     def validate_slug!(a_slug)
       raise "inconsistent slug, must be #{slug}" if slug.present? && slug != a_slug
     end
+
+    def exercise_language(exercise)
+      exercise.language || self.language
+    end
+
+    def run_tests(exercise_id)
+      exercise = find_exercise_by_id(exercise_id)
+      raise Bibliotheca::Collection::ExerciseNotFoundError, "exercise #{exercise_id} not found" if exercise.nil?
+      runner = Mumukit::Bridge::Runner.new(exercise_language(exercise).test_runner_url)
+      runner.run_tests!(:test => exercise.test, :extra => "#{self.extra}\n#{exercise.extra}",
+                        :content => exercise.solution, :expectations => self.expectations + exercise.expectations)
+    end
   end
 
   class InvalidGuideFormatError < StandardError

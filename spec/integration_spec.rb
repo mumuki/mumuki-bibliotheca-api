@@ -4,9 +4,9 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let(:exercise) {
-      {:id => 1, :name => 'foo', :type => 'problem', :layout => 'editor_right',
-       :description => 'foo', :test => %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
-       :solution => 'foo = True', :expectations => [], :tag_list => []}
+      {:id => 1, :name => 'foo', :type => 'problem', :layout => 'editor_right', :description => 'foo',
+       :test => %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, :solution => 'foo = True',
+       :expectations => [{ binding: 'foo', inspection:'HasBinding' }], :tag_list => []}
   }
 
   let!(:guide_id) {
@@ -93,7 +93,8 @@ describe 'routes' do
     describe 'run tests for specific guide\'s exercise' do
       describe 'When guide exists' do
         context 'and exercise exists too' do
-          let(:response) { {:status => :passed} }
+          let(:response) { { status: 'passed' } }
+          let(:arg) {  }
           before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).and_return(response) }
           before { get "/guides/#{guide_id}/exercises/1/test" }
           it { expect(last_response).to be_ok }
@@ -102,7 +103,7 @@ describe 'routes' do
         context 'and exercise does not exist' do
           before { get "/guides/#{guide_id}/exercises/2/test" }
           it { expect(last_response).to_not be_ok }
-          it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+          it { expect(last_response.body).to json_eq(message: 'exercise 2 not found') }
           it { expect(last_response.status).to be(404) }
         end
       end
@@ -110,7 +111,7 @@ describe 'routes' do
     context 'When guide does not exist' do
       before { get '/guides/0123456789abcdef/exercises/1/test' }
       it { expect(last_response).to_not be_ok }
-      it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+      it { expect(last_response.body).to json_eq(message: 'guide {"id":"0123456789abcdef"} not found') }
       it { expect(last_response.status).to be(404) }
     end
   end
