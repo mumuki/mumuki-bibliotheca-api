@@ -6,7 +6,7 @@ describe 'routes' do
   let(:exercise) {
       {:id => 1, :name => 'foo', :type => 'problem', :layout => 'editor_right', :description => 'foo',
        :test => %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, :solution => 'foo = True',
-       :expectations => [{ binding: 'foo', inspection:'HasBinding' }], :tag_list => []}
+       :expectations => [{ binding: 'foo', inspection:'HasBinding' }], :tag_list => [], :extra_visible => false}
   }
 
   let!(:guide_id) {
@@ -73,7 +73,8 @@ describe 'routes' do
         it { expect(last_response.body).to json_eq({beta: false,
                                                     type: 'practice',
                                                     id_format: '%05d',
-                                                    name: 'foo', language: 'haskell',
+                                                    name: 'foo',
+                                                    language: 'haskell',
                                                     slug: 'foo/bar',
                                                     description: 'foo',
                                                     exercises: [exercise],
