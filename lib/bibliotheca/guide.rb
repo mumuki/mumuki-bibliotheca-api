@@ -53,8 +53,8 @@ module Bibliotheca
       exercise = find_exercise_by_id(exercise_id)
       raise Bibliotheca::Collection::ExerciseNotFoundError, "exercise #{exercise_id} not found" if exercise.nil?
       runner = Mumukit::Bridge::Runner.new(exercise_language(exercise).test_runner_url)
-      runner.run_tests!(:test => exercise.test, :extra => "#{self.extra}\n#{exercise.extra}",
-                        :content => exercise.solution, :expectations => self.expectations + exercise.expectations)
+      runner.run_tests!(test: exercise.test, extra: "#{self.extra}\n#{exercise.extra}",
+                        content: exercise.solution, expectations: self.expectations + exercise.expectations)
     end
   end
 

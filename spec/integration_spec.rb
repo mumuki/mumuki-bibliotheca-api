@@ -4,9 +4,9 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let(:exercise) {
-      {:id => 1, :name => 'foo', :type => 'problem', :layout => 'editor_right', :description => 'foo',
-       :test => %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, :solution => 'foo = True',
-       :expectations => [{ binding: 'foo', inspection:'HasBinding' }], :tag_list => [], :extra_visible => false}
+      {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
+       test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
+       expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false}
   }
 
   let!(:guide_id) {

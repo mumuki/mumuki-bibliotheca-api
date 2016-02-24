@@ -87,18 +87,18 @@ describe Bibliotheca::Guide do
     end
 
     context 'run tests' do
-      let(:exercise) {{:id => 1, :name => 'foo', :type => 'problem', :layout => 'editor_right',
-                       :description => 'foo', :test => %Q{describe "foo" $ do\n it "eq 1" $ do\n  foo = 1},
-                       :solution => 'foo = 1', :expectations => [{ binding: 'foo', inspection:'HasBinding' }],
-                       :tag_list => [],  extra: 'bar = 2'}}
+      let(:exercise) {{id: 1, name: 'foo', type: 'problem', layout: 'editor_right',
+                       description: 'foo', test: %Q{describe "foo" $ do\n it "eq 1" $ do\n  foo = 1},
+                       solution: 'foo = 1', expectations: [{binding: 'foo', inspection: 'HasBinding'}],
+                       tag_list: [], extra: 'bar = 2'}}
 
       let(:guide) { build(:guide, { extra: 'baz = 3', exercises: [exercise]}) }
 
-      let(:response) {{:status => :passed}}
-      let(:request) {{:test => exercise[:test],
-                      :extra => "baz = 3\nbar = 2",
-                      :content => exercise[:solution],
-                      :expectations => exercise[:expectations]}}
+      let(:response) {{status: :passed}}
+      let(:request) {{test: exercise[:test],
+                      extra: "baz = 3\nbar = 2",
+                      content: exercise[:solution],
+                      expectations: exercise[:expectations]}}
 
       before do
         allow_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).with(request).and_return(response)
