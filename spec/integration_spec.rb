@@ -92,10 +92,9 @@ describe 'routes' do
 
   describe('get /guides/:guide_id/exercises/:exercise_id/test') do
     describe 'run tests for specific guide\'s exercise' do
-      describe 'When guide exists' do
+      context 'When guide exists' do
         context 'and exercise exists too' do
           let(:response) { { status: 'passed' } }
-          let(:arg) {  }
           before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).and_return(response) }
           before { get "/guides/#{guide_id}/exercises/1/test" }
           it { expect(last_response).to be_ok }
