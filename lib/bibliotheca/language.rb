@@ -1,6 +1,6 @@
 module Bibliotheca
   class Language
-    attr_accessor :name, :extension, :test_extension, :ace_mode, :devicon
+    attr_accessor :name, :extension, :test_extension, :ace_mode, :devicon, :test_runner_url
 
     def initialize(args={})
       @name = args[:name]
@@ -8,6 +8,7 @@ module Bibliotheca
       @test_extension = args[:test_extension] || @extension
       @ace_mode = args[:ace_mode]
       @devicon = args[:devicon]
+      @test_runner_url = args[:url]
     end
 
     def as_json(options={})
@@ -16,7 +17,8 @@ module Bibliotheca
          extension: extension,
          test_extension: test_extension,
          ace_mode: ace_mode,
-         devicon: devicon}
+         devicon: devicon,
+         test_runner_url: test_runner_url}
       else
         name
       end
@@ -31,36 +33,46 @@ module Bibliotheca
         Language.new(name: 'haskell',
                      extension: 'hs',
                      ace_mode: 'haskell',
-                     devicon: 'haskell'),
+                     devicon: 'haskell',
+                     url: 'http://mumuki-hspec-server.herokuapp.com'),
         Language.new(name: 'java',
                      extension: 'java',
                      ace_mode: 'java',
-                     devicon: 'java'),
+                     devicon: 'java',
+                     url: 'http://162.243.111.176:8003'),
         Language.new(name: 'wollok',
                      extension: 'wlk',
-                     ace_mode: 'wollok'),
+                     ace_mode: 'wollok',
+                     url: 'http://mumuki-wollok-server.herokuapp.com'),
         Language.new(name: 'c',
                      extension: 'c',
-                     ace_mode: 'c'),
+                     ace_mode: 'c',
+                     url: 'http://162.243.111.176:8001'),
         Language.new(name: 'prolog',
                      extension: 'pl',
                      ace_mode: 'prolog',
-                     devicon: 'prolog'),
+                     devicon: 'prolog',
+                     url: 'http://mumuki-plunit-server.herokuapp.com'),
         Language.new(name: 'ruby',
                      extension: 'rb',
                      ace_mode: 'ruby',
-                     ruby_rough: 'ruby_rough'),
+                     ruby_rough: 'ruby_rough',
+                     url: 'http://162.243.111.176:8000'),
         Language.new(name: 'gobstones',
                      extension: 'gbs',
                      test_extension: 'yml',
-                     ace_mode: 'gobstones'),
+                     ace_mode: 'gobstones',
+                     url: 'http://mumuki-gobstones-server.herokuapp.com'),
         Language.new(name: 'javascript',
                      extension: 'js',
                      ace_mode: 'javascript',
-                     devicon: 'javascript_badge'),
+                     devicon: 'javascript_badge',
+                     url: 'http://mumuki-mocha-server.herokuapp.com'),
         Language.new(name: 'text',
                      extension: 'txt',
                      test_extension: 'yml',
-                     devicon: 'code')]
+                     devicon: 'code',
+                     url: 'https://mumuki-text-server.herokuapp.com')]
+
   end
 end

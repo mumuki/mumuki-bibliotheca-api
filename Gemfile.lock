@@ -7,6 +7,15 @@ GIT
       activesupport
       jwt
 
+GIT
+  remote: git://github.com/mumuki/mumukit-bridge.git
+  revision: e3b6abf420976ba50d76cf3f7f463c01f7a44343
+  tag: v0.4.0
+  specs:
+    mumukit-bridge (0.4.0)
+      activesupport
+      rest-client
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -99,6 +108,7 @@ DEPENDENCIES
   git
   mongo (~> 2.1)
   mumukit-auth!
+  mumukit-bridge!
   octokit (~> 4.1)
   rack-test
   rake

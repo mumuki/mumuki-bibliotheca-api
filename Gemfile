@@ -17,6 +17,7 @@ gem 'activesupport', '~> 4.2'
 gem 'rest-client'
 
 gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
+gem 'mumukit-bridge', github: 'mumuki/mumukit-bridge', tag: 'v0.4.0'
 
 gem 'thin'
 

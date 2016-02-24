@@ -90,6 +90,10 @@ error Bibliotheca::Collection::GuideNotFoundError do
   halt 404
 end
 
+error Bibliotheca::Collection::ExerciseNotFoundError do
+  halt 404
+end
+
 error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
 end
@@ -118,6 +122,10 @@ end
 
 get '/guides/:id' do
   Bibliotheca::Collection::Guides.find(params['id']).as_json
+end
+
+get '/guides/:guide_id/exercises/:exercise_id/test' do
+  Bibliotheca::Collection::Guides.find(params['guide_id']).run_tests(params['exercise_id'].to_i).as_json
 end
 
 delete '/guides/:id' do

@@ -2,6 +2,7 @@ module Bibliotheca
 end
 
 require 'active_support/all'
+require 'mumukit/bridge'
 
 require_relative './bibliotheca/object'
 
