@@ -124,8 +124,8 @@ get '/guides/:id' do
   Bibliotheca::Collection::Guides.find(params['id']).as_json
 end
 
-get '/guides/:gid/exercises/:eid/test' do
-  Bibliotheca::Collection::Guides.find(params['gid']).run_tests(params['eid'].to_i).as_json
+get '/guides/:guide_id/exercises/:exercise_id/test' do
+  Bibliotheca::Collection::Guides.find(params['guide_id']).run_tests(params['exercise_id'].to_i).as_json
 end
 
 delete '/guides/:id' do

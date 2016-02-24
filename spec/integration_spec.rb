@@ -90,7 +90,7 @@ describe 'routes' do
     end
   end
 
-  describe('get /guides/:gid/exercises/:eid/test') do
+  describe('get /guides/:guide_id/exercises/:exercise_id/test') do
     describe 'run tests for specific guide\'s exercise' do
       describe 'When guide exists' do
         context 'and exercise exists too' do
