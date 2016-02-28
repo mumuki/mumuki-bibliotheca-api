@@ -9,7 +9,7 @@ module Bibliotheca::Collection::Books
   end
 
   def self.mongo_database
-    Bibliotheca::Collection::Database
+    Bibliotheca::Database
   end
 
   def self.wrap(it)
