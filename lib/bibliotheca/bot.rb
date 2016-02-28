@@ -59,7 +59,7 @@ class Bibliotheca::Bot
   end
 
   def writable_github_url_for(repo)
-    "https://#{token}:@github.com/#{repo.slug}"
+    "https://#{token}:@github.com/#{repo}"
   end
 
   def octokit

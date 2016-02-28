@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'read-write' do
   let(:haskell) { Bibliotheca::Language.find_by_name(:haskell) }
-  let(:repo) { Bibliotheca::Repo.new('mumuki', 'functional-haskell-guide-1') }
+  let(:repo) { Mumukit::Service::Slug.new('mumuki', 'functional-haskell-guide-1') }
   let(:export_log) { Bibliotheca::IO::Log.new }
   let(:import_log) { Bibliotheca::IO::Log.new }
   let(:guide) { Bibliotheca::Guide.new(
