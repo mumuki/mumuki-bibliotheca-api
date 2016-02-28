@@ -14,17 +14,17 @@ module Bibliotheca::IO
     end
 
     def run!
-      puts "#{self.class.name} : running before run hook for repository #{repo.slug}"
+      puts "#{self.class.name} : running before run hook for repository #{repo}"
       before_run_in_local_repo
 
       log.with_error_logging do
         with_local_repo do |dir, local_repo|
-          puts "#{self.class.name} : running run hook for repository #{repo.slug}"
+          puts "#{self.class.name} : running run hook for repository #{repo}"
           run_in_local_repo dir, local_repo
         end
       end
 
-      puts "#{self.class.name} : running after run hook repository #{repo.slug}"
+      puts "#{self.class.name} : running after run hook repository #{repo}"
       after_run_in_local_repo
 
       ensure_post_commit_hook!

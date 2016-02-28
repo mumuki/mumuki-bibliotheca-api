@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bibliotheca::Collection::Guides do
   after do
-    Bibliotheca::Collection::Database.client[:guides].drop
+    Bibliotheca::Database.client[:guides].drop
   end
 
   describe '#insert' do

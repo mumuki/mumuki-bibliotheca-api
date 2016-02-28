@@ -1,43 +1,18 @@
-require 'sinatra'
-require 'sinatra/cross_origin'
-
-require 'json'
-require 'yaml'
-require 'rest-client'
-
-require 'mumukit/auth'
+require 'mumukit/service/routes'
 
 require_relative '../lib/bibliotheca'
 
 configure do
-  enable :cross_origin
-  set :allow_methods, [:get, :put, :post, :options, :delete]
-  set :show_exceptions, false
-
-  Mongo::Logger.logger = ::Logger.new('mongo.log')
+  set :app_name, 'bibliotheca'
 end
 
 helpers do
-  def json_body
-    @json_body ||= JSON.parse(request.body.read) rescue nil
-  end
-
-  def permissions
-    token = Mumukit::Auth::Token.decode_header(authorization_header)
-    token.verify_client!
-    @permissions ||= token.permissions 'bibliotheca'
-  end
-
-  def authorization_header
-    env['HTTP_AUTHORIZATION']
-  end
-
   def bot
     Bibliotheca::Bot.from_env
   end
 
-  def protect!
-    permissions.protect! repo.slug
+  def subject
+    Bibliotheca::Collection::Guides.find(params[:id])
   end
 
   def upsert!(document_class, collection_class, export_class)
@@ -48,65 +23,10 @@ helpers do
       export_class.new(document, bot).run! if bot.authenticated?
     end
   end
-
-  def repo
-    if params[:organization] && params[:repository]
-      Bibliotheca::Repo.new(params[:organization], params[:repository])
-    elsif params[:id]
-      Bibliotheca::Repo.from_slug(Bibliotheca::Collection::Guides.find(params[:id]).slug)
-    elsif json_body
-      Bibliotheca::Repo.from_slug(json_body['slug'])
-    else
-      raise Bibliotheca::InvalidSlugFormatError.new('Slug not available')
-    end
-  end
-end
-
-before do
-  content_type 'application/json', 'charset' => 'utf-8'
-end
-
-after do
-  error_message = env['sinatra.error']
-  if error_message.blank?
-    response.body = response.body.to_json
-  else
-    response.body = {message: env['sinatra.error'].message}.to_json
-  end
-end
-
-error JSON::ParserError do
-  halt 400
-end
-
-error Mumukit::Auth::InvalidTokenError do
-  halt 400
-end
-
-error Bibliotheca::InvalidSlugFormatError do
-  halt 400
-end
-
-error Mumukit::Service::DocumentValidationError do
-  halt 400
-end
-
-error Mumukit::Auth::UnauthorizedAccessError do
-  halt 403
-end
-
-error Mumukit::Service::DocumentNotFoundError do
-  halt 404
 end
 
 error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
-end
-
-options '*' do
-  response.headers['Allow'] = settings.allow_methods.map { |it| it.to_s.upcase }.join(',')
-  response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization'
-  200
 end
 
 get '/languages' do
@@ -140,11 +60,11 @@ delete '/guides/:id' do
 end
 
 get '/guides/:organization/:repository/raw' do
-  Bibliotheca::Collection::Guides.find_by_slug(repo.slug).raw
+  Bibliotheca::Collection::Guides.find_by_slug(slug.to_s).raw
 end
 
 get '/guides/:organization/:repository' do
-  Bibliotheca::Collection::Guides.find_by_slug(repo.slug).as_json
+  Bibliotheca::Collection::Guides.find_by_slug(slug.to_s).as_json
 end
 
 post '/guides' do
@@ -156,10 +76,10 @@ post '/books' do
 end
 
 post '/guides/import/:organization/:repository' do
-  Bibliotheca::IO::GuideImport.new(bot, repo).run!
+  Bibliotheca::IO::GuideImport.new(bot, slug).run!
 end
 
 post '/books/import/:organization/:repository' do
-  Bibliotheca::IO::BookImport.new(bot, repo).run!
+  Bibliotheca::IO::BookImport.new(bot, slug).run!
 end
 

@@ -20,7 +20,7 @@ describe 'routes' do
   end
 
   after do
-    Bibliotheca::Collection::Database.clean!
+    Bibliotheca::Database.clean!
   end
 
   def app
