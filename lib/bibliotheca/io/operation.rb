@@ -25,10 +25,10 @@ module Bibliotheca::IO
       end
 
       puts "#{self.class.name} : running after run hook repository #{repo.slug}"
-      after_run_in_local_repo
-
-      ensure_post_commit_hook!
-      Bibliotheca::IO::AtheneumExporter.run!(guide)
+      after_run_in_local_repo.tap do
+        ensure_post_commit_hook!
+        Bibliotheca::IO::AtheneumExporter.run!(guide)
+      end
     end
 
     def ensure_post_commit_hook!
