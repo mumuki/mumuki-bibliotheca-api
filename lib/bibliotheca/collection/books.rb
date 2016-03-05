@@ -1,11 +1,11 @@
-module Bibliotheca::Collection::Guides
+module Bibliotheca::Collection::Books
   extend Mumukit::Service::Collection
   extend Bibliotheca::Collection::WithSlug
 
   private
 
   def self.mongo_collection_name
-    :guides
+    :books
   end
 
   def self.mongo_database
@@ -13,11 +13,11 @@ module Bibliotheca::Collection::Guides
   end
 
   def self.wrap(it)
-    Bibliotheca::Guide.new(it)
+    Bibliotheca::Book.new(it)
   end
 
   def self.wrap_array(it)
-    Bibliotheca::Collection::GuideArray.new(it)
+    Bibliotheca::Collection::BookArray.new(it)
   end
 end
 

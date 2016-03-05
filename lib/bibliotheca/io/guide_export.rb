@@ -1,5 +1,5 @@
 module Bibliotheca::IO
-  class Export < Bibliotheca::IO::Operation
+  class GuideExport < Bibliotheca::IO::Operation
 
     attr_accessor :guide, :bot
 
@@ -9,7 +9,7 @@ module Bibliotheca::IO
     end
 
     def repo
-      @repo ||= Bibliotheca::Repo.from_slug(guide.slug)
+      @repo ||= Mumukit::Service::Slug.from(guide.slug)
     end
 
     def before_run_in_local_repo

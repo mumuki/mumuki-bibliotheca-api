@@ -10,18 +10,23 @@ describe 'routes' do
   }
 
   let!(:guide_id) {
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id]
   }
   before do
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
+
+    Bibliotheca::Collection::Books.insert!(
+        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: [
+            {name: 'first chapter', lessons: %w(baz/bar baz/bar2)},
+            {name: 'second chapter', lessons: ['bar/foo']}]))
   end
 
   after do
-    Bibliotheca::Collection::Database.clean!
+    Bibliotheca::Database.clean!
   end
 
   def app
@@ -45,6 +50,14 @@ describe 'routes' do
         {name: 'javascript', extension: 'js'}]}) }
   end
 
+  describe('get /books') do
+    before do
+      get '/books'
+    end
+
+    it { expect(last_response).to be_ok }
+    it { expect(JSON.parse(last_response.body)['books'].count).to eq 1 }
+  end
 
   describe('get /guides/writable') do
     before do
@@ -64,6 +77,7 @@ describe 'routes' do
     it { expect(last_response).to be_ok }
     it { expect(JSON.parse(last_response.body)['guides'].count).to eq 3 }
   end
+
 
   describe('get /guides/:slug') do
     describe 'shows guide by slug' do
@@ -85,7 +99,7 @@ describe 'routes' do
     context 'When guide does not exist' do
       before { get '/guides/foo/bar2' }
       it { expect(last_response).to_not be_ok }
-      it { expect(last_response.body).to json_eq(message: 'guide {"slug":"foo/bar2"} not found') }
+      it { expect(last_response.body).to json_eq(message: 'document {"slug":"foo/bar2"} not found') }
       it { expect(last_response.status).to be(404) }
     end
   end
@@ -111,7 +125,7 @@ describe 'routes' do
     context 'When guide does not exist' do
       before { get '/guides/0123456789abcdef/exercises/1/test' }
       it { expect(last_response).to_not be_ok }
-      it { expect(last_response.body).to json_eq(message: 'guide {"id":"0123456789abcdef"} not found') }
+      it { expect(last_response.body).to json_eq(message: 'document {"id":"0123456789abcdef"} not found') }
       it { expect(last_response.status).to be(404) }
     end
   end
@@ -120,7 +134,7 @@ describe 'routes' do
     context 'when request is valid' do
 
       it 'accepts valid requests' do
-        expect_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
+        expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header('*')
@@ -136,7 +150,7 @@ describe 'routes' do
       end
 
       it 'accepts re posts' do
-        allow_any_instance_of(Bibliotheca::IO::Export).to receive(:run!)
+        allow_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header('*')
@@ -257,7 +271,7 @@ describe 'routes' do
 
   describe 'delete /guides/:id' do
     let(:guide) { build(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
-    let(:id) { Bibliotheca::Collection::Guides.insert(guide)[:id] }
+    let(:id) { Bibliotheca::Collection::Guides.insert!(guide)[:id] }
 
     context 'when user is authenticated' do
 

@@ -1,5 +1,5 @@
 module Bibliotheca
-  class Guide < JsonWrapper
+  class Guide < Mumukit::Service::JsonWrapper
     def defaults
       {beta: false,
        type: 'practice',
@@ -33,12 +33,7 @@ module Bibliotheca
         ("Name must be present" unless name.present?),
         ("Language must be present" unless language.present?),
         ("Description must be present" unless description.present?)
-      ].compact
-    end
-
-    def validate!
-      e = errors + exercises.flat_map(&:errors).each_with_index.map {|it, i| "in exercise #{i+1}: #{it}"}
-      raise InvalidGuideFormatError.new(e.join(', ')) unless e.empty?
+      ].compact + exercises.flat_map(&:errors).each_with_index.map {|it, i| "in exercise #{i+1}: #{it}"}
     end
 
     def validate_slug!(a_slug)
@@ -58,6 +53,4 @@ module Bibliotheca
     end
   end
 
-  class InvalidGuideFormatError < StandardError
-  end
 end

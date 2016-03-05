@@ -16,6 +16,19 @@ GIT
       activesupport
       rest-client
 
+GIT
+  remote: git://github.com/mumuki/mumukit-service.git
+  revision: ac7e1f81463d8685b550a8ebf9bf1b4dc54cfe78
+  branch: master
+  specs:
+    mumukit-service (0.1.0)
+      activesupport (~> 4.2)
+      bson_ext
+      mongo (~> 2.1)
+      puma
+      sinatra
+      sinatra-cross_origin (~> 0.3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -26,16 +39,14 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    bson (3.2.6)
+    bson (4.0.3)
     bson_ext (1.5.1)
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
-    daemons (1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    eventmachine (1.0.9)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     faraday (0.9.1)
@@ -48,12 +59,13 @@ GEM
     jwt (1.5.2)
     mime-types (2.6.2)
     minitest (5.8.3)
-    mongo (2.1.2)
-      bson (~> 3.0)
+    mongo (2.2.4)
+      bson (~> 4.0)
     multipart-post (2.0.0)
     netrc (0.10.3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
+    puma (3.0.2)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -80,17 +92,13 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    sinatra (1.4.6)
-      rack (~> 1.4)
+    sinatra (1.4.7)
+      rack (~> 1.5)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
     sinatra-cross_origin (0.3.2)
-    thin (1.6.4)
-      daemons (~> 1.0, >= 1.0.9)
-      eventmachine (~> 1.0, >= 1.0.4)
-      rack (~> 1.0)
     thread_safe (0.3.5)
-    tilt (2.0.1)
+    tilt (2.0.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)
@@ -101,22 +109,18 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (~> 4.2)
-  bson_ext
   codeclimate-test-reporter
   factory_girl
   git
-  mongo (~> 2.1)
   mumukit-auth!
   mumukit-bridge!
+  mumukit-service!
   octokit (~> 4.1)
+  puma
   rack-test
   rake
   rest-client
   rspec (~> 2.99)
-  sinatra
-  sinatra-cross_origin (~> 0.3.1)
-  thin
 
 BUNDLED WITH
    1.11.2
