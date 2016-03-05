@@ -11,7 +11,7 @@ gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
 gem 'mumukit-bridge', github: 'mumuki/mumukit-bridge', tag: 'v0.4.0'
 gem 'mumukit-service', github: 'mumuki/mumukit-service', branch: 'master'
 
-gem 'thin'
+gem 'puma'
 
 group :test do
   gem 'rspec', '~> 2.99'
