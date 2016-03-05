@@ -1,4 +1,5 @@
 require 'mumukit/service/routes'
+require 'mumukit/service/routes/auth'
 
 require_relative '../lib/bibliotheca'
 
@@ -19,7 +20,7 @@ helpers do
     protect!
     document = document_class.new(json_body)
 
-    collection_class.upsert_by_slug(repo.slug, document).tap do
+    collection_class.upsert_by_slug(slug.to_s, document).tap do
       export_class.new(document, bot).run! if bot.authenticated?
     end
   end
@@ -60,11 +61,11 @@ delete '/guides/:id' do
 end
 
 get '/guides/:organization/:repository/raw' do
-  Bibliotheca::Collection::Guides.find_by_slug(slug.to_s).raw
+  Bibliotheca::Collection::Guides.find_by_slug!(slug.to_s).raw
 end
 
 get '/guides/:organization/:repository' do
-  Bibliotheca::Collection::Guides.find_by_slug(slug.to_s).as_json
+  Bibliotheca::Collection::Guides.find_by_slug!(slug.to_s).as_json
 end
 
 post '/guides' do
