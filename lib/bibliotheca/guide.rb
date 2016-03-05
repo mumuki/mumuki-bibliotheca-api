@@ -8,8 +8,7 @@ module Bibliotheca
     end
 
     def transforms(original)
-      {exercises: original[:exercises].map { |e| Exercise.new e },
-       language: original[:language].try { |it| Language.find_by_name(it) } }
+      {exercises: original[:exercises].map { |e| Exercise.new e }}
     end
 
     def format_id(exercise)
@@ -21,11 +20,11 @@ module Bibliotheca
     end
 
     def errors
-      puts '**********************************************'
-      puts "Encoding of description: #{description.encoding.name}"
-      puts "Encoding: #{__ENCODING__.name}"
-      puts "Ruby version: #{RUBY_VERSION}"
-      puts '**********************************************'
+      #puts '**********************************************'
+      #puts "Encoding of description: #{description.encoding.name}"
+      #puts "Encoding: #{__ENCODING__.name}"
+      #puts "Ruby version: #{RUBY_VERSION}"
+      #puts '**********************************************'
 
       [
         ("Unrecognized guide type #{type}" unless [nil, 'practice', 'learning'].include? type),

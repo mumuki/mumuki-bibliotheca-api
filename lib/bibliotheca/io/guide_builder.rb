@@ -27,7 +27,7 @@ module Bibliotheca::IO
       {name: name,
        description: description,
        corollary: corollary,
-       language: language.name,
+       language: language,
        locale: locale,
        type: type,
        extra: extra,

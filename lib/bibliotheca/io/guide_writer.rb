@@ -5,6 +5,7 @@ module Bibliotheca::IO
     def initialize(dir, log)
       @dir = dir
       @log = log
+      @thesaurus = Mumukit::Bridge::Thesaurus.new
     end
 
     def write_guide!(guide)
@@ -23,7 +24,7 @@ module Bibliotheca::IO
 
       FileUtils.mkdir_p dirname
 
-      write_file!(dirname, "test.#{guide.language.test_extension}", e.test)
+      write_file!(dirname, "test.#{test_extension guide.language}", e.test)
       write_file!(dirname, 'description.md', e.description)
       write_file!(dirname, 'meta.yml', metadata_yaml(e))
 
@@ -49,7 +50,7 @@ module Bibliotheca::IO
           'locale' => guide.locale,
           'type' => guide.type,
           'beta' => guide.beta,
-          'language' => guide.language.name,
+          'language' => guide.language,
           'id_format' => guide.id_format,
           'order' => guide.exercises.map { |e| e.id }
       }.to_yaml
@@ -62,23 +63,31 @@ module Bibliotheca::IO
     private
 
     def metadata_yaml(e)
-      {'tags' => e.tag_list.to_a,  'layout' => e.layout, 'type' => e.type, 'extra_visible' => e.extra_visible}.to_yaml
+      {'tags' => e.tag_list.to_a, 'layout' => e.layout, 'type' => e.type, 'extra_visible' => e.extra_visible}.to_yaml
     end
 
     def expectations_yaml(e)
-      {'expectations' => e.expectations.map(&:stringify_keys) }.to_yaml
+      {'expectations' => e.expectations.map(&:stringify_keys)}.to_yaml
     end
 
     def extra_filename(guide)
-      "extra.#{guide.language.extension}"
+      "extra.#{extension guide.language}"
     end
 
     def default_filename(guide)
-      "default.#{guide.language.extension}"
+      "default.#{extension guide.language}"
     end
 
     def write_file!(dirname, name, content)
       File.write(File.join(dirname, name), content)
+    end
+
+    def test_extension(lang)
+      @thesaurus.language(lang)['test_framework']['test_extension']
+    end
+
+    def extension(lang)
+      @thesaurus.language(lang)['test_framework']['test_extension']
     end
   end
 end

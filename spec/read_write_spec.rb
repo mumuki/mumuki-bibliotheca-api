@@ -1,7 +1,20 @@
 require 'spec_helper'
 
 describe 'read-write' do
-  let(:haskell) { Bibliotheca::Language.find_by_name(:haskell) }
+  let(:haskell) do
+    {'test_framework' => {
+        'name' => 'rspec',
+        'version' => '2.13',
+        'test_extension' => '.rb'
+    }}
+  end
+
+  before do
+    allow_any_instance_of(Mumukit::Bridge::Thesaurus).to receive(:language).
+                                                             with('haskell').
+                                                             and_return(haskell)
+  end
+
   let(:repo) { Mumukit::Service::Slug.new('mumuki', 'functional-haskell-guide-1') }
   let(:export_log) { Bibliotheca::IO::Log.new }
   let(:import_log) { Bibliotheca::IO::Log.new }

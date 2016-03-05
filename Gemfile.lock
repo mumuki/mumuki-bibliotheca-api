@@ -8,8 +8,17 @@ GIT
       jwt
 
 GIT
+  remote: git://github.com/mumuki/mumukit-bridge.git
+  revision: ffddb2034036b5285fe1a4b80f9d9507f9aa42de
+  tag: v1.0.1
+  specs:
+    mumukit-bridge (1.0.1)
+      activesupport
+      rest-client
+
+GIT
   remote: git://github.com/mumuki/mumukit-service.git
-  revision: ac63849a86c13350b88a9731c8b40c69cf3eb253
+  revision: 0c1727b8f10c340ab40b08586fd7432adda62083
   branch: master
   specs:
     mumukit-service (0.1.0)
@@ -110,6 +119,7 @@ DEPENDENCIES
   factory_girl
   git
   mumukit-auth!
+  mumukit-bridge!
   mumukit-service!
   octokit (~> 4.1)
   rack-test

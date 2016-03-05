@@ -30,10 +30,6 @@ error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
 end
 
-get '/languages' do
-  Bibliotheca::Collection::Languages.all.as_json
-end
-
 get '/guides' do
   Bibliotheca::Collection::Guides.all.as_json
 end

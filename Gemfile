@@ -8,6 +8,7 @@ gem 'octokit', '~> 4.1'
 gem 'rest-client'
 
 gem 'mumukit-auth', github: 'mumuki/mumukit-auth', branch: 'master'
+gem 'mumukit-bridge', github: 'mumuki/mumukit-bridge', branch: 'master'
 gem 'mumukit-service', github: 'mumuki/mumukit-service', branch: 'master'
 
 gem 'thin'
