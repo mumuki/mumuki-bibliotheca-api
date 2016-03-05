@@ -10,7 +10,7 @@ describe 'routes' do
   }
 
   let!(:guide_id) {
-    Bibliotheca::Collection::Guides.insert(
+    Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id]
   }
   before do
@@ -125,7 +125,7 @@ describe 'routes' do
     context 'When guide does not exist' do
       before { get '/guides/0123456789abcdef/exercises/1/test' }
       it { expect(last_response).to_not be_ok }
-      it { expect(last_response.body).to json_eq(message: 'guide {"id":"0123456789abcdef"} not found') }
+      it { expect(last_response.body).to json_eq(message: 'document {"id":"0123456789abcdef"} not found') }
       it { expect(last_response.status).to be(404) }
     end
   end

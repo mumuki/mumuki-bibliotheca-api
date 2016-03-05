@@ -40,7 +40,7 @@ describe Bibliotheca::Collection::Guides do
   end
 
   describe '#upsert_by_slug' do
-    let(:upserted) { Bibliotheca::Collection::Guides.find_by_slug('foo/goo') }
+    let(:upserted) { Bibliotheca::Collection::Guides.find_by_slug!('foo/goo') }
 
     context 'slug exists' do
       let!(:original_id) { Bibliotheca::Collection::Guides.insert!(
@@ -95,7 +95,7 @@ describe Bibliotheca::Collection::Guides do
           description: 'foo',
           exercises: [{name: 'baz', description: '#goo'}]))[:id] }
     context 'exists' do
-      let(:guide) { Bibliotheca::Collection::Guides.find_by_slug('foo/goo') }
+      let(:guide) { Bibliotheca::Collection::Guides.find_by_slug!('foo/goo') }
 
       it { expect(guide.raw).to_not be_empty }
       it { expect(guide.exercises.count).to eq 1 }
@@ -104,7 +104,7 @@ describe Bibliotheca::Collection::Guides do
     end
 
     context 'not exists' do
-      it { expect { Bibliotheca::Collection::Guides.find_by_slug('foo/bar') }.to raise_error('document {"slug":"foo/bar"} not found') }
+      it { expect { Bibliotheca::Collection::Guides.find_by_slug!('foo/bar') }.to raise_error('document {"slug":"foo/bar"} not found') }
     end
   end
 
@@ -113,6 +113,6 @@ describe Bibliotheca::Collection::Guides do
 
     before { Bibliotheca::Collection::Guides.delete!(id) }
 
-    it { expect { Bibliotheca::Collection::Guides.find(id) }.to raise_error(%Q{document {"id":"#{id}"} not found}) }
+    it { expect { Bibliotheca::Collection::Guides.find!(id) }.to raise_error(%Q{document {"id":"#{id}"} not found}) }
   end
 end
