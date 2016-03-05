@@ -3,8 +3,8 @@ module Bibliotheca::Collection::WithSlug
     project { |it| permissions.allows? it.slug }
   end
 
-  def find_by_slug(slug)
-    find_by(slug: slug)
+  def find_by_slug!(slug)
+    find_by!(slug: slug)
   end
 
   def upsert_by_slug(slug, guide)
