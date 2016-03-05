@@ -6,17 +6,13 @@ rvm:
 script:
 - bundle exec rspec
 services:
-  - mongodb
+- mongodb
 env: RACK_ENV=test
 addons:
   code_climate:
     repo_token: fc99046bbbd5bab2e17c7ce37e57a8ed9d04b79fce6d0d8904fb983bccb009e2
-deploy:
-  provider: openshift
-  user: federico.aloi@gmail.com
-  password:
-    secure: FSjQA3zUdsCV0/PMNxNYZoMQOMOanIuY8r+qnFbh1GPkx+ezV2WL6G6cZOpHJpz8u6Ffq4UCMC1N3dtRtUsBgIgEz5bwFg4PeIKllx7SKB0dbI7xSEh0b00SsdwJe1pZu7zgGo2X+LdXwOUKLO3nH0/fDQuMkmmHmzPGOEEPUoWb097f8MWvRdnHi0kZc+3drfK+NSHaaXHwUTPjXmfkGnUO2zwdT5qUKdoGAVv+gVtEfdOW3Xorqgx0w2grv8bukmVarNQYD8MHn8AYIqoEiOBLYOiRwZ8k1iFzR+RtMeNWiiVqUnWxz4RhhSd+n1BJyFJtdkA5iF4fe4EeLmf6KmdvEnn4ug9Gh+c30Fpk9McZxzsCPQ2xIerFqirA6VA5pLNnRDnm4Y0MxMyuZAvRVf4ablIsuLlVrJ+7kSpqQ9g0uAB783HqpHbNuA7TOUdMflBuU5/NlAO/m/WHL5nnyfR39BmAhpe3VaQ2/XEdR7K67B/8F6cCllgRPFxJfkEfB8wrL4IZ+goRMgdDhkb25luDpNE+OAejNdhOWvHiU4acaltesLkWLDdrhKQXsFI61X7aabBkjWCCtEoWxsXlCsx/p4nkG+56XRVPtT2Af5f2PS34IGN5LU1sU5shFZzfJP8Em8MvTFwfs9FT8YdmkSY9bRMy0GDy6EUcy9m+VGU=
-  app: content
-  domain: mumuki
-  on:
-    repo: mumuki/mumuki-bibliotheca
+after_success: wget https://raw.githubusercontent.com/mumuki/mumuki-escualo/master/travis_deploy
+  && chmod u+x travis_deploy && ./travis_deploy bibliotheca bibliotheca.mumuki.io
+before_install:
+- openssl aes-256-cbc -K $encrypted_d15a3399a687_key -iv $encrypted_d15a3399a687_iv
+  -in escualo_rsa.enc -out escualo_rsa -d

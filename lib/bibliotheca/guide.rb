@@ -21,12 +21,6 @@ module Bibliotheca
     end
 
     def errors
-      puts '**********************************************'
-      puts "Encoding of description: #{description.encoding.name}"
-      puts "Encoding: #{__ENCODING__.name}"
-      puts "Ruby version: #{RUBY_VERSION}"
-      puts '**********************************************'
-
       [
         ("Unrecognized guide type #{type}" unless [nil, 'practice', 'learning'].include? type),
         ("Beta flag must be boolean" unless [nil, true, false].include? beta),

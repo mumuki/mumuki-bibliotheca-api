@@ -10,7 +10,7 @@ require 'rest-client'
 require 'octokit'
 
 
-['pdep-utn', 'sagrado-corazon-alcal', 'mumuki', 'arquitecturas-concurrentes'].flat_map do |org|
+['pdep-utn', 'sagrado-corazon-alcal', 'mumuki', 'arquitecturas-concurrentes', 'orga-unq', 'alcal', 'inpr-unq', 'inpr-sarmiento', 'pdp-unsam', 'wollok'].flat_map do |org|
   Octokit.repos(org).map(&:full_name).select { |it| it =~ /guia/ }
 end.each do |slug|
   puts slug 
