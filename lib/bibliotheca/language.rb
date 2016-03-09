@@ -44,7 +44,7 @@ module Bibliotheca
                      extension: 'wlk',
                      ace_mode: 'wollok',
                      devicon: 'webplatform',
-                     url: 'http://mumuki-wollok-server.herokuapp.com'),
+                     url: 'http://runners2.mumuki.io:8003'),
         Language.new(name: 'c',
                      extension: 'c',
                      ace_mode: 'c_cpp',
