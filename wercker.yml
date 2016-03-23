@@ -9,3 +9,9 @@ build:
   - script:
       name: rspec
       code: bundle exec rspec
+
+deploy:
+  escualo:
+  - script:
+      name: deploy
+      code: wget https://raw.githubusercontent.com/mumuki/mumuki-escualo-deploy/master/wercker_deploy && chmod u+x wercker_deploy && ./wercker_deploy bibliotheca
