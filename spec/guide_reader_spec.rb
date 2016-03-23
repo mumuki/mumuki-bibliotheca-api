@@ -11,7 +11,7 @@ describe Bibliotheca::IO::GuideReader do
 
     before { reader.read_exercises { |it| results << it } }
 
-    it { expect(results.size).to eq 25 }
+    it { expect(results.size).to eq 4 }
     it { expect(log.messages).to eq ['Description does not exist for sample_broken'] }
   end
 
