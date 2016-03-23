@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mumuki/mumuki-bibliotheca.svg?branch=master)](https://travis-ci.org/mumuki/mumuki-bibliotheca)
+[![wercker status](https://app.wercker.com/status/0b4dd5fa93028f3a8172e685187d542a/s/master "wercker status")](https://app.wercker.com/project/bykey/0b4dd5fa93028f3a8172e685187d542a)
 [![Code Climate](https://codeclimate.com/github/mumuki/mumuki-bibliotheca/badges/gpa.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca)
 [![Test Coverage](https://codeclimate.com/github/mumuki/mumuki-bibliotheca/badges/coverage.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca)
 
