@@ -11,6 +11,6 @@ development:
   database: bibliotheca
 
 test:
-  host: <%=ENV['MONGO_PORT_27017_TCP_ADDR']%>
-  port: <%=ENV['MONGO_PORT_27017_TCP_PORT']%>
+  host: <%=ENV['MONGO_PORT_27017_TCP_ADDR'] || 'localhost' %>
+  port: <%=ENV['MONGO_PORT_27017_TCP_PORT'] || 27017 %>
   database: bibliotheca-test
