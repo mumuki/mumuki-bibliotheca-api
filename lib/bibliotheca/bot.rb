@@ -11,8 +11,8 @@ class Bibliotheca::Bot
     @token = token
   end
 
-  def ensure_exists!(repo)
-    create!(repo) unless exists?(repo)
+  def ensure_exists!(slug)
+    create!(slug) unless exists?(slug)
   end
 
   def clone_into(repo, dir, &block)
@@ -25,10 +25,10 @@ class Bibliotheca::Bot
     raise e
   end
 
-  def register_post_commit_hook!(repo)
+  def register_post_commit_hook!(slug)
     octokit.create_hook(
-        repo.slug, 'web',
-        {url: repo.web_hook_url, content_type: 'json'},
+        slug.to_s, 'web',
+        {url: slug.bibliotehca_guide_web_hook_url, content_type: 'json'},
         {events: ['push'],
          active: true})
   rescue => e
@@ -47,19 +47,19 @@ class Bibliotheca::Bot
 
   private
 
-  def exists?(repo)
-    Git.ls_remote(writable_github_url_for(repo))
+  def exists?(slug)
+    Git.ls_remote(writable_github_url_for(slug))
     true
   rescue Git::GitExecuteError
     false
   end
 
-  def create!(repo)
-    octokit.create_repository(repo.name, organization: repo.organization)
+  def create!(slug)
+    octokit.create_repository(slug.repository, organization: slug.organization)
   end
 
-  def writable_github_url_for(repo)
-    "https://#{token}:@github.com/#{repo}"
+  def writable_github_url_for(slug)
+    "https://#{token}:@github.com/#{slug}"
   end
 
   def octokit
