@@ -16,6 +16,10 @@ helpers do
     Bibliotheca::Collection::Guides.find(params[:id])
   end
 
+  def route_slug_parts
+    [params[:organization], params[:repository]].compact
+  end
+
   def upsert!(document_class, collection_class, export_class)
     protect!
     document = document_class.new(json_body)

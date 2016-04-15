@@ -18,10 +18,10 @@ GIT
 
 GIT
   remote: git://github.com/mumuki/mumukit-service.git
-  revision: ac7e1f81463d8685b550a8ebf9bf1b4dc54cfe78
-  branch: master
+  revision: 638bdbcb7712d4395f5f44c909158810acd5b3fc
+  tag: v0.1.1
   specs:
-    mumukit-service (0.1.0)
+    mumukit-service (0.1.1)
       activesupport (~> 4.2)
       bson_ext
       mongo (~> 2.1)
@@ -32,14 +32,14 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.5)
+    activesupport (4.2.6)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    bson (4.0.3)
+    bson (4.1.0)
     bson_ext (1.5.1)
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -58,14 +58,14 @@ GEM
     json (1.8.3)
     jwt (1.5.2)
     mime-types (2.6.2)
-    minitest (5.8.3)
+    minitest (5.8.4)
     mongo (2.2.4)
       bson (~> 4.0)
     multipart-post (2.0.0)
     netrc (0.10.3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
-    puma (3.0.2)
+    puma (3.4.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
