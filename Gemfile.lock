@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/mumuki/mumukit-auth.git
-  revision: 422a50b49b7617dc2188ae8cbae30e8ed42befa4
-  branch: master
+  revision: 2b183826ed6606f6f7e4e189b8f4a7de29b2c454
+  tag: v0.0.1
   specs:
     mumukit-auth (0.1.0)
       activesupport
@@ -56,7 +56,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
-    jwt (1.5.2)
+    jwt (1.5.4)
     mime-types (2.6.2)
     minitest (5.8.4)
     mongo (2.2.4)
