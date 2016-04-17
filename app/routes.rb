@@ -7,6 +7,13 @@ configure do
   set :app_name, 'bibliotheca'
 end
 
+
+class Mumukit::Auth::Token
+  def email
+    jwt['email']
+  end
+end
+
 helpers do
   def bot
     Bibliotheca::Bot.from_env
@@ -25,7 +32,7 @@ helpers do
     document = document_class.new(json_body)
 
     collection_class.upsert_by_slug(slug.to_s, document).tap do
-      export_class.new(document, bot).run! if bot.authenticated?
+      export_class.new(document, bot, token.email).run! if bot.authenticated?
     end
   end
 end
