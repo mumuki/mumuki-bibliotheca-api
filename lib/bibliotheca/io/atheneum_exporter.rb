@@ -32,7 +32,7 @@ module Bibliotheca::IO
       begin
         RestClient::Resource
           .new(self.class.guides_url(url), client_id, client_secret)
-          .post(guide.to_json, {content_type: 'json', accept: 'json'})
+          .post({slug: guide.slug}, {content_type: 'json', accept: 'json'})
       rescue RestClient::Exception => e
         self.class.log_warning "Atheneum rejected guide #{guide.slug} update, reason: #{e.response}."
       rescue Exception => e
