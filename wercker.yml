@@ -5,6 +5,9 @@ services:
 
 build:
   steps:
+  - script:
+    name: Clear bundle cache
+    code: rm -rf /pipeline/cache/bundle-install/ruby/2.0.0/cache/bundler/git/*
   - bundle-install
   - script:
       name: rspec
