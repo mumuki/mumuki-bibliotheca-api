@@ -9,7 +9,7 @@ gem 'rest-client'
 
 gem 'mumukit-auth', github: 'mumuki/mumukit-auth', tag: 'v0.0.1'
 gem 'mumukit-bridge', github: 'mumuki/mumukit-bridge', tag: 'v0.4.0'
-gem 'mumukit-service', github: 'mumuki/mumukit-service', tag: 'v0.1.2'
+gem 'mumukit-service', github: 'mumuki/mumukit-service', tag: 'v0.2.0'
 
 gem 'puma'
 

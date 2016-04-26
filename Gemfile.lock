@@ -18,10 +18,10 @@ GIT
 
 GIT
   remote: git://github.com/mumuki/mumukit-service.git
-  revision: 407a82a1ea7a77affa621beb9249fa738d6f805f
-  tag: v0.1.2
+  revision: c902627e82d9b17479ac718f9ef09050715b784d
+  tag: v0.2.0
   specs:
-    mumukit-service (0.1.2)
+    mumukit-service (0.2.0)
       activesupport (~> 4.2)
       bson_ext
       mongo (~> 2.1)
