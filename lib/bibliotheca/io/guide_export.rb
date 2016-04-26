@@ -31,7 +31,7 @@ module Bibliotheca::IO
     private
 
     def commit_options
-      author_email.present? ? {author: author_email} : {}
+      author_email.present? ? {author: "#{author_email} <#{author_email}>"} : {}
     end
 
     def clear_repo(local_repo)
