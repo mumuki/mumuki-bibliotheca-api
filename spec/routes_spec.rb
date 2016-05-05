@@ -12,10 +12,6 @@ describe 'routes' do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
 
-  let!(:book_id) {
-    Bibliotheca::Collection::Books.insert!(
-        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: %w(bar/baz1 bar/baz2)))[:id] }
-
   before do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
@@ -33,28 +29,6 @@ describe 'routes' do
 
   def app
     Sinatra::Application
-  end
-
-  describe('get /books') do
-    before do
-      get '/books'
-    end
-
-    it { expect(last_response).to be_ok }
-    it { expect(JSON.parse(last_response.body)['books'].count).to eq 1 }
-  end
-
-  describe('get /books/baz/foo') do
-    before { get '/books/baz/foo' }
-
-    it { expect(last_response).to be_ok }
-    it { expect(last_response.body).to json_eq(
-                                           id: book_id,
-                                           name: 'the book',
-                                           description: 'this book is for everyone and nobody',
-                                           locale: 'es',
-                                           slug: 'baz/foo',
-                                           chapters: %w(bar/baz1 bar/baz2)) }
   end
 
   describe('get /topics') do
