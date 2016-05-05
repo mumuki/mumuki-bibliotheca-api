@@ -2,7 +2,7 @@ get '/topics' do
   Bibliotheca::Collection::Topics.all.as_json
 end
 
-get '/Topics/:organization/:repository' do
+get '/topics/:organization/:repository' do
   Bibliotheca::Collection::Topics.find_by_slug!(slug.to_s).as_json
 end
 
