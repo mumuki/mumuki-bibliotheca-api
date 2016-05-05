@@ -4,25 +4,27 @@ require_relative '../app/routes'
 
 describe 'routes' do
   let(:exercise) {
-      {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
-       test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
-       expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false}
-  }
+    {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
+     test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
+     expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false} }
 
   let!(:guide_id) {
     Bibliotheca::Collection::Guides.insert!(
-        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id]
-  }
+        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
+
+  let!(:book_id) {
+    Bibliotheca::Collection::Books.insert!(
+        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: %w(bar/baz1 bar/baz2)))[:id] }
+
   before do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
 
-    Bibliotheca::Collection::Books.insert!(
-        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: [
-            {name: 'first chapter', lessons: %w(baz/bar baz/bar2)},
-            {name: 'second chapter', lessons: ['bar/foo']}]))
+#    Bibliotheca::Collection::Topics.insert!(
+#        {name: 'first chapter', lessons: %w(baz/bar baz/bar2)},
+#        {name: 'second chapter', lessons: ['bar/foo']}
   end
 
   after do
@@ -57,6 +59,19 @@ describe 'routes' do
 
     it { expect(last_response).to be_ok }
     it { expect(JSON.parse(last_response.body)['books'].count).to eq 1 }
+  end
+
+  describe('get /books/baz/foo') do
+    before { get '/books/baz/foo' }
+
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_eq(
+                                           id: book_id,
+                                           name: 'the book',
+                                           description: 'this book is for everyone and nobody',
+                                           locale: 'es',
+                                           slug: 'baz/foo',
+                                           chapters: %w(bar/baz1 bar/baz2)) }
   end
 
   describe('get /guides/writable') do
@@ -108,7 +123,7 @@ describe 'routes' do
     describe 'run tests for specific guide\'s exercise' do
       context 'When guide exists' do
         context 'and exercise exists too' do
-          let(:response) { { status: 'passed' } }
+          let(:response) { {status: 'passed'} }
           before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).and_return(response) }
           before { get "/guides/#{guide_id}/exercises/1/test" }
           it { expect(last_response).to be_ok }
