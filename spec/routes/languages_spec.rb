@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../app/routes'
+require_relative '../../app/routes'
 
 describe 'routes' do
   after do
