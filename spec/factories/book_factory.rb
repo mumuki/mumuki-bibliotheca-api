@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :book, class: Bibliotheca::Book do
-    name 'my guide'
+    name 'my book'
     slug 'foo/bar'
     chapters []
     locale 'en'

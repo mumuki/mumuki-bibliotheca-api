@@ -12,15 +12,21 @@ describe 'routes' do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
 
+  let!(:topic_id) {
+    Bibliotheca::Collection::Topics.insert!(
+        build(:topic,
+              name: 'the topic',
+              description: 'this is important!',
+              locale: 'es',
+              slug: 'baz/foo',
+              lessons: %w(bar/baz1 bar/baz2)))[:id] }
+
   before do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
 
-#    Bibliotheca::Collection::Topics.insert!(
-#        {name: 'first chapter', lessons: %w(baz/bar baz/bar2)},
-#        {name: 'second chapter', lessons: ['bar/foo']}
   end
 
   after do
@@ -40,17 +46,17 @@ describe 'routes' do
     it { expect(JSON.parse(last_response.body)['topics'].count).to eq 1 }
   end
 
-  describe('get /topic/mumuki/a-topic') do
-    before { get '/topic/mumuki/a-topic' }
+  describe('get /topics/baz/foo') do
+    before { get '/topics/baz/foo' }
 
     it { expect(last_response).to be_ok }
     it { expect(last_response.body).to json_eq(
                                            id: topic_id,
-                                           name: 'a great topic',
+                                           name: 'the topic',
                                            description: 'this is important!',
                                            locale: 'es',
-                                           slug: 'mumuki/a-topic',
-                                           lessons: %w(foo/bar foo/bar2)) }
+                                           slug: 'baz/foo',
+                                           lessons: %w(bar/baz1 bar/baz2)) }
   end
 
 
