@@ -57,6 +57,29 @@ describe 'routes' do
                                            chapters: %w(bar/baz1 bar/baz2)) }
   end
 
+  describe('get /topics') do
+    before do
+      get '/topics'
+    end
+
+    it { expect(last_response).to be_ok }
+    it { expect(JSON.parse(last_response.body)['topics'].count).to eq 1 }
+  end
+
+  describe('get /topic/mumuki/a-topic') do
+    before { get '/topic/mumuki/a-topic' }
+
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_eq(
+                                           id: topic_id,
+                                           name: 'a great topic',
+                                           description: 'this is important!',
+                                           locale: 'es',
+                                           slug: 'mumuki/a-topic',
+                                           lessons: %w(foo/bar foo/bar2)) }
+  end
+
+
   describe('get /guides/writable') do
     before do
       header 'Authorization', build_auth_header('foo/*')
