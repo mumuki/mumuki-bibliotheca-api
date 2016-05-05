@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../app/routes'
+require_relative '../../app/routes'
 
 describe 'routes' do
   let(:exercise) {
@@ -12,21 +12,11 @@ describe 'routes' do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
 
-  let!(:topic_id) {
-    Bibliotheca::Collection::Topics.insert!(
-        build(:topic,
-              name: 'the topic',
-              description: 'this is important!',
-              locale: 'es',
-              slug: 'baz/foo',
-              lessons: %w(bar/baz1 bar/baz2)))[:id] }
-
   before do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
-
   end
 
   after do
@@ -36,29 +26,6 @@ describe 'routes' do
   def app
     Sinatra::Application
   end
-
-  describe('get /topics') do
-    before do
-      get '/topics'
-    end
-
-    it { expect(last_response).to be_ok }
-    it { expect(JSON.parse(last_response.body)['topics'].count).to eq 1 }
-  end
-
-  describe('get /topics/baz/foo') do
-    before { get '/topics/baz/foo' }
-
-    it { expect(last_response).to be_ok }
-    it { expect(last_response.body).to json_eq(
-                                           id: topic_id,
-                                           name: 'the topic',
-                                           description: 'this is important!',
-                                           locale: 'es',
-                                           slug: 'baz/foo',
-                                           lessons: %w(bar/baz1 bar/baz2)) }
-  end
-
 
   describe('get /guides/writable') do
     before do
