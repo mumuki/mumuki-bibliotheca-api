@@ -27,12 +27,12 @@ helpers do
     [params[:organization], params[:repository]].compact
   end
 
-  def upsert!(document_class, collection_class, export_class)
+  def upsert!(document_class, collection_class, export_class=nil)
     protect!
     document = document_class.new(json_body)
 
     collection_class.upsert_by_slug(slug.to_s, document).tap do
-      export_class.new(document, bot, token.email).run! if bot.authenticated?
+      export_class.new(document, bot, token.email).run! if bot.authenticated? && export_class
     end
   end
 end

@@ -3,9 +3,5 @@ get '/books' do
 end
 
 post '/books' do
-  upsert! Bibliotheca::Book, Bibliotheca::Collection::Books, Bibliotheca::IO::BookExport
-end
-
-post '/books/import/:organization/:repository' do
-  Bibliotheca::IO::BookImport.new(bot, slug).run!
+  upsert! Bibliotheca::Book, Bibliotheca::Collection::Books
 end
