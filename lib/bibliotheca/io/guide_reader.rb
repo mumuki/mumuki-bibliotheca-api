@@ -46,6 +46,7 @@ module Bibliotheca::IO
       read! 'id_format', builder, meta
       read! 'type', builder, meta
       read! 'beta', builder, meta
+      read! 'teacher_info', builder, meta
 
       read_legacy! builder, meta
 

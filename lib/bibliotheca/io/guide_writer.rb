@@ -49,6 +49,7 @@ module Bibliotheca::IO
           'locale' => guide.locale,
           'type' => guide.type,
           'beta' => guide.beta,
+          'teacher_info' => guide.teacher_info,
           'language' => guide.language.name,
           'id_format' => guide.id_format,
           'order' => guide.exercises.map { |e| e.id }
