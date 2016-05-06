@@ -9,6 +9,7 @@ require 'mumukit/auth'
 
 require_relative '../lib/bibliotheca'
 require_relative './factories/language_factory'
+require_relative './factories/topic_factory'
 require_relative './factories/book_factory'
 require_relative './factories/guide_factory'
 

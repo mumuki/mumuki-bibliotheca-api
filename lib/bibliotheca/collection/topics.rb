@@ -1,12 +1,12 @@
 module Bibliotheca::Collection
-  module Books
+  module Topics
     extend Mumukit::Service::Collection
     extend Bibliotheca::Collection::WithSlug
 
     private
 
     def self.mongo_collection_name
-      :books
+      :topics
     end
 
     def self.mongo_database
@@ -14,21 +14,21 @@ module Bibliotheca::Collection
     end
 
     def self.wrap(it)
-      Bibliotheca::Book.new(it)
+      Bibliotheca::Topic.new(it)
     end
 
     def self.wrap_array(it)
-      Bibliotheca::Collection::BookArray.new(it)
+      Bibliotheca::Collection::TopicsArray.new(it)
     end
   end
 
-  class BookArray < Mumukit::Service::JsonArrayWrapper
+  class TopicsArray < Mumukit::Service::JsonArrayWrapper
     def options
       {only: [:id, :name, :slug]}
     end
 
     def key
-      :books
+      :topics
     end
   end
 end

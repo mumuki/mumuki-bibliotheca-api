@@ -1,28 +1,22 @@
 require 'spec_helper'
 
-require_relative '../app/routes'
+require_relative '../../app/routes'
 
 describe 'routes' do
   let(:exercise) {
-      {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
-       test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
-       expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false}
-  }
+    {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
+     test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
+     expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false} }
 
   let!(:guide_id) {
     Bibliotheca::Collection::Guides.insert!(
-        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id]
-  }
+        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
+
   before do
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
         build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
-
-    Bibliotheca::Collection::Books.insert!(
-        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: [
-            {name: 'first chapter', lessons: %w(baz/bar baz/bar2)},
-            {name: 'second chapter', lessons: ['bar/foo']}]))
   end
 
   after do
@@ -31,32 +25,6 @@ describe 'routes' do
 
   def app
     Sinatra::Application
-  end
-
-  describe('get /languages') do
-    before do
-      get '/languages'
-    end
-
-    it { expect(last_response).to be_ok }
-    skip { expect(last_response.body).to json_eq({languages: [
-        {name: 'haskell', extension: 'hs'},
-        {name: 'java', extension: 'java'},
-        {name: 'wollok', extension: 'wlk'},
-        {name: 'c', extension: 'c'},
-        {name: 'prolog', extension: 'pl'},
-        {name: 'ruby', extension: 'rb'},
-        {name: 'gobstones', extension: 'gbs'},
-        {name: 'javascript', extension: 'js'}]}) }
-  end
-
-  describe('get /books') do
-    before do
-      get '/books'
-    end
-
-    it { expect(last_response).to be_ok }
-    it { expect(JSON.parse(last_response.body)['books'].count).to eq 1 }
   end
 
   describe('get /guides/writable') do
@@ -108,7 +76,7 @@ describe 'routes' do
     describe 'run tests for specific guide\'s exercise' do
       context 'When guide exists' do
         context 'and exercise exists too' do
-          let(:response) { { status: 'passed' } }
+          let(:response) { {status: 'passed'} }
           before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).and_return(response) }
           before { get "/guides/#{guide_id}/exercises/1/test" }
           it { expect(last_response).to be_ok }
@@ -292,12 +260,5 @@ describe 'routes' do
       it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
     end
 
-  end
-
-  describe 'options /' do
-    before do
-      options '/'
-    end
-    it { expect(last_response.headers['Allow']).to include 'DELETE' }
   end
 end
