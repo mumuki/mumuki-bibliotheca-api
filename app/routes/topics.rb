@@ -11,5 +11,5 @@ get '/topics/:organization/:repository' do
 end
 
 post '/topics' do
-  upsert! Bibliotheca::Guide, Bibliotheca::Collection::Topics
+  upsert! Bibliotheca::Topic, Bibliotheca::Collection::Topics
 end
