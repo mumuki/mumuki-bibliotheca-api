@@ -15,6 +15,29 @@ describe 'routes' do
     Sinatra::Application
   end
 
+  describe('get /books/writable') do
+    context 'when no topics match' do
+      before do
+        header 'Authorization', build_auth_header('foo/*')
+        get '/books/writable'
+      end
+
+      it { expect(last_response).to be_ok }
+      it { expect(JSON.parse(last_response.body)['books'].count).to eq 0 }
+    end
+
+    context 'when topics match' do
+      before do
+        header 'Authorization', build_auth_header('baz/*')
+        get '/books/writable'
+      end
+
+      it { expect(last_response).to be_ok }
+      it { expect(JSON.parse(last_response.body)['books'].count).to eq 1 }
+    end
+  end
+
+
   describe('get /books') do
     before do
       get '/books'
