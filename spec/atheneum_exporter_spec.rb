@@ -12,8 +12,8 @@ describe Bibliotheca::IO::AtheneumExporter do
   end
 
   context 'guides url' do
-    it { expect(exporter.guides_url 'http://foo.com').to eq 'http://foo.com/api/guides' }
-    it { expect(exporter.guides_url 'http://foo.com/').to eq 'http://foo.com/api/guides' }
+    it { expect(exporter.item_url 'http://foo.com').to eq 'http://foo.com/api/guides' }
+    it { expect(exporter.item_url 'http://foo.com/').to eq 'http://foo.com/api/guides' }
   end
 
   context 'when the request to Atheneum fails' do

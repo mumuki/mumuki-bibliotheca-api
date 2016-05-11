@@ -15,28 +15,28 @@ module Bibliotheca::IO
           Bibliotheca::Env.atheneum_client_secret
     end
 
-    def self.guides_url(url)
+    def self.item_url(url)
       url += '/' unless url.end_with? '/'
       "#{url}api/guides"
     end
 
-    def self.run!(guide)
+    def self.run!(item)
       if env_available?
-        from_env.run!(guide)
+        from_env.run!(item)
       else
-        log_warning "Atheneum credentials not set. Not going to export #{guide}."
+        log_warning "Atheneum credentials not set. Not going to export #{item}."
       end
     end
 
-    def run!(guide)
+    def run!(item)
       begin
         RestClient::Resource
-          .new(self.class.guides_url(url), client_id, client_secret)
-          .post({slug: guide.slug}, {content_type: 'json', accept: 'json'})
+          .new(self.class.item_url(url), client_id, client_secret)
+          .post({slug: item.slug}, {content_type: 'json', accept: 'json'})
       rescue RestClient::Exception => e
-        self.class.log_warning "Atheneum rejected guide #{guide.slug} update, reason: #{e.response}."
+        self.class.log_warning "Atheneum rejected item #{item.slug} update, reason: #{e.response}."
       rescue Exception => e
-        self.class.log_warning "something went wrong while trying to update guide #{guide.slug}, error message is #{e.message}."
+        self.class.log_warning "something went wrong while trying to update item #{item.slug}, error message is #{e.message}."
       end
     end
 
