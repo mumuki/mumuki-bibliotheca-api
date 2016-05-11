@@ -24,6 +24,6 @@ describe Bibliotheca::IO::AtheneumExport do
 
     let(:guide) { build(:guide) }
 
-    it { expect { Bibliotheca::IO::GuideAtheneumExport.run! guide }.to_not raise_error }
+    it { expect { Bibliotheca::IO::GuideAtheneumExport.run! guide.slug }.to_not raise_error }
   end
 end

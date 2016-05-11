@@ -20,23 +20,23 @@ module Bibliotheca::IO
       "#{url}api/#{kind.to_s.pluralize}"
     end
 
-    def self.run!(item)
+    def self.run!(slug)
       if env_available?
-        from_env.run!(item)
+        from_env.run!(slug)
       else
-        log_warning "Atheneum credentials not set. Not going to export #{item}."
+        log_warning "Atheneum credentials not set. Not going to export #{slug}."
       end
     end
 
-    def run!(item)
+    def run!(slug)
       begin
         RestClient::Resource
           .new(self.item_url(url), client_id, client_secret)
-          .post({slug: item.slug}, {content_type: 'json', accept: 'json'})
+          .post({slug: slug}, {content_type: 'json', accept: 'json'})
       rescue RestClient::Exception => e
-        self.class.log_warning "Atheneum rejected item #{item.slug} update, reason: #{e.response}."
+        self.class.log_warning "Atheneum rejected item #{slug} update, reason: #{e.response}."
       rescue Exception => e
-        self.class.log_warning "something went wrong while trying to update item #{item.slug}, error message is #{e.message}."
+        self.class.log_warning "something went wrong while trying to update item #{slug}, error message is #{e.message}."
       end
     end
 
