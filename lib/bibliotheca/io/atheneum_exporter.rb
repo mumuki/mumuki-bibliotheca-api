@@ -1,28 +1,30 @@
 module Bibliotheca::IO
   class AtheneumExporter
-    attr_accessor :url, :client_id, :client_secret
+    attr_accessor :url, :client_id, :client_secret, :kind
 
-    def initialize(url, client_id, client_secret)
-      ensure_present! url, client_id, client_secret
+    def initialize(kind, url, client_id, client_secret)
+      ensure_present! kind, url, client_id, client_secret
+      @kind = kind
       @url = url
       @client_id = client_id
       @client_secret = client_secret
     end
 
-    def self.from_env
-      new Bibliotheca::Env.atheneum_url,
+    def self.from_env(kind)
+      new kind,
+          Bibliotheca::Env.atheneum_url,
           Bibliotheca::Env.atheneum_client_id,
           Bibliotheca::Env.atheneum_client_secret
     end
 
-    def self.item_url(url)
+    def item_url(url)
       url += '/' unless url.end_with? '/'
-      "#{url}api/guides"
+      "#{url}api/#{kind.to_s.pluralize}"
     end
 
-    def self.run!(item)
+    def self.run!(kind, item)
       if env_available?
-        from_env.run!(item)
+        from_env(kind).run!(item)
       else
         log_warning "Atheneum credentials not set. Not going to export #{item}."
       end
@@ -31,7 +33,7 @@ module Bibliotheca::IO
     def run!(item)
       begin
         RestClient::Resource
-          .new(self.class.item_url(url), client_id, client_secret)
+          .new(self.item_url(url), client_id, client_secret)
           .post({slug: item.slug}, {content_type: 'json', accept: 'json'})
       rescue RestClient::Exception => e
         self.class.log_warning "Atheneum rejected item #{item.slug} update, reason: #{e.response}."

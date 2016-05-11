@@ -5,13 +5,15 @@ describe Bibliotheca::IO::AtheneumExporter do
     [:atheneum_url, :atheneum_client_id, :atheneum_client_secret].each { |msg| allow(Bibliotheca::Env).to receive(msg).and_return('foo') }
   end
 
-  let(:exporter) { Bibliotheca::IO::AtheneumExporter }
-
   context 'when credentials are not set' do
-    it { expect { exporter.run!({}) }.to_not raise_error }
+    it { expect { Bibliotheca::IO::AtheneumExporter.run!(:guide, {}) }.to_not raise_error }
   end
 
   context 'guides url' do
+    let(:exporter) { Bibliotheca::IO::AtheneumExporter.from_env :guide }
+
+    before {  setup_dummy_atheneum_credentials }
+
     it { expect(exporter.item_url 'http://foo.com').to eq 'http://foo.com/api/guides' }
     it { expect(exporter.item_url 'http://foo.com/').to eq 'http://foo.com/api/guides' }
   end
@@ -22,6 +24,6 @@ describe Bibliotheca::IO::AtheneumExporter do
 
     let(:guide) { build(:guide) }
 
-    it { expect { exporter.run! guide }.to_not raise_error }
+    it { expect { Bibliotheca::IO::AtheneumExporter.run! :guide, guide }.to_not raise_error }
   end
 end
