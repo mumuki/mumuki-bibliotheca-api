@@ -33,9 +33,11 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
-  upsert! Bibliotheca::Guide, Bibliotheca::Collection::Guides, Bibliotheca::IO::GuideExport
+  upsert! Bibliotheca::Guide, Bibliotheca::Collection::Guides, [Bibliotheca::IO::GuideExport, Bibliotheca::IO::GuideAtheneumExport]
 end
 
 post '/guides/import/:organization/:repository' do
-  Bibliotheca::IO::GuideImport.new(bot, slug).run!
+  exporting [Bibliotheca::IO::GuideAtheneumExport] do
+    Bibliotheca::IO::GuideImport.new(bot: bot, slug: slug).run!
+  end
 end

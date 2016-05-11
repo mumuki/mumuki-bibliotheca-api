@@ -2,8 +2,8 @@ module Bibliotheca::IO
   class Operation
     attr_accessor :log, :bot
 
-    def initialize(bot)
-      @bot = bot
+    def initialize(options)
+      @bot = options[:bot]
       @log = new_log
     end
 
@@ -14,6 +14,8 @@ module Bibliotheca::IO
     end
 
     def run!
+      return unless bot.authenticated?
+
       puts "#{self.class.name} : running before run hook for repository #{repo}"
       before_run_in_local_repo
 
@@ -27,7 +29,6 @@ module Bibliotheca::IO
       puts "#{self.class.name} : running after run hook repository #{repo}"
       after_run_in_local_repo.tap do
         ensure_post_commit_hook!
-        Bibliotheca::IO::GuideAtheneumExport.run!(guide.slug)
       end
     end
 

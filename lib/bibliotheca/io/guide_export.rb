@@ -3,10 +3,10 @@ module Bibliotheca::IO
 
     attr_accessor :guide, :bot, :author_email
 
-    def initialize(guide, bot, author_email)
-      super(bot)
-      @guide = guide
-      @author_email = author_email
+    def initialize(options)
+      super(options)
+      @guide = options[:guide]
+      @author_email = options[:author_email]
     end
 
     def repo

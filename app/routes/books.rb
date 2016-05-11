@@ -12,5 +12,5 @@ get '/books/:organization/:repository' do
 end
 
 post '/books' do
-  upsert! Bibliotheca::Book, Bibliotheca::Collection::Books
+  upsert! Bibliotheca::Book, Bibliotheca::Collection::Books, [Bibliotheca::IO::BookAtheneumExport]
 end
