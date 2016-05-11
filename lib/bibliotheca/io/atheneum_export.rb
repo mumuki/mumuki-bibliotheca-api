@@ -1,18 +1,16 @@
 module Bibliotheca::IO
-  class AtheneumExporter
-    attr_accessor :url, :client_id, :client_secret, :kind
+  class AtheneumExport
+    attr_accessor :url, :client_id, :client_secret
 
-    def initialize(kind, url, client_id, client_secret)
-      ensure_present! kind, url, client_id, client_secret
-      @kind = kind
+    def initialize(url, client_id, client_secret)
+      ensure_present! url, client_id, client_secret
       @url = url
       @client_id = client_id
       @client_secret = client_secret
     end
 
-    def self.from_env(kind)
-      new kind,
-          Bibliotheca::Env.atheneum_url,
+    def self.from_env
+      new Bibliotheca::Env.atheneum_url,
           Bibliotheca::Env.atheneum_client_id,
           Bibliotheca::Env.atheneum_client_secret
     end
@@ -22,9 +20,9 @@ module Bibliotheca::IO
       "#{url}api/#{kind.to_s.pluralize}"
     end
 
-    def self.run!(kind, item)
+    def self.run!(item)
       if env_available?
-        from_env(kind).run!(item)
+        from_env.run!(item)
       else
         log_warning "Atheneum credentials not set. Not going to export #{item}."
       end
@@ -50,6 +48,24 @@ module Bibliotheca::IO
 
     def self.log_warning(message)
       puts "Warning: #{message}"
+    end
+  end
+
+  class GuideAtheneumExport < AtheneumExport
+    def kind
+      :guide
+    end
+  end
+
+  class TopicAtheneumExport < AtheneumExport
+    def kind
+      :topic
+    end
+  end
+
+  class BookAtheneumExport < AtheneumExport
+    def kind
+      :book
     end
   end
 end
