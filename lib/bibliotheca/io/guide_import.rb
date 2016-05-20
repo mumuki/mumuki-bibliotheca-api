@@ -2,9 +2,9 @@ module Bibliotheca::IO
   class GuideImport < Bibliotheca::IO::Operation
     attr_accessor :repo, :guide
 
-    def initialize(bot, repo)
-      super(bot)
-      @repo = repo
+    def initialize(options)
+      super(options)
+      @repo = options[:repo]
     end
 
     def run_in_local_repo(dir, local_repo)

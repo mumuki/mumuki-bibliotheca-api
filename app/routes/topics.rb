@@ -11,5 +11,5 @@ get '/topics/:organization/:repository' do
 end
 
 post '/topics' do
-  upsert! Bibliotheca::Topic, Bibliotheca::Collection::Topics
+  upsert! Bibliotheca::Topic, Bibliotheca::Collection::Topics, [Bibliotheca::IO::TopicAtheneumExport]
 end
