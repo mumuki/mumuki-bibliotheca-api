@@ -5,7 +5,7 @@ module Bibliotheca::IO
 
     def initialize(options)
       super(options)
-      @guide = options[:guide]
+      @guide = options[:document]
       @author_email = options[:author_email]
     end
 
