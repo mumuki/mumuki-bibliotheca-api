@@ -38,6 +38,6 @@ end
 
 post '/guides/import/:organization/:repository' do
   exporting [Bibliotheca::IO::GuideAtheneumExport] do
-    Bibliotheca::IO::GuideImport.new(bot: bot, slug: slug).run!
+    Bibliotheca::IO::GuideImport.new(bot: bot, repo: slug).run!
   end
 end
