@@ -29,6 +29,7 @@ module Bibliotheca::IO
        extra_visible: meta['extra_visible'],
        default_content: default_content,
        layout: meta['layout'],
+       language: meta['language'],
        id: id}.compact
     end
   end
