@@ -27,6 +27,7 @@ module Bibliotheca::IO
        expectations: expectations_list,
        tag_list: meta['tags'],
        extra_visible: meta['extra_visible'],
+       teacher_info: meta['teacher_info'],
        default_content: default_content,
        layout: meta['layout'],
        language: meta['language'],

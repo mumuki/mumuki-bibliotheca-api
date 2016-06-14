@@ -27,6 +27,7 @@ describe Bibliotheca::IO::GuideReader do
       it { expect(guide.description).to eq "Awesome guide\n" }
       it { expect(guide.language).to eq haskell }
       it { expect(guide.locale).to eq 'en' }
+      it { expect(guide.teacher_info).to eq 'information' }
       skip { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
 
       context 'when importing basic exercise' do
@@ -41,6 +42,7 @@ describe Bibliotheca::IO::GuideReader do
         it { expect(imported_exercise.test).to eq 'pending' }
         it { expect(imported_exercise.extra).to eq "extra\n" }
         it { expect(imported_exercise.hint).to be nil }
+        it { expect(imported_exercise.teacher_info).to eq 'information' }
         it { expect(imported_exercise.corollary).to be nil }
         it { expect(imported_exercise.expectations.size).to eq 2 }
         it { expect(imported_exercise.tag_list).to include *%w(foo bar baz) }
