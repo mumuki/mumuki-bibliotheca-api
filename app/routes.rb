@@ -52,7 +52,6 @@ error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
 end
 
-require_relative './routes/languages'
 require_relative './routes/guides'
 require_relative './routes/books'
 require_relative './routes/topics'
