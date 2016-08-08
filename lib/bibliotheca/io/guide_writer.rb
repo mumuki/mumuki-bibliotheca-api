@@ -15,6 +15,7 @@ module Bibliotheca::IO
       write_corollary!(guide)
       write_meta!(guide)
       write_extra!(guide)
+      write_authors!(guide)
     end
 
 
@@ -33,6 +34,10 @@ module Bibliotheca::IO
       write_file!(dirname, 'expectations.yml', expectations_yaml(e)) if e.expectations.present?
       write_file!(dirname, 'corollary.md', e.corollary) if e.corollary.present?
 
+    end
+
+    def write_authors!(guide)
+      write_file! dir, 'authors.md', guide.authors
     end
 
     def write_description!(guide)

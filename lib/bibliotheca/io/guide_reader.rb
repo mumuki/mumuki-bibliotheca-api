@@ -17,6 +17,7 @@ module Bibliotheca::IO
       read_description! builder
       read_corollary! builder
       read_extra! builder
+      read_authors! builder
       read_exercises! builder
 
       builder.build
@@ -30,6 +31,10 @@ module Bibliotheca::IO
 
     def read_corollary!(builder)
       builder.corollary = read_file(File.join(dir, 'corollary.md'))
+    end
+
+    def read_authors!(builder)
+      builder.authors = read_file(File.join(dir, 'authors.md'))
     end
 
     def read_extra!(builder)

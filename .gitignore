@@ -19,3 +19,4 @@
 
 *.log
 start-*.sh
+coverage/
