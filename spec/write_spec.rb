@@ -17,6 +17,7 @@ describe Bibliotheca::IO::GuideWriter do
       locale: 'en',
       id_format: '%05d',
       extra: 'Foo',
+      authors: 'Foo Bar',
       exercises: [
 
           {name: 'foo',
@@ -55,6 +56,12 @@ describe Bibliotheca::IO::GuideWriter do
       before { writer.write_description! guide }
       it { expect(File.exist? 'spec/data/export/description.md').to be true }
       it { expect(File.read 'spec/data/export/description.md').to eq 'Baz' }
+    end
+
+    describe '#write_authors' do
+      before { writer.write_authors! guide }
+      it { expect(File.exist? 'spec/data/export/authors.md').to be true }
+      it { expect(File.read 'spec/data/export/authors.md').to eq 'Foo Bar' }
     end
 
     describe '#write_extra' do
@@ -114,7 +121,8 @@ describe Bibliotheca::IO::GuideWriter do
       it { expect(File.exist? 'spec/data/export/description.md').to be true }
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
       it { expect(File.exist? 'spec/data/export/extra.hs').to be true }
-      it { expect(Dir['spec/data/export/*'].size).to eq 5 }
+      it { expect(File.exist? 'spec/data/export/authors.md').to be true }
+      it { expect(Dir['spec/data/export/*'].size).to eq 6 }
     end
   end
 end
