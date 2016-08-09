@@ -83,7 +83,12 @@ module Bibliotheca
                      extension: 'txt',
                      test_extension: 'yml',
                      devicon: 'code',
-                     url: 'http://runners2.mumuki.io:8002')]
+                     url: 'http://runners2.mumuki.io:8002'),
+        Language.new(name: 'qsim',
+                     extension: 'qsim',
+                     test_extension: 'yml',
+                     devicon: 'code',
+                     url: 'http://qsim.runners.mumuki.io')]
 
   end
 end
