@@ -87,6 +87,7 @@ module Bibliotheca
         Language.new(name: 'qsim',
                      extension: 'qsim',
                      test_extension: 'yml',
+                     ace_mode: 'assembly_x86',
                      devicon: 'code',
                      url: 'http://qsim.runners.mumuki.io')]
 
