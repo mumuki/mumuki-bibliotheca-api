@@ -122,7 +122,10 @@ describe Bibliotheca::IO::GuideWriter do
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
       it { expect(File.exist? 'spec/data/export/extra.hs').to be true }
       it { expect(File.exist? 'spec/data/export/authors.md').to be true }
-      it { expect(Dir['spec/data/export/*'].size).to eq 6 }
+      it { expect(File.exist? 'spec/data/export/README.md').to be true }
+      it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
+      it { expect(File.exist? 'spec/data/export/COPYRIGHT.txt').to be true }
+      it { expect(Dir['spec/data/export/*'].size).to eq 9 }
     end
   end
 end

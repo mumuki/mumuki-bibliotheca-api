@@ -16,6 +16,7 @@ module Bibliotheca::IO
       write_meta!(guide)
       write_extra!(guide)
       write_authors!(guide)
+      write_licenses!
     end
 
 
@@ -65,6 +66,12 @@ module Bibliotheca::IO
       write_file!(dir, extra_filename(guide), guide.extra) if guide.extra.present?
     end
 
+    def write_licenses!
+      copy_file! 'COPYRIGHT.txt'
+      copy_file! 'LICENSE.txt'
+      copy_file! 'README.md'
+    end
+
     private
 
     def metadata_yaml(e)
@@ -91,6 +98,14 @@ module Bibliotheca::IO
 
     def write_file!(dirname, name, content)
       File.write(File.join(dirname, name), content)
+    end
+
+    def copy_file!(name)
+      FileUtils.cp license_dir(name), dir
+    end
+
+    def license_dir(name)
+      File.join File.dirname(__FILE__), 'licenses', name
     end
   end
 end
