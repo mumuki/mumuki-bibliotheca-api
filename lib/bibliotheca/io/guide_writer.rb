@@ -51,14 +51,14 @@ module Bibliotheca::IO
 
     def write_meta!(guide)
       write_file! dir, 'meta.yml', {
-          'name' => guide.name,
-          'locale' => guide.locale,
-          'type' => guide.type,
-          'beta' => guide.beta,
-          'teacher_info' => guide.teacher_info,
-          'language' => guide.language.name,
-          'id_format' => guide.id_format,
-          'order' => guide.exercises.map { |e| e.id }
+        'name' => guide.name,
+        'locale' => guide.locale,
+        'type' => guide.type,
+        'beta' => guide.beta,
+        'teacher_info' => guide.teacher_info,
+        'language' => guide.language.name,
+        'id_format' => guide.id_format,
+        'order' => guide.exercises.map { |e| e.id }
       }.to_yaml
     end
 
@@ -85,7 +85,7 @@ module Bibliotheca::IO
     end
 
     def expectations_yaml(e)
-      {'expectations' => e.expectations.map(&:stringify_keys) }.to_yaml
+      {'expectations' => e.expectations.map(&:stringify_keys)}.to_yaml
     end
 
     def extra_filename(guide)
