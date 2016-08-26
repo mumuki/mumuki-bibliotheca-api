@@ -38,7 +38,7 @@ module Bibliotheca::IO
     end
 
     def write_authors!(guide)
-      write_file! dir, 'authors.md', guide.authors
+      write_file! dir, 'AUTHORS.txt', guide.authors
     end
 
     def write_description!(guide)

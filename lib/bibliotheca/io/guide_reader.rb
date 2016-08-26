@@ -34,7 +34,7 @@ module Bibliotheca::IO
     end
 
     def read_authors!(builder)
-      builder.authors = read_file(File.join(dir, 'authors.md'))
+      builder.authors = read_file(File.join(dir, 'AUTHORS.txt'))
     end
 
     def read_extra!(builder)

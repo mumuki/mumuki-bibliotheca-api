@@ -60,8 +60,8 @@ describe Bibliotheca::IO::GuideWriter do
 
     describe '#write_authors' do
       before { writer.write_authors! guide }
-      it { expect(File.exist? 'spec/data/export/authors.md').to be true }
-      it { expect(File.read 'spec/data/export/authors.md').to eq 'Foo Bar' }
+      it { expect(File.exist? 'spec/data/export/AUTHORS.txt').to be true }
+      it { expect(File.read 'spec/data/export/AUTHORS.txt').to eq 'Foo Bar' }
     end
 
     describe '#write_extra' do
@@ -136,7 +136,7 @@ describe Bibliotheca::IO::GuideWriter do
       it { expect(File.exist? 'spec/data/export/description.md').to be true }
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
       it { expect(File.exist? 'spec/data/export/extra.hs').to be true }
-      it { expect(File.exist? 'spec/data/export/authors.md').to be true }
+      it { expect(File.exist? 'spec/data/export/AUTHORS.txt').to be true }
       it { expect(File.exist? 'spec/data/export/README.md').to be true }
       it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
       it { expect(File.exist? 'spec/data/export/COPYRIGHT.txt').to be true }
