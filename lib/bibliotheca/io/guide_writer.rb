@@ -16,7 +16,7 @@ module Bibliotheca::IO
       write_meta!(guide)
       write_extra!(guide)
       write_authors!(guide)
-      write_licenses!
+      write_licenses!(guide)
     end
 
 
@@ -66,10 +66,10 @@ module Bibliotheca::IO
       write_file!(dir, extra_filename(guide), guide.extra) if guide.extra.present?
     end
 
-    def write_licenses!
-      copy_file! 'COPYRIGHT.txt'
+    def write_licenses!(guide)
+      write_file! dir, 'COPYRIGHT.txt', copyright_content(guide)
+      write_file! dir, 'README.md', readme_content(guide)
       copy_file! 'LICENSE.txt'
-      copy_file! 'README.md'
     end
 
     private
@@ -100,12 +100,27 @@ module Bibliotheca::IO
       File.write(File.join(dirname, name), content)
     end
 
-    def copy_file!(name)
-      FileUtils.cp license_dir(name), dir
+    def copyright_content(guide)
+      @guide_authors= guide.authors
+      @guide_repo_url = "https://github.com/#{guide.slug}"
+      ERB.new(read_file 'COPYRIGHT.txt.erb').result binding
     end
 
-    def license_dir(name)
-      File.join File.dirname(__FILE__), 'licenses', name
+    def readme_content(guide)
+      @copyright = copyright_content guide
+      ERB.new(read_file 'README.md.erb').result binding
+    end
+
+    def copy_file!(name)
+      FileUtils.cp licenses_dir(name), dir
+    end
+
+    def read_file(name)
+      File.read licenses_dir(name)
+    end
+
+    def licenses_dir(name)
+      File.join __dir__, 'licenses', name
     end
   end
 end
