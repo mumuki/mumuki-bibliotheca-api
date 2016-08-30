@@ -60,8 +60,8 @@ describe Bibliotheca::IO::GuideWriter do
 
     describe '#write_authors' do
       before { writer.write_authors! guide }
-      it { expect(File.exist? 'spec/data/export/authors.md').to be true }
-      it { expect(File.read 'spec/data/export/authors.md').to eq 'Foo Bar' }
+      it { expect(File.exist? 'spec/data/export/AUTHORS.txt').to be true }
+      it { expect(File.read 'spec/data/export/AUTHORS.txt').to eq 'Foo Bar' }
     end
 
     describe '#write_extra' do
@@ -111,6 +111,21 @@ describe Bibliotheca::IO::GuideWriter do
 
     end
 
+    describe '#write_licenses' do
+      before { writer.write_licenses! guide }
+      context 'with copyright' do
+        it { expect(File.exist? 'spec/data/export/COPYRIGHT.txt').to be true }
+        it { expect(File.read 'spec/data/export/COPYRIGHT.txt').to eq "Copyright Foo Bar and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n" }
+      end
+      context 'with readme' do
+        it { expect(File.exist? 'spec/data/export/README.md').to be true }
+        it { expect(File.read 'spec/data/export/README.md').to eq "## License\n![License icon](http://icdn.pro/images/css/licences/cc-by-nc-sa.png)\n\nThis content is distributed under Creative Commons License Share-Alike, 4.0. [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0)\n\nCopyright Foo Bar and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n\n" }
+      end
+      context 'with license' do
+        it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
+        it { expect(File.read 'spec/data/export/LICENSE.txt').to include 'Attribution-ShareAlike 4.0 International' }
+      end
+    end
 
     describe '#write_guide_files' do
       before { writer.write_guide! guide }
@@ -121,8 +136,11 @@ describe Bibliotheca::IO::GuideWriter do
       it { expect(File.exist? 'spec/data/export/description.md').to be true }
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
       it { expect(File.exist? 'spec/data/export/extra.hs').to be true }
-      it { expect(File.exist? 'spec/data/export/authors.md').to be true }
-      it { expect(Dir['spec/data/export/*'].size).to eq 6 }
+      it { expect(File.exist? 'spec/data/export/AUTHORS.txt').to be true }
+      it { expect(File.exist? 'spec/data/export/README.md').to be true }
+      it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
+      it { expect(File.exist? 'spec/data/export/COPYRIGHT.txt').to be true }
+      it { expect(Dir['spec/data/export/*'].size).to eq 9 }
     end
   end
 end
