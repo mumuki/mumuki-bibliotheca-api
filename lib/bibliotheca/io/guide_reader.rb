@@ -19,6 +19,7 @@ module Bibliotheca::IO
       read_extra! builder
       read_authors! builder
       read_exercises! builder
+      read_collaborators! builder
 
       builder.build
     end
@@ -35,6 +36,10 @@ module Bibliotheca::IO
 
     def read_authors!(builder)
       builder.authors = read_file(File.join(dir, 'AUTHORS.txt'))
+    end
+
+    def read_collaborators!(builder)
+      builder.collaborators = read_file(File.join(dir, 'COLLABORATORS.txt'))
     end
 
     def read_extra!(builder)

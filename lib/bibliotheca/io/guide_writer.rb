@@ -17,6 +17,7 @@ module Bibliotheca::IO
       write_extra!(guide)
       write_authors!(guide)
       write_licenses!(guide)
+      write_collaborators!(guide)
     end
 
 
@@ -39,6 +40,10 @@ module Bibliotheca::IO
 
     def write_authors!(guide)
       write_file! dir, 'AUTHORS.txt', guide.authors
+    end
+
+    def write_collaborators!(guide)
+      write_file! dir, 'COLLABORATORS.txt', guide.collaborators
     end
 
     def write_description!(guide)
