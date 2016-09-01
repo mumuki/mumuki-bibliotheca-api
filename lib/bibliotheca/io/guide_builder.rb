@@ -33,6 +33,7 @@ module Bibliotheca::IO
        extra: extra,
        beta: beta,
        authors: authors,
+       collaborators: collaborators,
        teacher_info: teacher_info,
        id_format: id_format,
        slug: slug,
