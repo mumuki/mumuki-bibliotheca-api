@@ -1,5 +1,5 @@
 ## License
-![License icon](http://icdn.pro/images/css/licences/cc-by-nc-sa.png)
+![License icon](http://mmedia.20m.es/especiales/corporativo/css/img/licencia-cc-by-sa.png)
 
 This content is distributed under Creative Commons License Share-Alike, 4.0. [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0)
 
