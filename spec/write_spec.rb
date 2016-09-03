@@ -17,7 +17,7 @@ describe Bibliotheca::IO::GuideWriter do
       locale: 'en',
       id_format: '%05d',
       extra: 'Foo',
-      authors: 'Foo Bar',
+      authors: ['Foo Bar', 'Jhon Doe'],
       collaborators: 'Jhon Doe',
       exercises: [
 
@@ -62,7 +62,7 @@ describe Bibliotheca::IO::GuideWriter do
     describe '#write_authors' do
       before { writer.write_authors! guide }
       it { expect(File.exist? 'spec/data/export/AUTHORS.txt').to be true }
-      it { expect(File.read 'spec/data/export/AUTHORS.txt').to eq 'Foo Bar' }
+      it { expect(File.read 'spec/data/export/AUTHORS.txt').to eq 'Foo Bar, Jhon Doe' }
     end
 
     describe '#write_collaborators' do
@@ -122,11 +122,11 @@ describe Bibliotheca::IO::GuideWriter do
       before { writer.write_licenses! guide }
       context 'with copyright' do
         it { expect(File.exist? 'spec/data/export/COPYRIGHT.txt').to be true }
-        it { expect(File.read 'spec/data/export/COPYRIGHT.txt').to eq "Copyright Foo Bar and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n" }
+        it { expect(File.read 'spec/data/export/COPYRIGHT.txt').to eq "Copyright Foo Bar, Jhon Doe and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n" }
       end
       context 'with readme' do
         it { expect(File.exist? 'spec/data/export/README.md').to be true }
-        it { expect(File.read 'spec/data/export/README.md').to eq "## License\n![License icon](http://mmedia.20m.es/especiales/corporativo/css/img/licencia-cc-by-sa.png)\n\nThis content is distributed under Creative Commons License Share-Alike, 4.0. [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0)\n\nCopyright Foo Bar and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n\n" }
+        it { expect(File.read 'spec/data/export/README.md').to eq "## License\n![License icon](http://mmedia.20m.es/especiales/corporativo/css/img/licencia-cc-by-sa.png)\n\nThis content is distributed under Creative Commons License Share-Alike, 4.0. [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0)\n\nCopyright Foo Bar, Jhon Doe and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n\n" }
       end
       context 'with license' do
         it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }

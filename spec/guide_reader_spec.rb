@@ -93,7 +93,7 @@ describe Bibliotheca::IO::GuideReader do
       let!(:guide) { reader.read_guide! }
 
       it { expect(guide.name).to eq 'Introduction' }
-      it { expect(guide.authors).to eq "Foo Bar\n" }
+      it { expect(guide.authors).to eq ["Foo Bar", "Jhon Doe\n"] }
       it { expect(guide.collaborators).to eq "Jhon Doe\n" }
       it { expect(guide.exercises.size).to eq 1 }
       it { expect(guide.corollary).to eq "A guide's corollary\n" }
