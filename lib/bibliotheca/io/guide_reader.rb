@@ -35,7 +35,7 @@ module Bibliotheca::IO
     end
 
     def read_authors!(builder)
-      builder.authors = read_file(File.join(dir, 'AUTHORS.txt'))
+      builder.authors = read_file(File.join(dir, 'AUTHORS.txt')).try(:split, ', ')
     end
 
     def read_collaborators!(builder)

@@ -39,7 +39,7 @@ module Bibliotheca::IO
     end
 
     def write_authors!(guide)
-      write_file! dir, 'AUTHORS.txt', guide.authors
+      write_file! dir, 'AUTHORS.txt', joined_authors(guide)
     end
 
     def write_collaborators!(guide)
@@ -106,9 +106,13 @@ module Bibliotheca::IO
     end
 
     def copyright_content(guide)
-      @guide_authors= guide.authors
+      @guide_authors = joined_authors(guide)
       @guide_repo_url = "https://github.com/#{guide.slug}"
       ERB.new(read_file 'COPYRIGHT.txt.erb').result binding
+    end
+
+    def joined_authors(guide)
+      guide.authors.try(:join, ', ')
     end
 
     def readme_content(guide)
