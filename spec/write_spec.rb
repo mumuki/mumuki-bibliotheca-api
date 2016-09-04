@@ -126,7 +126,7 @@ describe Bibliotheca::IO::GuideWriter do
       end
       context 'with readme' do
         it { expect(File.exist? 'spec/data/export/README.md').to be true }
-        it { expect(File.read 'spec/data/export/README.md').to eq "## License\n![License icon](http://mmedia.20m.es/especiales/corporativo/css/img/licencia-cc-by-sa.png)\n\nThis content is distributed under Creative Commons License Share-Alike, 4.0. [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0)\n\nCopyright Foo Bar and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n\n" }
+        it { expect(File.read 'spec/data/export/README.md').to eq "## License\n![License icon](https://licensebuttons.net/l/by-sa/3.0/88x31.png)\n\nThis content is distributed under Creative Commons License Share-Alike, 4.0. [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0)\n\nCopyright Foo Bar and contributors\n\nThis content consists of voluntary contributions made by many\nindividuals. For exact contribution history, see its revision history\navailable at https://github.com/flbulgarelli/never-existent-repo and the AUTHORS.txt file.\n\n" }
       end
       context 'with license' do
         it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
