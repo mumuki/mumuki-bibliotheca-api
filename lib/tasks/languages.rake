@@ -1,5 +1,5 @@
 namespace :languages do
-  task :import, :environment do |t, args|
+  task :import do |t, args|
     Mumukit::Bridge::Thesaurus.new.runners.each do |url|
       puts "Importing Language #{url}"
       begin
