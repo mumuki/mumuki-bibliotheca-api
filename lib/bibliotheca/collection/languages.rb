@@ -35,7 +35,7 @@ module Bibliotheca::Collection
     end
   end
 
-  class LanguageArray < Mumukit::Service::JsonArrayWrapper
+  class LanguageArray < Mumukit::Service::DocumentArray
 
     def options
       {except: [:id],

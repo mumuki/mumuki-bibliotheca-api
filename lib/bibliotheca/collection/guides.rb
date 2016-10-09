@@ -22,7 +22,7 @@ module Bibliotheca::Collection
     end
   end
 
-  class GuideArray < Mumukit::Service::JsonArrayWrapper
+  class GuideArray < Mumukit::Service::DocumentArray
 
     def options
       {only: [:id, :name, :slug, :language, :type]}

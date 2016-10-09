@@ -22,7 +22,7 @@ module Bibliotheca::Collection
     end
   end
 
-  class TopicsArray < Mumukit::Service::JsonArrayWrapper
+  class TopicsArray < Mumukit::Service::DocumentArray
     def options
       {only: [:id, :name, :slug]}
     end

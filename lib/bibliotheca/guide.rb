@@ -1,5 +1,5 @@
 module Bibliotheca
-  class Guide < Mumukit::Service::JsonWrapper
+  class Guide < Mumukit::Service::Document
     def defaults
       {beta: false,
        type: 'practice',
