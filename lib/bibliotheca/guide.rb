@@ -9,7 +9,7 @@ module Bibliotheca
 
     def transforms(original)
       {exercises: original[:exercises].map { |e| Exercise.new e },
-       language: original[:language].try { |it| Language.find_by_name(it) } }
+       language: original[:language].try { |it| Bibliotheca::Collection::Languages.find_by!(name: it) } }
     end
 
     def format_id(exercise)

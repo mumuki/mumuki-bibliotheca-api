@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe 'read-write' do
-  let(:haskell) { Bibliotheca::Language.find_by_name(:haskell) }
+  let(:haskell) { build(:haskell) }
+  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+
   let(:repo) { Mumukit::Service::Slug.new('mumuki', 'functional-haskell-guide-1') }
   let(:export_log) { Bibliotheca::IO::Log.new }
   let(:import_log) { Bibliotheca::IO::Log.new }
@@ -55,7 +57,7 @@ describe 'read-write' do
   it { expect(imported_guide.exercises.first.layout).to eq 'no_editor' }
   it { expect(imported_guide.exercises.second.layout).to eq 'editor_right' }
 
-  it { expect(imported_guide.language).to eq haskell }
+  it { expect(imported_guide.language.name).to eq 'haskell' }
   it { expect(imported_guide.locale).to eq 'en' }
   it { expect(imported_guide.description).to eq 'Baz' }
 

@@ -41,3 +41,5 @@ end
 def build_auth_header(permissions_string)
   Mumukit::Auth::Token.encode_dummy_auth_header(bibliotheca: {permissions: permissions_string})
 end
+
+

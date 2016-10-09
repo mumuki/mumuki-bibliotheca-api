@@ -1,5 +1,5 @@
 name: Introduction
-language: Haskell
+language: haskell
 locale: en
 learning: true
 original_id_format: '%03d'

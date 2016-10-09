@@ -3,6 +3,8 @@ require 'spec_helper'
 require_relative '../../app/routes'
 
 describe 'routes' do
+  before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
+
   let(:exercise) {
     {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
      test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',

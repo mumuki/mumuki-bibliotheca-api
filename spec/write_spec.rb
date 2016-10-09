@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe Bibliotheca::IO::GuideWriter do
   let(:bot) { Bibliotheca::Bot.new('mumukibot', 'zaraza') }
-  let(:haskell) { build(:haskell) }
   let(:log) { Bibliotheca::IO::Log.new }
+
+  let(:haskell) { build(:haskell) }
+  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+
 
   let!(:exercise_1) { guide.exercises.first }
   let(:exercise_2) { guide.exercises.second }

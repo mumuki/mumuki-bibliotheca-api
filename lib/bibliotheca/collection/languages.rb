@@ -1,15 +1,44 @@
 module Bibliotheca::Collection
   module Languages
-    class << self
-      def all
-        Bibliotheca::Collection::LanguageArray.new Bibliotheca::Language::LANGUAGES
-      end
+    extend Mumukit::Service::Collection
+
+    private
+
+    def self.mongo_collection_name
+      :languages
+    end
+
+    def self.mongo_database
+      Bibliotheca::Database
+    end
+
+    def self.import!(url)
+      import_from_json! Mumukit::Bridge::Runner.new(url).info.merge(url: url)
+    end
+
+    def self.import_from_json!(language_json)
+      insert! name: language_json['name'],
+              extension: language_json.dig('language', 'extension'),
+              test_extension: language_json.dig('test_framework', 'test_extension'),
+              ace_mode: language_json.dig('language', 'ace_mode'),
+              devicon: language_json.dig('language', 'icon', 'name'),
+              test_runner_url: language_json['url']
+    end
+
+    def self.wrap(it)
+      Bibliotheca::Language.new(it)
+    end
+
+    def self.wrap_array(it)
+      Bibliotheca::Collection::LanguageArray.new(it)
     end
   end
 
   class LanguageArray < Mumukit::Service::JsonArrayWrapper
+
     def options
-      {full_language: true}
+      {except: [:id],
+       full_language: true}
     end
 
     def key

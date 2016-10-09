@@ -12,19 +12,13 @@ describe 'routes' do
   end
 
   describe('get /languages') do
+    let(:haskell) { build(:haskell) }
+    before { Bibliotheca::Collection::Languages.insert!(haskell) }
+
     before do
       get '/languages'
     end
 
-    it { expect(last_response).to be_ok }
-    skip { expect(last_response.body).to json_eq({languages: [
-        {name: 'haskell', extension: 'hs'},
-        {name: 'java', extension: 'java'},
-        {name: 'wollok', extension: 'wlk'},
-        {name: 'c', extension: 'c'},
-        {name: 'prolog', extension: 'pl'},
-        {name: 'ruby', extension: 'rb'},
-        {name: 'gobstones', extension: 'gbs'},
-        {name: 'javascript', extension: 'js'}]}) }
+    it { expect(last_response.body).to json_eq languages: [{name: 'haskell', test_extension: 'hs', extension: 'hs'}] }
   end
 end

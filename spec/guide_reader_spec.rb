@@ -16,7 +16,7 @@ describe Bibliotheca::IO::GuideReader do
   end
 
   describe '#read_guide!' do
-    let!(:haskell) { Bibliotheca::Language.find_by_name(:haskell) }
+    before { Bibliotheca::Collection::Languages.insert!(haskell) }
 
     context 'when guide is ok' do
       let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/simple-guide', repo, log) }
@@ -25,10 +25,9 @@ describe Bibliotheca::IO::GuideReader do
       it { expect(guide.slug).to eq 'mumuki/functional-haskell-guide-1'}
       it { expect(guide.exercises.count).to eq 4 }
       it { expect(guide.description).to eq "Awesome guide\n" }
-      it { expect(guide.language).to eq haskell }
+      it { expect(guide.language.name).to eq 'haskell' }
       it { expect(guide.locale).to eq 'en' }
       it { expect(guide.teacher_info).to eq 'information' }
-      skip { expect(log.to_s).to eq 'Description does not exist for sample_broken' }
 
       context 'when importing basic exercise' do
         let(:imported_exercise) { guide.find_exercise_by_id(1) }
