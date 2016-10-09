@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Bibliotheca::Language do
+
+  before do
+    Bibliotheca::Database.clean!
+  end
+
   describe '#import_from_json!' do
     let(:json) do
       {'name' => 'ruby',
@@ -39,10 +44,18 @@ describe Bibliotheca::Language do
     end
     before { Bibliotheca::Collection::Languages.import_from_json! json }
     let(:imported_language) { Bibliotheca::Collection::Languages.find_by! name: 'ruby' }
-    it { expect(imported_language.name).to eq 'ruby'  }
-    it { expect(imported_language.test_runner_url).to eq 'http://ruby.runners.mumuki.io'  }
-    it { expect(imported_language.extension).to eq '.rb'  }
-    it { expect(imported_language.test_extension).to eq '.rb'  }
+
+    it { expect(Bibliotheca::Collection::Languages.count).to eq 1 }
+
+    it { expect(imported_language.name).to eq 'ruby' }
+    it { expect(imported_language.test_runner_url).to eq 'http://ruby.runners.mumuki.io' }
+    it { expect(imported_language.extension).to eq '.rb' }
+    it { expect(imported_language.test_extension).to eq '.rb' }
+
+    context 'when re-importing' do
+      before { Bibliotheca::Collection::Languages.import_from_json! json }
+      it { expect(Bibliotheca::Collection::Languages.count).to eq 1 }
+    end
   end
 
 
