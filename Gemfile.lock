@@ -1,27 +1,9 @@
 GIT
-  remote: git://github.com/mumuki/mumukit-auth.git
-  revision: 2b183826ed6606f6f7e4e189b8f4a7de29b2c454
-  tag: v0.0.1
-  specs:
-    mumukit-auth (0.1.0)
-      activesupport
-      jwt
-
-GIT
-  remote: git://github.com/mumuki/mumukit-bridge.git
-  revision: e3b6abf420976ba50d76cf3f7f463c01f7a44343
-  tag: v0.4.0
-  specs:
-    mumukit-bridge (0.4.0)
-      activesupport
-      rest-client
-
-GIT
   remote: git://github.com/mumuki/mumukit-service.git
-  revision: c902627e82d9b17479ac718f9ef09050715b784d
-  tag: v0.2.0
+  revision: d78e4c9f770f4654a70756896f74947a06dabbb6
+  tag: v0.2.2
   specs:
-    mumukit-service (0.2.0)
+    mumukit-service (0.2.2)
       activesupport (~> 4.2)
       bson_ext
       mongo (~> 2.1)
@@ -39,7 +21,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    bson (4.1.0)
+    auth0 (4.1.0)
+      rest-client (~> 1.8.0)
+    bson (4.1.1)
     bson_ext (1.5.1)
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -56,12 +40,23 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
-    jwt (1.5.4)
+    jwt (1.5.6)
     mime-types (2.6.2)
     minitest (5.8.4)
-    mongo (2.2.4)
-      bson (~> 4.0)
+    mongo (2.3.0)
+      bson (~> 4.1)
     multipart-post (2.0.0)
+    mumukit-auth (1.0.0)
+      auth0
+      jwt
+      mumukit-core (~> 0.2)
+    mumukit-bridge (1.3.1)
+      mumukit-core (~> 0.1)
+      rest-client
+    mumukit-core (0.2.0)
+      activesupport (~> 4.1)
+      i18n (~> 0.7)
+      rack (~> 1.5)
     netrc (0.10.3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
@@ -98,7 +93,7 @@ GEM
       tilt (>= 1.3, < 3)
     sinatra-cross_origin (0.3.2)
     thread_safe (0.3.5)
-    tilt (2.0.2)
+    tilt (2.0.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)
@@ -112,8 +107,9 @@ DEPENDENCIES
   codeclimate-test-reporter
   factory_girl
   git
-  mumukit-auth!
-  mumukit-bridge!
+  mumukit-auth (~> 1.0)
+  mumukit-bridge (~> 1.3)
+  mumukit-core (~> 0.2)
   mumukit-service!
   octokit (~> 4.1)
   puma
