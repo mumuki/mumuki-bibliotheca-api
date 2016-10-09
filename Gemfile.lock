@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.6)
+    activesupport (4.2.7.1)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -29,7 +29,7 @@ GEM
     json (1.8.3)
     jwt (1.5.6)
     mime-types (2.6.2)
-    minitest (5.8.4)
+    minitest (5.9.1)
     mongo (2.3.0)
       bson (~> 4.1)
     multipart-post (2.0.0)
@@ -44,7 +44,7 @@ GEM
       activesupport (~> 4.1)
       i18n (~> 0.7)
       rack (~> 1.5)
-    mumukit-service (0.4.0)
+    mumukit-service (0.5.1)
       bson_ext
       mongo (~> 2.1)
       mumukit-core (~> 0.2)
@@ -54,7 +54,7 @@ GEM
     netrc (0.10.3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
-    puma (3.4.0)
+    puma (3.6.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
