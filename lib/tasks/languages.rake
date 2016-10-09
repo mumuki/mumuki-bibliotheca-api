@@ -3,7 +3,7 @@ namespace :languages do
     Mumukit::Bridge::Thesaurus.new.runners.each do |url|
       puts "Importing Language #{url}"
       begin
-        Bibliotheca::Collection::Language.import! url
+        Bibliotheca::Collection::Languages.import! url
       rescue => e
         puts "Ignoring Language #{url} because of import error #{e}"
       end

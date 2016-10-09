@@ -17,12 +17,13 @@ module Bibliotheca::Collection
     end
 
     def self.import_from_json!(language_json)
-      insert! name: language_json['name'],
-              extension: language_json.dig('language', 'extension'),
-              test_extension: language_json.dig('test_framework', 'test_extension'),
-              ace_mode: language_json.dig('language', 'ace_mode'),
-              devicon: language_json.dig('language', 'icon', 'name'),
-              test_runner_url: language_json['url']
+      upsert_by! :name,
+                 Bibliotheca::Language.new(name: language_json['name'],
+                                           extension: language_json.dig('language', 'extension'),
+                                           test_extension: language_json.dig('test_framework', 'test_extension'),
+                                           ace_mode: language_json.dig('language', 'ace_mode'),
+                                           devicon: language_json.dig('language', 'icon', 'name'),
+                                           test_runner_url: language_json['url'])
     end
 
     def self.wrap(it)
