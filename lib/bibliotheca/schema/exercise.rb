@@ -10,7 +10,9 @@ module Bibliotheca::Schema::Exercise
 
       {name: :tags, kind: :metadata, reverse: :tag_list,
        transform: proc { |it| it.to_a }, default: []},
-      {name: :layout, kind: :metadata, default: 'editor_right'},
+      {name: :layout, kind: :metadata, default: 'input_right'},
+      {name: :editor, kind: :metadata, default: 'code'},
+
       {name: :type, kind: :metadata, default: 'problem'},
       {name: :extra_visible, kind: :metadata, default: false},
       {name: :language, kind: :metadata},

@@ -11,7 +11,7 @@ describe Bibliotheca::Guide do
          {name: 'Bar',
           description: 'a description',
           test: 'foo bar',
-          layout: 'no_editor',
+          layout: 'input_bottom',
           id: 1},
 
          {type: 'problem',
@@ -22,7 +22,7 @@ describe Bibliotheca::Guide do
          {type: 'playground',
           name: 'Baz',
           tag_list: %w(baz bar),
-          layout: 'editor_bottom',
+          layout: 'input_bottom',
           id: 2}]} }
 
 
@@ -87,7 +87,7 @@ describe Bibliotheca::Guide do
     end
 
     context 'run tests' do
-      let(:exercise) {{id: 1, name: 'foo', type: 'problem', layout: 'editor_right',
+      let(:exercise) {{id: 1, name: 'foo', type: 'problem', layout: 'input_right',
                        description: 'foo', test: %Q{describe "foo" $ do\n it "eq 1" $ do\n  foo = 1},
                        solution: 'foo = 1', expectations: [{binding: 'foo', inspection: 'HasBinding'}],
                        tag_list: [], extra: 'bar = 2'}}

@@ -46,7 +46,7 @@ describe Bibliotheca::IO::GuideReader do
         it { expect(imported_exercise.expectations.size).to eq 2 }
         it { expect(imported_exercise.tag_list).to include *%w(foo bar baz) }
         it { expect(guide.description).to eq "Awesome guide\n" }
-        it { expect(imported_exercise.layout).to eq 'editor_right' }
+        it { expect(imported_exercise.layout).to eq 'input_right' }
 
       end
 
@@ -68,7 +68,7 @@ describe Bibliotheca::IO::GuideReader do
         let(:imported_exercise) { guide.find_exercise_by_id(4) }
 
         it { expect(imported_exercise).to_not be nil }
-        it { expect(imported_exercise.layout).to eq 'editor_bottom' }
+        it { expect(imported_exercise.layout).to eq 'input_bottom' }
       end
 
       context 'when importing playground' do

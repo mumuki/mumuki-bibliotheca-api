@@ -38,7 +38,7 @@ describe Bibliotheca::IO::GuideWriter do
            id: 200,
            position: 2,
            type: 'problem',
-           layout: 'editor_right',
+           layout: 'input_right',
            test: 'foo bar'}]) }
 
   let(:writer) { Bibliotheca::IO::GuideWriter.new(dir, log) }
@@ -110,7 +110,7 @@ describe Bibliotheca::IO::GuideWriter do
         it { expect(File.read 'spec/data/export/00200_bar/description.md').to eq 'a description' }
 
         it { expect(File.exist? 'spec/data/export/00200_bar/meta.yml').to be true }
-        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: editor_right\ntype: problem\nextra_visible: false\nlanguage: \nteacher_info: \nmanual_evaluation: false\n" }
+        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: code\ntype: problem\nextra_visible: false\nlanguage: \nteacher_info: \nmanual_evaluation: false\n" }
 
 
         it { expect(File.exist? 'spec/data/export/00200_bar/test.hs').to be true }
