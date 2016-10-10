@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Bibliotheca::Collection::Guides do
+  before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
+
   after do
     Bibliotheca::Database.client[:guides].drop
   end

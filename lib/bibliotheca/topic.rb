@@ -1,5 +1,5 @@
 module Bibliotheca
-  class Topic < Mumukit::Service::JsonWrapper
+  class Topic < Mumukit::Service::Document
     def errors
       [
           ('Name must be present' unless name.present?),

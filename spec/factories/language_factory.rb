@@ -3,6 +3,8 @@ FactoryGirl.define do
     sequence(:name) { |n| "lang#{n}" }
     sequence(:extension) { |n| "ext#{n}" }
     sequence(:test_extension) { |n| "ext#{n}" }
+
+    initialize_with { new(attributes) }
   end
 
   factory :haskell, parent: :language do

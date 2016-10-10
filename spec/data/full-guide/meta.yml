@@ -1,5 +1,5 @@
 name: Introduction
-language: Haskell
+language: haskell
 locale: en
 type: learning
 beta: true

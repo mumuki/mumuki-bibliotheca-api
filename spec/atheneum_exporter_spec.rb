@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Bibliotheca::IO::AtheneumExport do
+  before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
+
   def setup_dummy_atheneum_credentials
     allow(Bibliotheca::Env).to receive(:atheneum_url).and_return('http://foo.com')
     [:atheneum_client_id, :atheneum_client_secret].each { |msg| allow(Bibliotheca::Env).to receive(msg).and_return('foo') }

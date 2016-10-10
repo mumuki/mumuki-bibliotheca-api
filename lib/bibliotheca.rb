@@ -1,10 +1,10 @@
 module Bibliotheca
 end
 
+require 'mumukit/core'
 require 'mumukit/service'
 require 'mumukit/bridge'
 
-require_relative './bibliotheca/object'
 require_relative './bibliotheca/database'
 require_relative './bibliotheca/env'
 require_relative './bibliotheca/bot'

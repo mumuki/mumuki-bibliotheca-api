@@ -7,9 +7,10 @@ gem 'octokit', '~> 4.1'
 
 gem 'rest-client'
 
-gem 'mumukit-auth', github: 'mumuki/mumukit-auth', tag: 'v0.0.1'
-gem 'mumukit-bridge', github: 'mumuki/mumukit-bridge', tag: 'v0.4.0'
-gem 'mumukit-service', github: 'mumuki/mumukit-service', tag: 'v0.2.0'
+gem 'mumukit-core', '~> 0.2'
+gem 'mumukit-auth', '~> 1.0'
+gem 'mumukit-bridge', '~> 1.3'
+gem 'mumukit-service', '~> 0.4'
 
 gem 'puma'
 

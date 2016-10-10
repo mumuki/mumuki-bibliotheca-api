@@ -41,6 +41,15 @@ MUMUKI_AUTH0_CLIENT_SECRET=... \
 bundle exec rackup
 ```
 
+* Running tasks
+
+```bash
+# import guides from a github organization
+bundle exec rake guides:import[<a github organization>]
+
+# import languages from http://thesaurus.mumuki.io
+bundle exec rake languages:import
+```
 ## Authentication Powered by Auth0
 
 <a width="150" height="50" href="https://auth0.com/" target="_blank" alt="Single Sign On & Token Based Authentication - Auth0"><img width="150" height="50" alt="JWT Auth for open source projects" src="http://cdn.auth0.com/oss/badges/a0-badge-dark.png"/></a>
