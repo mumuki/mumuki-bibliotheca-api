@@ -27,17 +27,17 @@ module Bibliotheca::IO
     private
 
     def url
-      Bibliotheca::Env.atheneum_url.try do |url|
+      Mumukit::Service::Env.atheneum_url.try do |url|
         !url.end_with?('/') ? "#{url}/" : url
       end
     end
 
     def client_id
-      Bibliotheca::Env.atheneum_client_id
+      Mumukit::Service::Env.atheneum_client_id
     end
 
     def client_secret
-      Bibliotheca::Env.atheneum_client_secret
+      Mumukit::Service::Env.atheneum_client_secret
     end
 
     def env_available?

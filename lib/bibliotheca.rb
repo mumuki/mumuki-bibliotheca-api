@@ -6,7 +6,6 @@ require 'mumukit/service'
 require 'mumukit/bridge'
 
 require_relative './bibliotheca/database'
-require_relative './bibliotheca/env'
 require_relative './bibliotheca/bot'
 require_relative './bibliotheca/exercise'
 require_relative './bibliotheca/guide'

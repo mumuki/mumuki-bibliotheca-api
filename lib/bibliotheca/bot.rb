@@ -40,9 +40,9 @@ class Bibliotheca::Bot
   end
 
   def self.from_env
-    new Bibliotheca::Env.bot_username,
-        Bibliotheca::Env.bot_email,
-        Bibliotheca::Env.bot_api_token
+    new Mumukit::Service::Env.bot_username,
+        Mumukit::Service::Env.bot_email,
+        Mumukit::Service::Env.bot_api_token
   end
 
   private
