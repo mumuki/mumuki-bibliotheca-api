@@ -3,6 +3,12 @@ module Bibliotheca::Collection
     extend Mumukit::Service::Collection
     extend Bibliotheca::Collection::WithSlug
 
+    def self.migrate_exercises!(query={})
+      migrate! query do |guide|
+        guide.exercises.each { |exercise| yield exercise }
+      end
+    end
+
     private
 
     def self.mongo_collection_name

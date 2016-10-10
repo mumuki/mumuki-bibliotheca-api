@@ -44,7 +44,7 @@ GEM
       activesupport (~> 4.1)
       i18n (~> 0.7)
       rack (~> 1.5)
-    mumukit-service (0.5.1)
+    mumukit-service (0.6.0)
       bson_ext
       mongo (~> 2.1)
       mumukit-core (~> 0.2)
