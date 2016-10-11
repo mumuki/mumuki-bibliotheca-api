@@ -5,7 +5,8 @@ module Bibliotheca::Collection
 
     def self.migrate_exercises!(query={})
       migrate! query do |guide|
-        guide.exercises.each { |exercise| yield exercise }
+        guide.exercises.each { |exercise| yield exercise, guide }
+        guide.exercises = guide.exercises.map(&:as_json)
       end
     end
 
