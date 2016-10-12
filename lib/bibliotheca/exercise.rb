@@ -1,5 +1,10 @@
 module Bibliotheca
   class Exercise < Mumukit::Service::Document
+    def initialize(json)
+      super(json)
+      @raw = Schema.slice(@raw)
+    end
+
     def defaults
       {type: 'problem',
        tag_list: [],

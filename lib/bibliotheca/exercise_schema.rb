@@ -1,8 +1,16 @@
 module Bibliotheca
   class Exercise < Mumukit::Service::Document
     module Schema
+      def self.slice(json)
+        json.slice(*fields.map(&:reverse_name))
+      end
+
       def self.metadata_fields
         fields.select { |it| it.kind == :metadata }
+      end
+
+      def self.simple_fields
+        fields.select { |it| [:special, :file].include? it.kind }
       end
 
       def self.file_fields
@@ -15,6 +23,11 @@ module Bibliotheca
 
       def self.fields_schema
         [
+          {name: :id, kind: :special},
+          {name: :name, kind: :special},
+
+          {name: :solution, kind: :transient},
+
           {name: :tags, kind: :metadata, reverse: :tag_list,
            transform: proc { |it| it.to_a }},
           {name: :layout, kind: :metadata},
