@@ -26,10 +26,10 @@ module Bibliotheca::IO
 
       FileUtils.mkdir_p dirname
 
-      write_file!(dirname, "test.#{guide.language.test_extension}", e.test)
-      write_file!(dirname, 'description.md', e.description)
       write_file!(dirname, 'meta.yml', metadata_yaml(e))
 
+      write_file!(dirname, "test.#{guide.language.test_extension}", e.test)
+      write_file!(dirname, 'description.md', e.description)
       write_file!(dirname, 'hint.md', e.hint) if e.hint.present?
       write_file!(dirname, extra_filename(guide), e.extra) if e.extra.present?
       write_file!(dirname, default_filename(guide), e.default_content) if e.default_content.present?
@@ -80,13 +80,9 @@ module Bibliotheca::IO
     private
 
     def metadata_yaml(e)
-      {'tags' => e.tag_list.to_a,
-       'layout' => e.layout,
-       'type' => e.type,
-       'extra_visible' => e.extra_visible,
-       'language' => e.language,
-       'teacher_info' => e.teacher_info,
-       'manual_evaluation' => e.manual_evaluation}.to_yaml
+      Hash[Bibliotheca::Exercise::Schema.metadata_fields.map do |field|
+        [field.name.to_s, field.get_field_value(e)]
+      end].to_yaml
     end
 
     def expectations_yaml(e)

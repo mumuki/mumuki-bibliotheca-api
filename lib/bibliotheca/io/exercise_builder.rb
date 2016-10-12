@@ -17,22 +17,17 @@ module Bibliotheca::IO
     end
 
     def build
-      {type: meta['type'],
-       name: name,
-       description: description,
-       hint: hint,
-       corollary: corollary,
-       test: test,
-       extra: extra,
-       expectations: expectations_list,
-       tag_list: meta['tags'],
-       extra_visible: meta['extra_visible'],
-       manual_evaluation: meta['manual_evaluation'],
-       teacher_info: meta['teacher_info'],
-       default_content: default_content,
-       layout: meta['layout'],
-       language: meta['language'],
-       id: id}.compact
+      Hash[Bibliotheca::Exercise::Schema.metadata_fields.map do |field|
+        [field.reverse_name, meta[field.name.to_s]]
+      end].merge(name: name,
+                 description: description,
+                 hint: hint,
+                 corollary: corollary,
+                 test: test,
+                 extra: extra,
+                 expectations: expectations_list,
+                 default_content: default_content,
+                 id: id).compact
     end
   end
 end
