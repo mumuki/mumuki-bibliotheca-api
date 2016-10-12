@@ -19,15 +19,9 @@ module Bibliotheca::IO
     def build
       Hash[Bibliotheca::Exercise::Schema.metadata_fields.map do |field|
         [field.reverse_name, meta[field.name.to_s]]
-      end].merge(name: name,
-                 description: description,
-                 hint: hint,
-                 corollary: corollary,
-                 test: test,
-                 extra: extra,
-                 expectations: expectations_list,
-                 default_content: default_content,
-                 id: id).compact
+      end].merge(Hash[Bibliotheca::Exercise::Schema.file_fields.map do |field|
+        [field.reverse_name, self.send(field.name)]
+      end]).merge(name: name, id: id).compact
     end
   end
 end

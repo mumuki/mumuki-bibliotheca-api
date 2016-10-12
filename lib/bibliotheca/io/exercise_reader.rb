@@ -19,7 +19,7 @@ module Bibliotheca::IO
       read_code_file(root, 'extra')
     end
 
-    def default_content(root)
+    def default(root)
       read_code_file(root, 'default')
     end
 
