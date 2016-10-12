@@ -6,9 +6,7 @@ module Bibliotheca
     end
 
     def defaults
-      Hash[Bibliotheca::Schema::Exercise.fields.map do |it|
-        [it.reverse_name, it.default]
-      end].compact
+      Bibliotheca::Schema::Exercise.fields.map { |it| [it.reverse_name, it.default] }.to_h.compact
     end
 
     def errors
