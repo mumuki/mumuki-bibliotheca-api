@@ -6,12 +6,9 @@ module Bibliotheca
     end
 
     def defaults
-      {type: 'problem',
-       tag_list: [],
-       extra_visible: false,
-       layout: 'editor_right',
-       manual_evaluation: false,
-       expectations: []}
+      Hash[Bibliotheca::Schema::Exercise.fields.map do |it|
+        [it.reverse_name, it.default]
+      end].compact
     end
 
     def errors

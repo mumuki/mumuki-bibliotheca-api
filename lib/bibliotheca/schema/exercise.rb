@@ -9,16 +9,17 @@ module Bibliotheca::Schema::Exercise
       {name: :solution, kind: :transient},
 
       {name: :tags, kind: :metadata, reverse: :tag_list,
-       transform: proc { |it| it.to_a }},
-      {name: :layout, kind: :metadata},
-      {name: :type, kind: :metadata},
-      {name: :extra_visible, kind: :metadata},
+       transform: proc { |it| it.to_a }, default: []},
+      {name: :layout, kind: :metadata, default: 'editor_right'},
+      {name: :type, kind: :metadata, default: 'problem'},
+      {name: :extra_visible, kind: :metadata, default: false},
       {name: :language, kind: :metadata},
       {name: :teacher_info, kind: :metadata},
-      {name: :manual_evaluation, kind: :metadata},
+      {name: :manual_evaluation, kind: :metadata, default: false},
 
       {name: :expectations, kind: :file, extension: 'yml',
-       transform: proc { |it| {'expectations' => it.map(&:stringify_keys)}.to_yaml }},
+       transform: proc { |it| {'expectations' => it.map(&:stringify_keys)}.to_yaml },
+       default: []},
 
       {name: :test, kind: :file, extension: :test},
       {name: :extra, kind: :file, extension: :code},
