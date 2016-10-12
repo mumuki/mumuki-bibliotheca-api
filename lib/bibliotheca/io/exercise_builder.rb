@@ -17,9 +17,9 @@ module Bibliotheca::IO
     end
 
     def build
-      Hash[Bibliotheca::Exercise::Schema.metadata_fields.map do |field|
+      Hash[Bibliotheca::Schema::Exercise.metadata_fields.map do |field|
         [field.reverse_name, meta[field.name.to_s]]
-      end].merge(Hash[Bibliotheca::Exercise::Schema.simple_fields.map do |field|
+      end].merge(Hash[Bibliotheca::Schema::Exercise.simple_fields.map do |field|
         [field.reverse_name, self.send(field.name)]
       end]).compact
     end

@@ -28,7 +28,7 @@ module Bibliotheca::IO
 
       write_file!(dirname, 'meta.yml', metadata_yaml(e))
 
-      Bibliotheca::Exercise::Schema.file_fields.each do |it|
+      Bibliotheca::Schema::Exercise.file_fields.each do |it|
         file_name = it.get_file_name(guide)
         write_file! dirname, file_name, it.get_field_value(e) if it.field_value_present?(e)
       end
@@ -76,7 +76,7 @@ module Bibliotheca::IO
     private
 
     def metadata_yaml(e)
-      Hash[Bibliotheca::Exercise::Schema.metadata_fields.map do |field|
+      Hash[Bibliotheca::Schema::Exercise.metadata_fields.map do |field|
         [field.name.to_s, field.get_field_value(e)]
       end].to_yaml
     end

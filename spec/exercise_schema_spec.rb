@@ -1,8 +1,8 @@
-describe Bibliotheca::Exercise::Schema::Field do
+describe Bibliotheca::Schema::Field do
   let(:exercise) { Mumukit::Service::Document.new(bar: 4) }
 
   describe 'when reverse field specified' do
-    let(:field) { Bibliotheca::Exercise::Schema::Field.new(kind: :metadata, name: :foo, reverse: :bar) }
+    let(:field) { Bibliotheca::Schema::Field.new(kind: :metadata, name: :foo, reverse: :bar) }
 
     it { expect(field.name).to eq :foo }
     it { expect(field.reverse_name).to eq :bar }
@@ -10,7 +10,7 @@ describe Bibliotheca::Exercise::Schema::Field do
   end
 
   describe 'when no reverse field specified' do
-    let(:field) { Bibliotheca::Exercise::Schema::Field.new(kind: :metadata, name: :bar) }
+    let(:field) { Bibliotheca::Schema::Field.new(kind: :metadata, name: :bar) }
 
     it { expect(field.name).to eq :bar }
     it { expect(field.reverse_name).to eq :bar }
