@@ -17,8 +17,8 @@ module Bibliotheca::Schema::Guide
       {name: :id_format, default: '%05d'},
 
       {name: :expectations, default: []},
-      {name: :description},
-      {name: :corollary},
+      {name: :description, kind: :file, extension: 'md'},
+      {name: :corollary, kind: :file, extension: 'md'},
       {name: :extra},
       {name: :AUTHORS, reverse: :authors},
       {name: :COLLABORATORS, reverse: :collaborators}

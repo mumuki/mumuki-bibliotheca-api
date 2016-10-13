@@ -9,10 +9,10 @@ module Bibliotheca::IO
 
     def write_guide!(guide)
       guide.exercises.each do |e|
-        write_exercise! guide, e
+        write_exercise! e
       end
-      write_description!(guide)
-      write_corollary!(guide)
+      write_files! dir, guide
+
       write_meta!(guide)
       write_extra!(guide)
       write_authors!(guide)
@@ -21,17 +21,20 @@ module Bibliotheca::IO
     end
 
 
-    def write_exercise!(guide, e)
-      dirname = File.join dir, "#{guide.format_id(e)}_#{e.name}"
+    def write_exercise!(e)
+      dirname = File.join dir, "#{e.guide.format_id(e)}_#{e.name}"
 
       FileUtils.mkdir_p dirname
 
       write_file!(dirname, 'meta.yml', metadata_yaml(e))
+      write_files! dirname, e
+    end
 
-      Bibliotheca::Schema::Exercise.file_fields.each do |it|
-        file_name = it.get_file_name(guide)
-        write_file! dirname, file_name, it.get_field_value(e) if it.field_value_present?(e)
-      end
+    def write_files!(dirname, document)
+      Bibliotheca::Schema::Exercise
+        .file_fields
+        .select { |it| it.field_value_present?(document) }
+        .each { |it| write_file! dirname, it.get_file_name(document), it.get_field_value(document) }
     end
 
     def write_authors!(guide)
@@ -40,14 +43,6 @@ module Bibliotheca::IO
 
     def write_collaborators!(guide)
       write_file! dir, 'COLLABORATORS.txt', guide.collaborators
-    end
-
-    def write_description!(guide)
-      write_file! dir, 'description.md', guide.description
-    end
-
-    def write_corollary!(guide)
-      write_file! dir, 'corollary.md', guide.corollary if guide.corollary.present?
     end
 
     def write_meta!(guide)
