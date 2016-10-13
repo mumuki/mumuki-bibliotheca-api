@@ -1,10 +1,7 @@
 module Bibliotheca
-  class Guide < Mumukit::Service::Document
-    def defaults
-      {beta: false,
-       type: 'practice',
-       id_format: '%05d',
-       expectations: []}
+  class Guide < Bibliotheca::SchemaDocument
+    def schema
+      Bibliotheca::Schema::Guide
     end
 
     def transforms(original)

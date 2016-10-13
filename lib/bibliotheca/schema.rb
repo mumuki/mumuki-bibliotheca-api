@@ -1,7 +1,23 @@
 module Bibliotheca
+  ## Schema definition explanation
+  #
+  #  * name: the name of the field
+  #  * kind: the type of the field: metadata, special, file or transient.
+  #     * metadata fields are those that are small and fit into the metadata.yml when exported to git
+  #     * special fields are those are essentials and not part of any file, like the id or name when exported to git
+  #     * transient fields are not exported to git
+  #     * file fields are large fields that are exported to git within their own file.
+  #  * reverse: the name of the field in the model. By default, it is assumed to be the same of name, but
+  #    can be overridden with this option
+  #  * default: the default value of the field
+  #  * extension: the file extension. It only applies to file kinds. It can be a plain extension or one of the following
+  #    special extensions:
+  #      * test: the extension of the test framework
+  #      * code: the normal extension for the language
+  #
   module Schema
-    def slice(json)
-      json.slice(*fields.map(&:reverse_name))
+    def defaults
+      fields.map { |it| [it.reverse_name, it.default] }.to_h.compact
     end
 
     def metadata_fields
@@ -18,6 +34,16 @@ module Bibliotheca
 
     def fields
       @field ||= fields_schema.map { |it| new_field(it) }
+    end
+
+    def slice(json)
+      json.slice(*fields.map(&:reverse_name))
+    end
+
+    private
+
+    def new_field(it)
+      Field.new(it)
     end
 
     class Field < OpenStruct
@@ -38,3 +64,4 @@ module Bibliotheca
 end
 
 require_relative './schema/exercise'
+require_relative './schema/guide'

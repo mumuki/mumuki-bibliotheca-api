@@ -1,12 +1,7 @@
 module Bibliotheca
-  class Exercise < Mumukit::Service::Document
-    def initialize(json)
-      super(json)
-      @raw = Bibliotheca::Schema::Exercise.slice(@raw)
-    end
-
-    def defaults
-      Bibliotheca::Schema::Exercise.fields.map { |it| [it.reverse_name, it.default] }.to_h.compact
+  class Exercise < Bibliotheca::SchemaDocument
+    def schema
+      Bibliotheca::Schema::Exercise
     end
 
     def errors
