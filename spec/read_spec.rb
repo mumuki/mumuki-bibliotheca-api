@@ -16,6 +16,9 @@ describe Bibliotheca::IO::GuideReader do
       it { expect(guide.id_format).to eq '%05d' }
       it { expect(guide.type).to eq 'practice' }
       it { expect(guide.beta).to be false }
+      it { expect(guide.language.name).to eq 'haskell' }
+      it { expect(guide.locale).to eq 'en' }
+      it { expect(guide.teacher_info).to eq 'information' }
     end
   end
 end

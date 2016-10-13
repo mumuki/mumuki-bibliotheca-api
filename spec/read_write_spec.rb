@@ -26,11 +26,13 @@ describe 'read-write' do
           {type: 'problem',
            name: 'Foo',
            tag_list: %w(foo bar),
+           description: 'another description',
            id: 4},
 
           {name: 'Baz',
            tag_list: %w(baz bar),
            layout: 'editor_bottom',
+           description: 'final description',
            type: 'problem',
            id: 2}]) }
 

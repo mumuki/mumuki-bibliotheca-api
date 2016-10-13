@@ -26,16 +26,12 @@ module Bibliotheca::IO
 
       FileUtils.mkdir_p dirname
 
-      write_file!(dirname, "test.#{guide.language.test_extension}", e.test)
-      write_file!(dirname, 'description.md', e.description)
       write_file!(dirname, 'meta.yml', metadata_yaml(e))
 
-      write_file!(dirname, 'hint.md', e.hint) if e.hint.present?
-      write_file!(dirname, extra_filename(guide), e.extra) if e.extra.present?
-      write_file!(dirname, default_filename(guide), e.default_content) if e.default_content.present?
-      write_file!(dirname, 'expectations.yml', expectations_yaml(e)) if e.expectations.present?
-      write_file!(dirname, 'corollary.md', e.corollary) if e.corollary.present?
-
+      Bibliotheca::Schema::Exercise.file_fields.each do |it|
+        file_name = it.get_file_name(guide)
+        write_file! dirname, file_name, it.get_field_value(e) if it.field_value_present?(e)
+      end
     end
 
     def write_authors!(guide)
@@ -80,17 +76,9 @@ module Bibliotheca::IO
     private
 
     def metadata_yaml(e)
-      {'tags' => e.tag_list.to_a,
-       'layout' => e.layout,
-       'type' => e.type,
-       'extra_visible' => e.extra_visible,
-       'language' => e.language,
-       'teacher_info' => e.teacher_info,
-       'manual_evaluation' => e.manual_evaluation}.to_yaml
-    end
-
-    def expectations_yaml(e)
-      {'expectations' => e.expectations.map(&:stringify_keys)}.to_yaml
+      Bibliotheca::Schema::Exercise.metadata_fields.map do |field|
+        [field.name.to_s, field.get_field_value(e)]
+      end.to_h.to_yaml
     end
 
     def extra_filename(guide)
