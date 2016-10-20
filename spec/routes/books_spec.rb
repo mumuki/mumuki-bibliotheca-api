@@ -5,7 +5,7 @@ require_relative '../../app/routes'
 describe 'routes' do
   let!(:book_id) {
     Bibliotheca::Collection::Books.insert!(
-        build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: %w(bar/baz1 bar/baz2)))[:id] }
+      build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: %w(bar/baz1 bar/baz2)))[:id] }
 
   after do
     Bibliotheca::Database.clean!
@@ -52,11 +52,31 @@ describe 'routes' do
 
     it { expect(last_response).to be_ok }
     it { expect(last_response.body).to json_eq(
-                                           id: book_id,
-                                           name: 'the book',
-                                           description: 'this book is for everyone and nobody',
-                                           locale: 'es',
-                                           slug: 'baz/foo',
-                                           chapters: %w(bar/baz1 bar/baz2)) }
+                                         id: book_id,
+                                         name: 'the book',
+                                         description: 'this book is for everyone and nobody',
+                                         locale: 'es',
+                                         slug: 'baz/foo',
+                                         chapters: %w(bar/baz1 bar/baz2)) }
+  end
+
+  describe 'post /books' do
+    let(:created_book) { Bibliotheca::Collection::Books.find_by!(slug: 'bar/a-book') }
+    it 'accepts valid requests' do
+      header 'Authorization', build_auth_header('*')
+      post '/books', {slug: 'bar/a-book',
+                      name: 'Baz Topic',
+                      locale: 'en',
+                      description: 'foo',
+                      invalid_field: 'zafaza',
+                      chapters: ['foo/bar']}.to_json
+
+      expect(last_response).to be_ok
+      expect(created_book).to json_like({slug: 'bar/a-book',
+                                         name: 'Baz Topic',
+                                         locale: 'en',
+                                         description: 'foo',
+                                         chapters: ['foo/bar']}, except: :id)
+    end
   end
 end
