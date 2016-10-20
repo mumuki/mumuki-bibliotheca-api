@@ -1,5 +1,9 @@
 module Bibliotheca
-  class Book < Mumukit::Service::Document
+  class Book < Bibliotheca::SchemaDocument
+    def schema
+      Bibliotheca::Schema::Book
+    end
+
     def errors
       [
         ("Name must be present" unless name.present?),

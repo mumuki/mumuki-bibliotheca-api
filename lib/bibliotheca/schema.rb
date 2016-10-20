@@ -65,3 +65,5 @@ end
 
 require_relative './schema/exercise'
 require_relative './schema/guide'
+require_relative './schema/book'
+require_relative './schema/topic'
