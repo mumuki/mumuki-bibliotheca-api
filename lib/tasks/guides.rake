@@ -3,11 +3,6 @@ namespace :guides do
     Octokit.repos(org).map(&:full_name).select { |it| it =~ /guia/ }
   end
 
-  task :migrate, [:migration_name]  do |_t, args|
-    require_relative "../../migrations/migrate_#{args[:migration_name]}"
-    do_migrate!
-  end
-
   task :import, [:organization, :url] do |_t, args|
     args.with_defaults(url: 'http://localhost:9292')
 

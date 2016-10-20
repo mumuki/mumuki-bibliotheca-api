@@ -49,6 +49,11 @@ bundle exec rake guides:import[<a github organization>]
 
 # import languages from http://thesaurus.mumuki.io
 bundle exec rake languages:import
+
+# running migrations
+
+# migration_name is the name of the migration file in ./migrations/, without extension and the "migrate_" prefeix
+bundle exec rake db:migrate[<migration_name>]
 ```
 ## Authentication Powered by Auth0
 
