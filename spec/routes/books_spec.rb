@@ -69,6 +69,7 @@ describe 'routes' do
                       locale: 'en',
                       description: 'foo',
                       invalid_field: 'zafaza',
+                      complements: ['foo/complement'],
                       chapters: ['foo/bar']}.to_json
 
       expect(last_response).to be_ok
@@ -76,6 +77,7 @@ describe 'routes' do
                                          name: 'Baz Topic',
                                          locale: 'en',
                                          description: 'foo',
+                                         complements: ['foo/complement'],
                                          chapters: ['foo/bar']}, except: :id)
     end
   end

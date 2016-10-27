@@ -11,7 +11,8 @@ module Bibliotheca::Schema::Book
       {name: :description},
       {name: :teacher_info},
 
-      {name: :chapters}
+      {name: :chapters},
+      {name: :complements}
     ]
   end
 end
