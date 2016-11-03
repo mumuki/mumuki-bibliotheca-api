@@ -20,7 +20,7 @@ describe 'read-write' do
            test: 'foo bar',
            default_content: '--type here',
            tag_list: %w(baz bar),
-           layout: 'no_editor',
+           layout: 'input_bottom',
            id: 1},
 
           {type: 'problem',
@@ -31,7 +31,7 @@ describe 'read-write' do
 
           {name: 'Baz',
            tag_list: %w(baz bar),
-           layout: 'editor_bottom',
+           layout: 'input_bottom',
            description: 'final description',
            type: 'problem',
            id: 2}]) }
@@ -56,8 +56,8 @@ describe 'read-write' do
   it { expect(imported_guide.exercises.second.name).to eq 'Foo' }
   it { expect(imported_guide.exercises.third.name).to eq 'Baz' }
   it { expect(imported_guide.exercises.first.default_content).to eq '--type here' }
-  it { expect(imported_guide.exercises.first.layout).to eq 'no_editor' }
-  it { expect(imported_guide.exercises.second.layout).to eq 'editor_right' }
+  it { expect(imported_guide.exercises.first.layout).to eq 'input_bottom' }
+  it { expect(imported_guide.exercises.second.layout).to eq 'input_right' }
 
   it { expect(imported_guide.language.name).to eq 'haskell' }
   it { expect(imported_guide.locale).to eq 'en' }

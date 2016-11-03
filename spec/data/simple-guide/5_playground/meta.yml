@@ -3,5 +3,5 @@ tags:
   - bar
   - baz
 locale: en
-layout: editor_bottom
+layout: input_bottom
 type: playground

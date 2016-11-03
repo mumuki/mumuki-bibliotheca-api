@@ -6,7 +6,7 @@ describe 'routes' do
   before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
 
   let(:exercise) {
-    {id: 1, name: 'foo', type: 'problem', layout: 'editor_right', description: 'foo',
+    {id: 1, name: 'foo', type: 'problem', layout: 'input_right', editor: 'code', description: 'foo',
      test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
      manual_evaluation: false,
      expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false} }
