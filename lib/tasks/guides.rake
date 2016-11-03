@@ -3,6 +3,13 @@ namespace :guides do
     Octokit.repos(org).map(&:full_name).select { |it| it =~ /guia/ }
   end
 
+  task :export, [:author_email] do |_t, args|
+    author_email = args[:author_email]
+    Bibliotheca::Collection::Guides.all.each do |it|
+      Bibliotheca::IO::GuideExport.new(slug: it.slug, author_email: author_email).run!
+    end
+  end
+
   task :import, [:organization, :url] do |_t, args|
     args.with_defaults(url: 'http://localhost:9292')
 
