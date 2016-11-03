@@ -6,7 +6,7 @@ namespace :guides do
   task :export, [:author_email] do |_t, args|
     author_email = args[:author_email]
     Bibliotheca::Collection::Guides.all.each do |it|
-      Bibliotheca::IO::GuideExport.new(slug: it.slug, author_email: author_email).run!
+      Bibliotheca::IO::GuideExport.new(slug: it.slug, author_email: author_email, bot: Bibliotheca::Bot.from_env).run!
     end
   end
 
