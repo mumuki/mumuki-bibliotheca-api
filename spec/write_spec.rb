@@ -36,6 +36,7 @@ describe Bibliotheca::IO::GuideWriter do
            name: 'bar',
            tag_list: %w(baz bar),
            id: 200,
+           editor: 'multiple_choice',
            position: 2,
            choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}],
            type: 'problem',
@@ -111,7 +112,7 @@ describe Bibliotheca::IO::GuideWriter do
         it { expect(File.read 'spec/data/export/00200_bar/description.md').to eq 'a description' }
 
         it { expect(File.exist? 'spec/data/export/00200_bar/meta.yml').to be true }
-        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: code\ntype: problem\nextra_visible: false\nlanguage: \nteacher_info: \nmanual_evaluation: false\nchoices:\n- :value: foo\n  :checked: true\n- :value: bar\n  :checked: false\n" }
+        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: multiple_choice\ntype: problem\nextra_visible: false\nlanguage: \nteacher_info: \nmanual_evaluation: false\nchoices:\n- :value: foo\n  :checked: true\n- :value: bar\n  :checked: false\n" }
 
 
         it { expect(File.exist? 'spec/data/export/00200_bar/test.hs').to be true }
