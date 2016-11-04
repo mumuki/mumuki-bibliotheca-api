@@ -1,11 +1,18 @@
 module Bibliotheca
   class Exercise < Bibliotheca::SchemaDocument
+    attr_accessor :guide
+
+    def initialize(json)
+      @guide = json.delete(:guide)
+      super(json)
+    end
+
     def schema
       Bibliotheca::Schema::Exercise
     end
 
-    def effective_language_name(guide)
-      language || guide.language.name
+    def effective_language
+      language.try { |it| Bibliotheca::Collection::Languages.find_by(name: it) } || guide.language
     end
 
     def errors

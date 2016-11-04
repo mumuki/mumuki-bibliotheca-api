@@ -39,16 +39,16 @@ module Bibliotheca::Schema::Exercise
   end
 
   class Field < Bibliotheca::Schema::Field
-    def get_file_name(guide)
-      "#{name}.#{get_file_extension(guide)}"
+    def get_file_name(exercise)
+      "#{name}.#{get_file_extension(exercise)}"
     end
 
-    def get_file_extension(guide)
+    def get_file_extension(exercise)
       case extension
         when :code then
-          guide.language.extension
+          exercise.effective_language.extension
         when :test then
-          guide.language.test_extension
+          exercise.effective_language.test_extension
         else
           extension
       end

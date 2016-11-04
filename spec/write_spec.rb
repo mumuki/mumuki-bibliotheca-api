@@ -57,12 +57,6 @@ describe Bibliotheca::IO::GuideWriter do
       it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\ntype: practice\nbeta: false\nteacher_info: an info\nlanguage: haskell\nid_format: '%05d'\norder:\n- 100\n- 200\n" }
     end
 
-    describe '#write_description' do
-      before { writer.write_description! guide }
-      it { expect(File.exist? 'spec/data/export/description.md').to be true }
-      it { expect(File.read 'spec/data/export/description.md').to eq 'Baz' }
-    end
-
     describe '#write_authors' do
       before { writer.write_authors! guide }
       it { expect(File.exist? 'spec/data/export/AUTHORS.txt').to be true }
@@ -83,27 +77,27 @@ describe Bibliotheca::IO::GuideWriter do
 
     describe '#write_exercise' do
       context 'with extra' do
-        before { writer.write_exercise! guide, exercise_1 }
+        before { writer.write_exercise! exercise_1 }
 
         it { expect(File.exist? 'spec/data/export/00100_foo/extra.hs').to be true }
         it { expect(File.read 'spec/data/export/00100_foo/extra.hs').to eq 'foobar' }
       end
 
       context 'without extra' do
-        before { writer.write_exercise! guide, exercise_2 }
+        before { writer.write_exercise! exercise_2 }
 
         it { expect(File.exist? 'spec/data/export/00200_bar/extra.hs').to be false }
       end
 
       context 'with expectations' do
-        before { writer.write_exercise! guide, exercise_1 }
+        before { writer.write_exercise! exercise_1 }
 
         it { expect(File.exist? 'spec/data/export/00100_foo/expectations.yml').to be true }
         it { expect(File.read 'spec/data/export/00100_foo/expectations.yml').to eq "---\nexpectations:\n- binding: bar\n  inspection: HasBinding\n" }
       end
 
       context 'without expectations' do
-        before { writer.write_exercise! guide, exercise_2 }
+        before { writer.write_exercise! exercise_2 }
 
         it { expect(Dir.exist? 'spec/data/export/00200_bar/').to be true }
 
