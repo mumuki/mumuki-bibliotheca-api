@@ -1,11 +1,29 @@
 module Bibliotheca
   class Exercise < Bibliotheca::SchemaDocument
+    def initialize(e)
+      super(e)
+      process_choices!
+    end
+
     def schema
       Bibliotheca::Schema::Exercise
     end
 
     def effective_language_name(guide)
       language || guide.language.name
+    end
+
+    def process_choices!
+      multiple_choices_to_test! if multiple_choice?
+    end
+
+    def multiple_choices_to_test!
+      choice = choices.select { |choice| choice['checked'] }.try(:first)
+      test = { equal: choice['value'] }
+    end
+
+    def multiple_choice?
+      ['multiple_choice'].include? editor
     end
 
     def errors
