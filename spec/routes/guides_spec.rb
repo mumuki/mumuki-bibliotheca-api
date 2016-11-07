@@ -9,6 +9,7 @@ describe 'routes' do
     {id: 1, name: 'foo', type: 'problem', layout: 'input_right', editor: 'code', description: 'foo',
      test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
      manual_evaluation: false,
+     choices: [],
      expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false} }
 
   let!(:guide_id) {
