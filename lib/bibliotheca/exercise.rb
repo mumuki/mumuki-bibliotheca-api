@@ -18,8 +18,8 @@ module Bibliotheca
     end
 
     def multiple_choices_to_test!
-      choice = choices.select { |choice| choice['checked'] }.try(:first)
-      test = { equal: choice['value'] }
+      value = choices.select { |choice| choice['checked'] }.map { |choice| choice['value']}.join(':')
+      self.test = { 'equal' => value }.to_yaml
     end
 
     def multiple_choice?
