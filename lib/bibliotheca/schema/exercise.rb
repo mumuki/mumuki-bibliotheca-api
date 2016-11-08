@@ -18,7 +18,7 @@ module Bibliotheca::Schema::Exercise
       {name: :language, kind: :metadata},
       {name: :teacher_info, kind: :metadata},
       {name: :manual_evaluation, kind: :metadata, default: false},
-      {name: :choices, kind: :metadata},
+      {name: :choices, kind: :metadata, default: []},
 
       {name: :expectations, kind: :file, extension: 'yml',
        transform: proc { |it| {'expectations' => it.map(&:stringify_keys)}.to_yaml },

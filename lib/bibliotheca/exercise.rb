@@ -1,11 +1,36 @@
 module Bibliotheca
   class Exercise < Bibliotheca::SchemaDocument
+    def initialize(e)
+      super(e)
+      process_choices!
+    end
+
     def schema
       Bibliotheca::Schema::Exercise
     end
 
     def effective_language_name(guide)
       language || guide.language.name
+    end
+
+    def text?
+      language == 'text'
+    end
+
+    def process_choices!
+      choices_to_test! if choice? && text?
+    end
+
+    def choices_to_test!
+      value = choices.each_with_index
+                .map { |choice, index| choice.merge('index' => index.to_s) }
+                .select { |choice| choice['checked'] }
+                .map { |choice| choice['index']}.join(':')
+      self.test = { 'equal' => value }.to_yaml
+    end
+
+    def choice?
+      ['multiple_choice', 'single_choice'].include? editor
     end
 
     def errors
