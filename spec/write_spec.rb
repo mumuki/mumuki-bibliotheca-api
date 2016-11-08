@@ -147,7 +147,7 @@ describe Bibliotheca::IO::GuideWriter do
 
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/test.hs').to be true }
-        it { expect(File.read 'spec/data/export/00300_multiple/test.hs').to eq "---\nequal: foo\n" }
+        it { expect(File.read 'spec/data/export/00300_multiple/test.hs').to eq "---\nequal: '0'\n" }
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/expectations.yml').to be false }
       end

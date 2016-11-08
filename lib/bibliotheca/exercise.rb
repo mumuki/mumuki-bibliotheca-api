@@ -18,7 +18,10 @@ module Bibliotheca
     end
 
     def multiple_choices_to_test!
-      value = choices.select { |choice| choice['checked'] }.map { |choice| choice['value']}.join(':')
+      value = choices.each_with_index
+                .map { |choice, index| choice.merge('index' => index.to_s) }
+                .select { |choice| choice['checked'] }
+                .map { |choice| choice['index']}.join(':')
       self.test = { 'equal' => value }.to_yaml
     end
 
