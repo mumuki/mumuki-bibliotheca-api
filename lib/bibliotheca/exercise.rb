@@ -13,11 +13,15 @@ module Bibliotheca
       language || guide.language.name
     end
 
-    def process_choices!
-      multiple_choices_to_test! if multiple_choice?
+    def text?
+      language == 'text'
     end
 
-    def multiple_choices_to_test!
+    def process_choices!
+      choices_to_test! if choice? && text?
+    end
+
+    def choices_to_test!
       value = choices.each_with_index
                 .map { |choice, index| choice.merge('index' => index.to_s) }
                 .select { |choice| choice['checked'] }
@@ -25,8 +29,8 @@ module Bibliotheca
       self.test = { 'equal' => value }.to_yaml
     end
 
-    def multiple_choice?
-      ['multiple_choice'].include? editor
+    def choice?
+      ['multiple_choice', 'single_choice'].include? editor
     end
 
     def errors
