@@ -52,10 +52,7 @@ describe Bibliotheca::IO::GuideWriter do
            type: 'problem',
            layout: 'input_right',
            choices: [{'value' => 'foo', 'checked' => true}, {'value' => 'bar', 'checked' => false}]
-           },
-
-
-      ]) }
+           }]) }
 
   let(:writer) { Bibliotheca::IO::GuideWriter.new(dir, log) }
 
