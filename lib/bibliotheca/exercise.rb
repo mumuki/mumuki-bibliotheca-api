@@ -18,10 +18,13 @@ module Bibliotheca
     end
 
     def process_choices!
-      choices_to_test! if choice? && text?
+      if text?
+        multiple_choices_to_test! if multiple_choice?
+        single_choices_to_test! if single_choice?
+      end
     end
 
-    def choices_to_test!
+    def multiple_choices_to_test!
       value = choices.each_with_index
                 .map { |choice, index| choice.merge('index' => index.to_s) }
                 .select { |choice| choice['checked'] }
@@ -29,8 +32,17 @@ module Bibliotheca
       self.test = { 'equal' => value }.to_yaml
     end
 
-    def choice?
-      ['multiple_choice', 'single_choice'].include? editor
+    def single_choices_to_test!
+      choice = choices.find { |choice| choice['checked']}
+      self.test = { 'equal' =>  choice['value'] }.to_yaml
+    end
+
+    def multiple_choice?
+      editor == 'multiple_choice'
+    end
+
+    def single_choice?
+      editor == 'single_choice'
     end
 
     def errors
