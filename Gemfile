@@ -7,7 +7,7 @@ gem 'octokit', '~> 4.1'
 
 gem 'rest-client'
 
-gem 'mumukit-content-type', '~> 0.2', require: 'mumukit/content_type'
+gem 'mumukit-content-type', '~> 0.4', require: 'mumukit/content_type'
 gem 'mumukit-core', '~> 0.4'
 gem 'mumukit-auth', '~> 1.0'
 gem 'mumukit-bridge', '~> 1.3'
