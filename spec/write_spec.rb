@@ -66,7 +66,7 @@ describe Bibliotheca::IO::GuideWriter do
       before { writer.write_meta! guide }
 
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
-      it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\ntype: practice\nbeta: false\nteacher_info: an info\nlanguage: haskell\nid_format: '%05d'\norder:\n- 100\n- 200\n- 300\n" }
+      it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\ntype: practice\nbeta: false\nteacher_info: an info\nlanguage: haskell\nid_format: \"%05d\"\norder:\n- 100\n- 200\n- 300\n" }
     end
 
     describe '#write_description' do
