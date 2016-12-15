@@ -1,7 +1,7 @@
-[![wercker status](https://app.wercker.com/status/0b4dd5fa93028f3a8172e685187d542a/s/master "wercker status")](https://app.wercker.com/project/bykey/0b4dd5fa93028f3a8172e685187d542a)
+[![Build Status](https://travis-ci.org/mumuki/mumuki-bibliotheca-api.svg?branch=master)](https://travis-ci.org/mumuki/mumuki-bibliotheca-api)
 
-# Mumuki Bibliotheca
-> Storage and formatting service for guides
+# Mumuki Bibliotheca API
+> Storage and formatting API for guides
 
 ## About
 
