@@ -5,7 +5,7 @@
 
 ## About
 
-Bibliotheca is a service for storing Mumuki guides. Its main persistent media is MongoDB, but it is also capable of importing and exporting guides from a Github repository. Features:
+Bibliotheca is a service for storing Mumuki content - Books, Topics and Guides. Its main persistent media is MongoDB, but it is also capable of importing and exporting guides from a Github repository. Features:
 
 * REST API
 * Importing and exporting to a Github repository
