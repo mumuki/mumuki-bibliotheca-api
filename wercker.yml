@@ -1,4 +1,4 @@
-box: ruby:2.0.0
+box: ruby:2.3.1
 
 services:
 - id: mongo
@@ -19,4 +19,4 @@ deploy:
       keyname: ESCUALO_RSA
   - script:
       name: deploy
-      code: wget https://raw.githubusercontent.com/mumuki/mumuki-escualo-deploy/master/wercker_deploy && chmod u+x wercker_deploy && ./wercker_deploy bibliotheca
+      code: wget https://raw.githubusercontent.com/mumuki/mumuki-escualo-deploy/master/wercker_deploy && chmod u+x wercker_deploy && ./wercker_deploy bibliotheca-api
