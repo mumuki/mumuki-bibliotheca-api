@@ -109,6 +109,11 @@ bundle exec rake languages:import
 # migration_name is the name of the migration file in ./migrations/, without extension and the "migrate_" prefeix
 bundle exec rake db:migrate[<migration_name>]
 ```
+
+## See also 
+
+[Bibliotheca Web Client](https://github.com/mumuki/mumuki-bibliotheca)
+
 ## Authentication Powered by Auth0
 
 <a width="150" height="50" href="https://auth0.com/" target="_blank" alt="Single Sign On & Token Based Authentication - Auth0"><img width="150" height="50" alt="JWT Auth for open source projects" src="http://cdn.auth0.com/oss/badges/a0-badge-dark.png"/></a>
