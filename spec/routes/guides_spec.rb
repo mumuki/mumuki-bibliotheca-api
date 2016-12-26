@@ -182,7 +182,7 @@ describe 'routes' do
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 403
-        expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz. Permissions are goo/foo'
+        expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz. Permissions are '
 
       end
 

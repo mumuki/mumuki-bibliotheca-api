@@ -28,8 +28,12 @@ helpers do
     [params[:organization], params[:repository]].compact
   end
 
+  def protect!(role)
+    permissions.protect! role, slug.to_s
+  end
+
   def upsert!(document_class, collection_class, export_classes=[])
-    protect!
+    protect! :writer
     document = document_class.new(json_body)
     exporting export_classes, document: document, bot: bot, author_email: token.email do
       collection_class.upsert_by_slug(slug.to_s, document)

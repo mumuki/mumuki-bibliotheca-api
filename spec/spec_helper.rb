@@ -57,10 +57,22 @@ require 'base64'
 Mumukit::Auth.configure do |c|
   c.client_id = 'foo'
   c.client_secret = Base64.encode64 'bar'
+  c.daybreak_name = 'test'
 end
 
-def build_auth_header(permissions_string)
-  Mumukit::Auth::Token.encode_dummy_auth_header(bibliotheca: {permissions: permissions_string})
+RSpec.configure do |config|
+  config.after(:each) do
+    FileUtils.rm ["#{Mumukit::Auth.config.daybreak_name}.db"], force: true
+  end
+end
+
+def build_auth_header(permissions_string, email='bot@mumuki.org')
+  Mumukit::Auth::Store.set!(email, { editor: permissions_string })
+  encoded_token = JWT.encode(
+    {aud: Mumukit::Auth.config.client_id,
+     email: email},
+    Mumukit::Auth::Token.decoded_secret)
+  'dummy token ' + encoded_token
 end
 
 
