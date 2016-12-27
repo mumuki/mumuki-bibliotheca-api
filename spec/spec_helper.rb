@@ -60,9 +60,17 @@ Mumukit::Auth.configure do |c|
   c.daybreak_name = 'test'
 end
 
+class Mumukit::Auth::Store
+  class << self
+    def clean!
+      FileUtils.rm ["#{Mumukit::Auth.config.daybreak_name}.db"], force: true
+    end
+  end
+end
+
 RSpec.configure do |config|
   config.after(:each) do
-    FileUtils.rm ["#{Mumukit::Auth.config.daybreak_name}.db"], force: true
+    Mumukit::Auth::Store.clean!
   end
 end
 
