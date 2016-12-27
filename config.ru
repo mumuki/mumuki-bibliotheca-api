@@ -14,6 +14,10 @@ Mumukit::Auth.configure do |c|
   c.daybreak_name = 'permissions'
 end
 
+Mumukit::Nuntius.configure do |c|
+  c.app_name = 'bibliotheca'
+end
+
 require_relative './app/routes'
 
 run Sinatra::Application
