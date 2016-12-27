@@ -66,8 +66,8 @@ RSpec.configure do |config|
   end
 end
 
-def build_auth_header(permissions_string, email='bot@mumuki.org')
-  Mumukit::Auth::Store.set!(email, { editor: permissions_string })
+def build_auth_header(permissions, email='bot@mumuki.org')
+  Mumukit::Auth::Store.set! email, permissions
   encoded_token = JWT.encode(
     {aud: Mumukit::Auth.config.client_id,
      email: email},

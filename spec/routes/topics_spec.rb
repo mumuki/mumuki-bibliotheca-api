@@ -23,7 +23,7 @@ describe 'routes' do
   describe('get /topics/writable') do
     context 'when no topics match' do
       before do
-        header 'Authorization', build_auth_header('foo/*')
+        header 'Authorization', build_auth_header(writer: 'foo/*')
         get '/topics/writable'
       end
 
@@ -33,7 +33,7 @@ describe 'routes' do
 
     context 'when topics match' do
       before do
-        header 'Authorization', build_auth_header('baz/*')
+        header 'Authorization', build_auth_header(writer: 'baz/*')
         get '/topics/writable'
       end
 
@@ -68,7 +68,7 @@ describe 'routes' do
   describe 'post /topics' do
     let(:created_topic) { Bibliotheca::Collection::Topics.find_by!(slug: 'bar/a-topic') }
     it 'accepts valid requests' do
-      header 'Authorization', build_auth_header('*')
+      header 'Authorization', build_auth_header(writer: '*')
       post '/topics', {slug: 'bar/a-topic',
                        name: 'Baz Topic',
                        locale: 'en',
