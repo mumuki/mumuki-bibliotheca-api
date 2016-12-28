@@ -1,4 +1,5 @@
 require 'mumukit/auth'
+require 'mumukit/nuntius'
 
 require_relative './lib/bibliotheca'
 
