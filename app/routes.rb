@@ -57,6 +57,10 @@ post '/markdown' do
   { markdown: Mumukit::ContentType::Markdown.to_html(json_body['markdown']) }
 end
 
+get '/permissions' do
+  {permissions: permissions }
+end
+
 require_relative './routes/languages'
 require_relative './routes/guides'
 require_relative './routes/books'
