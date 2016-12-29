@@ -1,4 +1,5 @@
 require 'mumukit/core'
+require 'mumukit/auth'
 require 'mumukit/service'
 require 'mumukit/bridge'
 require 'mumukit/nuntius'
@@ -26,3 +27,12 @@ require_relative './bibliotheca/io'
 require_relative './bibliotheca/collection'
 require_relative './bibliotheca/event'
 
+Mumukit::Nuntius.configure do |c|
+  c.app_name = 'bibliotheca'
+end
+
+Mumukit::Auth.configure do |c|
+  c.client_id = Mumukit::Service::Env.auth0_client_id
+  c.client_secret = Mumukit::Service::Env.auth0_client_secret
+  c.daybreak_name = 'permissions'
+end
