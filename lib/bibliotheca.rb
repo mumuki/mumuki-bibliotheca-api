@@ -1,6 +1,7 @@
 require 'mumukit/core'
 require 'mumukit/service'
 require 'mumukit/bridge'
+require 'mumukit/nuntius'
 
 module Bibliotheca
   class SchemaDocument < Mumukit::Service::Document
