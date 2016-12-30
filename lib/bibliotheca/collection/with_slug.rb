@@ -1,6 +1,6 @@
 module Bibliotheca::Collection::WithSlug
   def allowed(permissions)
-    project { |it| permissions.allows? it.slug }
+    project { |it| permissions.has_permission? :writer, it.slug }
   end
 
   def find_by_slug!(slug)

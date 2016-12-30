@@ -29,7 +29,7 @@ helpers do
   end
 
   def upsert!(document_class, collection_class, export_classes=[])
-    protect!
+    protect! :writer
     document = document_class.new(json_body)
     exporting export_classes, document: document, bot: bot, author_email: token.email do
       collection_class.upsert_by_slug(slug.to_s, document)
@@ -55,6 +55,10 @@ end
 
 post '/markdown' do
   { markdown: Mumukit::ContentType::Markdown.to_html(json_body['markdown']) }
+end
+
+get '/permissions' do
+  {permissions: permissions }
 end
 
 require_relative './routes/languages'

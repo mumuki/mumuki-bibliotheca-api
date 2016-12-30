@@ -18,7 +18,7 @@ describe 'routes' do
   describe('get /books/writable') do
     context 'when no topics match' do
       before do
-        header 'Authorization', build_auth_header('foo/*')
+        header 'Authorization', build_auth_header(writer: 'foo/*')
         get '/books/writable'
       end
 
@@ -28,7 +28,7 @@ describe 'routes' do
 
     context 'when topics match' do
       before do
-        header 'Authorization', build_auth_header('baz/*')
+        header 'Authorization', build_auth_header(writer: 'baz/*')
         get '/books/writable'
       end
 
@@ -63,7 +63,7 @@ describe 'routes' do
   describe 'post /books' do
     let(:created_book) { Bibliotheca::Collection::Books.find_by!(slug: 'bar/a-book') }
     it 'accepts valid requests' do
-      header 'Authorization', build_auth_header('*')
+      header 'Authorization', build_auth_header(writer: '*')
       post '/books', {slug: 'bar/a-book',
                       name: 'Baz Topic',
                       locale: 'en',

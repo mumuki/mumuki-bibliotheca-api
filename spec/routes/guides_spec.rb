@@ -14,18 +14,16 @@ describe 'routes' do
 
   let!(:guide_id) {
     Bibliotheca::Collection::Guides.insert!(
-        build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
+      build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
 
   before do
     Bibliotheca::Collection::Guides.insert!(
-        build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
+      build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
-        build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
+      build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
   end
 
-  after do
-    Bibliotheca::Database.clean!
-  end
+  after { Bibliotheca::Database.clean! }
 
   def app
     Sinatra::Application
@@ -33,7 +31,7 @@ describe 'routes' do
 
   describe('get /guides/writable') do
     before do
-      header 'Authorization', build_auth_header('foo/*')
+      header 'Authorization', build_auth_header(writer: 'foo/*')
       get '/guides/writable'
     end
 
@@ -42,9 +40,7 @@ describe 'routes' do
   end
 
   describe('get /guides') do
-    before do
-      get '/guides'
-    end
+    before { get '/guides' }
 
     it { expect(last_response).to be_ok }
     it { expect(JSON.parse(last_response.body)['guides'].count).to eq 3 }
@@ -109,7 +105,23 @@ describe 'routes' do
         expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
-        header 'Authorization', build_auth_header('*')
+        header 'Authorization', build_auth_header(writer: '*')
+
+        post '/guides', {slug: 'bar/baz',
+                         language: 'haskell',
+                         name: 'Baz Guide',
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
+
+        expect(last_response).to be_ok
+        expect(JSON.parse(last_response.body)['id']).to_not be nil
+      end
+
+      it 'accepts valid requests with narrower permissions' do
+        expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
+        allow_any_instance_of(RestClient::Request).to receive(:execute)
+
+        header 'Authorization', build_auth_header(editor: '*')
 
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
@@ -125,7 +137,7 @@ describe 'routes' do
         allow_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
         allow_any_instance_of(RestClient::Request).to receive(:execute)
 
-        header 'Authorization', build_auth_header('*')
+        header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
                          name: 'Baz Guide',
@@ -147,7 +159,7 @@ describe 'routes' do
       it 'does not export if bot is not authenticated' do
         expect_any_instance_of(Bibliotheca::Bot).to receive(:authenticated?).and_return(false)
 
-        header 'Authorization', build_auth_header('*')
+        header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
@@ -162,7 +174,7 @@ describe 'routes' do
 
     context 'when request is invalid' do
       it 'rejects invalid exercises' do
-        header 'Authorization', build_auth_header('*')
+        header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
                          language: 'haskell',
@@ -176,14 +188,23 @@ describe 'routes' do
       end
 
       it 'reject unauthorized requests' do
-        header 'Authorization', build_auth_header('goo/foo')
+        header 'Authorization', build_auth_header(writer: 'goo/foo')
 
         post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 403
-        expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz. Permissions are goo/foo'
+        expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz as writer. Scope is `goo/foo`'
+      end
 
+      it 'reject unauthorized requests' do
+        header 'Authorization', build_auth_header(editor: 'goo/foo')
+
+        post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq 403
+        expect(last_response.body).to json_eq message: 'Unauthorized access to bar/baz as writer. Scope is ``'
       end
 
       it 'reject unauthenticated requests' do
@@ -245,16 +266,20 @@ describe 'routes' do
     let(:guide) { build(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
     let(:id) { Bibliotheca::Collection::Guides.insert!(guide)[:id] }
 
-    context 'when user is authenticated' do
-
-      before do
-        header 'Authorization', build_auth_header('*')
-
-        delete "/guides/#{id}"
-      end
+    context 'when user is authenticated and has permissions' do
+      before { header 'Authorization', build_auth_header(editor: '*') }
+      before { delete "/guides/#{id}" }
 
       it { expect(last_response).to be_ok }
       it { expect(Bibliotheca::Collection::Guides.exists? id).to be false }
+    end
+
+    context 'when user is authenticated but does not have enough permissions' do
+      before { header 'Authorization', build_auth_header(writer: '*') }
+      before { delete "/guides/#{id}" }
+
+      it { expect(last_response).to_not be_ok }
+      it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
     end
 
     context 'when user is not authenticated' do

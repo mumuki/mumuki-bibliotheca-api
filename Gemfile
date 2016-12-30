@@ -9,9 +9,10 @@ gem 'rest-client'
 
 gem 'mumukit-content-type', '~> 0.4', require: 'mumukit/content_type'
 gem 'mumukit-core', '~> 0.4'
-gem 'mumukit-auth', '~> 1.0'
+gem 'mumukit-auth', '~> 3.5'
 gem 'mumukit-bridge', '~> 1.3'
-gem 'mumukit-service', '~> 0.6'
+gem 'mumukit-service', '~> 1.0'
+gem 'mumukit-nuntius', '~> 2.2'
 
 gem 'puma'
 

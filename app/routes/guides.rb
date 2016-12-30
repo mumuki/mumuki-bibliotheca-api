@@ -19,7 +19,7 @@ get '/guides/:guide_id/exercises/:exercise_id/test' do
 end
 
 delete '/guides/:id' do
-  protect!
+  protect! :editor
   Bibliotheca::Collection::Guides.delete!(params['id'])
   {}
 end
