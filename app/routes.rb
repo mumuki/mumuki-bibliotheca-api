@@ -14,7 +14,7 @@ end
 
 use Rack::Session::Cookie
 use OmniAuth::Builder do
-  provider :developer
+  Mumukit::Login.configure_omniauth! self
 end
 
 
@@ -95,7 +95,6 @@ end
 
 get '/logout' do
   modify_cookie(:delete_cookie)
-
   redirect back
 end
 
