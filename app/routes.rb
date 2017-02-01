@@ -69,12 +69,16 @@ get '/permissions' do
 end
 
 # Omniauth
-auth_callback = lambda do
-  response.set_cookie('mucookie',
-                      :value => Mumukit::Auth::Token.encode(request.env['omniauth.auth'].info),
+def modify_cookie(modification, value = nil)
+  response.send(modification, 'mucookie',
+                      :value => value,
                       :domain => '.localmumuki.io',
                       :path => '/',
                       :httpOnly => false)
+end
+
+auth_callback = lambda do
+  modify_cookie(:set_cookie, Mumukit::Auth::Token.encode(request.env['omniauth.auth'].info))
 
   redirect to(session[:origin])
 end
@@ -88,10 +92,8 @@ get '/login' do
 end
 
 get '/logout' do
-  response.delete_cookie('mucookie',
-                         :domain => '.localmumuki.io',
-                         :path => '/',
-                         :httpOnly => false)
+  modify_cookie(:delete_cookie)
+
   redirect back
 end
 
