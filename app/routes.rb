@@ -1,12 +1,19 @@
 require 'mumukit/content_type'
 require 'mumukit/service/routes'
 require 'mumukit/service/routes/auth'
+require 'sinatra/cookies'
+require 'omniauth'
 
 require_relative '../lib/bibliotheca'
 
 configure do
   set :app_name, 'bibliotheca'
+  # TODO: is it ok to disable csrf_protection?
+  set :protection, :except => [:json_csrf]
 end
+
+use Rack::Session::Cookie
+use OmniAuth::Strategies::Developer
 
 
 class Mumukit::Auth::Token
@@ -59,6 +66,37 @@ end
 
 get '/permissions' do
   {permissions: permissions }
+end
+
+# Omniauth
+auth_callback = lambda do
+  response.set_cookie('mucookie',
+                      :value => Mumukit::Auth::Token.encode(request.env['omniauth.auth'].info),
+                      :domain => '.localmumuki.io',
+                      :path => '/',
+                      :httpOnly => false)
+
+  redirect to(session[:origin])
+end
+
+get '/auth/developer/callback', &auth_callback
+post '/auth/developer/callback', &auth_callback
+
+get '/login' do
+  session[:origin] = params['origin']
+  redirect to('auth/developer')
+end
+
+get '/logout' do
+  response.delete_cookie('mucookie',
+                         :domain => '.localmumuki.io',
+                         :path => '/',
+                         :httpOnly => false)
+  redirect back
+end
+
+get '/auth/failure' do
+  puts params['message']
 end
 
 require_relative './routes/languages'

@@ -14,6 +14,10 @@ gem 'mumukit-bridge', '~> 1.3'
 gem 'mumukit-service', '~> 1.0'
 gem 'mumukit-nuntius', '~> 2.2'
 
+gem 'sinatra-contrib'
+
+gem 'omniauth', '~> 1.2'
+
 gem 'puma'
 
 group :test do
