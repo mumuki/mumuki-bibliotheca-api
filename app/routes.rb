@@ -13,7 +13,9 @@ configure do
 end
 
 use Rack::Session::Cookie
-use OmniAuth::Strategies::Developer
+use OmniAuth::Builder do
+  provider :developer
+end
 
 
 class Mumukit::Auth::Token
