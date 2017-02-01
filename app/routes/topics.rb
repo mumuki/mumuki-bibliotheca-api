@@ -3,7 +3,7 @@ get '/topics' do
 end
 
 get '/topics/writable' do
-  Bibliotheca::Collection::Topics.allowed(permissions).as_json
+  Bibliotheca::Collection::Topics.allowed(current_user.permissions).as_json
 end
 
 get '/topics/:organization/:repository' do

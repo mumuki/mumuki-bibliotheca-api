@@ -214,8 +214,6 @@ describe 'routes' do
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 401
-        expect(last_response.body).to json_eq message: 'missing authorization header'
-
       end
 
       it 'reject invalid tokens' do
@@ -279,6 +277,7 @@ describe 'routes' do
       before { delete "/guides/#{id}" }
 
       it { expect(last_response).to_not be_ok }
+      it { expect(last_response.status).to eq 403 }
       it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
     end
 

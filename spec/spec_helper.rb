@@ -55,24 +55,12 @@ ENV['MUMUKI_BOT_API_TOKEN'] = 'fake_token'
 
 require 'base64'
 Mumukit::Auth.configure do |c|
-  c.client_id = 'foo'
-  c.client_secret = Base64.encode64 'bar'
-  c.daybreak_name = 'test'
-end
-
-RSpec.configure do |config|
-  config.after(:each) do
-    Mumukit::Auth::Store.clean_env!
-  end
+  c.clients.default = {id: 'test-client', secret: 'thisIsATestSecret'}
 end
 
 def build_auth_header(permissions, email='bot@mumuki.org')
-  Mumukit::Auth::Store.set! email, permissions
-  encoded_token = JWT.encode(
-    {aud: Mumukit::Auth.config.client_id,
-     email: email},
-    Mumukit::Auth::Token.decoded_secret)
-  'dummy token ' + encoded_token
+  Bibliotheca::Collection::Users.upsert_permissions! email, permissions
+  Mumukit::Auth::Token.encode email, {}
 end
 
 

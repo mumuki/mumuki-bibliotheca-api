@@ -5,7 +5,7 @@ describe Bibliotheca::IO::GuideReader do
     before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
 
     let(:log) { Bibliotheca::IO::Log.new }
-    let(:repo) { Mumukit::Service::Slug.new('mumuki', 'functional-haskell-guide-1') }
+    let(:repo) { Mumukit::Auth::Slug.new('mumuki', 'functional-haskell-guide-1') }
     let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/full-guide', repo, log) }
     let!(:guide) { reader.read_guide! }
 
