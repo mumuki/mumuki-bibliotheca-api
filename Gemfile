@@ -12,13 +12,11 @@ gem 'mumukit-core', '~> 0.4'
 gem 'mumukit-bridge', '~> 1.3'
 gem 'mumukit-nuntius', '~> 2.2'
 
-gem 'mumukit-auth', path: '../mumukit-auth'
-gem 'mumukit-service', path: '../mumukit-service'
-gem 'mumukit-login', path: '../mumukit-login'
+gem 'mumukit-auth', '~> 6.0'
+gem 'mumukit-service', '~> 2.0'
+gem 'mumukit-login', github: 'mumuki/mumukit-login', tag: 'v1.0.0'
 
 gem 'sinatra-contrib'
-
-gem 'omniauth', '~> 1.2'
 
 gem 'puma'
 

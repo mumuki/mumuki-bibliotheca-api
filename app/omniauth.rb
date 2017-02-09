@@ -1,6 +1,4 @@
-use Rack::Session::Cookie,
-    key: '_mumuki_session',
-    domain: '.localmumuki.io'
+require 'omniauth'
 
 use OmniAuth::Builder do
   Mumukit::Login.configure_omniauth! self

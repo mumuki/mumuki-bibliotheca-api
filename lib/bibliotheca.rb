@@ -8,12 +8,14 @@ require 'mumukit/login'
 module Bibliotheca
   class SchemaDocument < Mumukit::Service::Document
     delegate :defaults, to: :schema
+
     def initialize(json)
       super(json)
       @raw = schema.slice(@raw)
     end
   end
 end
+
 
 require_relative './bibliotheca/database'
 require_relative './bibliotheca/bot'
@@ -41,4 +43,10 @@ end
 Mumukit::Login.configure do |config|
   config.user_class = Bibliotheca::Collection::Users
   config.framework = Mumukit::Login::Framework::Sinatra
+end
+
+class Mumukit::Auth::Slug
+  def bibliotheca_guide_web_hook_url
+    "http://bibliotheca.mumuki.io/guides/import/#{to_s}"
+  end
 end

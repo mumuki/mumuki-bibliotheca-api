@@ -1,9 +1,9 @@
 require 'mumukit/content_type'
 require 'mumukit/service/routes'
-require 'sinatra/cookies'
-require 'omniauth'
 
+require_relative './session_store'
 require_relative './omniauth'
+
 require_relative '../lib/bibliotheca'
 
 configure do
