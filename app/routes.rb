@@ -68,7 +68,8 @@ post '/markdown' do
 end
 
 get '/permissions' do
-  slug
+  authenticate!
+
   {permissions: current_user.permissions}
 end
 

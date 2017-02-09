@@ -12,9 +12,9 @@ gem 'mumukit-core', '~> 0.4'
 gem 'mumukit-bridge', '~> 1.3'
 gem 'mumukit-nuntius', '~> 2.2'
 
-gem 'mumukit-auth', '~> 6.0'
+gem 'mumukit-auth', '~> 6.1'
 gem 'mumukit-service', '~> 2.0'
-gem 'mumukit-login', github: 'mumuki/mumukit-login', tag: 'v1.0.0'
+gem 'mumukit-login', '~> 1.0'
 
 gem 'sinatra-contrib'
 
