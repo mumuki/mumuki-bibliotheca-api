@@ -10,6 +10,8 @@ configure do
   set :app_name, 'bibliotheca'
 end
 
+set :cookie_options, httponly: false, domain: '.localmumuki.io'
+
 Mumukit::Login.configure_login_routes! self
 
 helpers do
