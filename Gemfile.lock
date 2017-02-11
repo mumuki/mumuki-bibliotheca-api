@@ -3,6 +3,7 @@ PATH
   specs:
     mumukit-login (1.0.0)
       addressable
+      mumukit-auth (~> 6.1)
       mumukit-core (~> 0.5)
       omniauth (~> 1.2)
       omniauth-auth0 (~> 1.1)

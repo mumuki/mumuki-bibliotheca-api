@@ -3,14 +3,11 @@ require 'mumukit/service/routes'
 
 require_relative './session_store'
 require_relative './omniauth'
-
 require_relative '../lib/bibliotheca'
 
 configure do
   set :app_name, 'bibliotheca'
 end
-
-set :cookie_options, httponly: false, domain: '.localmumuki.io'
 
 Mumukit::Login.configure_login_routes! self
 
