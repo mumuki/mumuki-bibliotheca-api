@@ -14,7 +14,7 @@ gem 'mumukit-nuntius', '~> 2.2'
 
 gem 'mumukit-auth', '~> 6.1'
 gem 'mumukit-service', '~> 2.0'
-gem 'mumukit-login', path: '../mumukit-login'
+gem 'mumukit-login', github: 'mumuki/mumukit-login', branch: 'feature-sso'
 
 gem 'sinatra-contrib'
 

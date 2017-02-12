@@ -1,5 +1,7 @@
-PATH
-  remote: ../mumukit-login
+GIT
+  remote: git://github.com/mumuki/mumukit-login.git
+  revision: 08dfe239f5d7471819d0a1cd7c4ac6cf193e6bf3
+  branch: feature-sso
   specs:
     mumukit-login (1.0.0)
       addressable
@@ -49,10 +51,10 @@ GEM
     erubis (2.7.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
-    faraday (0.9.1)
+    faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     git (1.2.9.1)
-    hashie (3.5.1)
+    hashie (3.5.3)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.8.0)
@@ -107,9 +109,9 @@ GEM
       rack (>= 1.2, < 3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
-    omniauth (1.4.1)
-      hashie (>= 1.2, < 4)
-      rack (>= 1.0, < 3)
+    omniauth (1.5.0)
+      hashie (~> 3.5.0, < 4)
+      rack (>= 1.6.2, < 3)
     omniauth-auth0 (1.4.2)
       omniauth-oauth2 (~> 1.1)
     omniauth-oauth2 (1.4.0)
