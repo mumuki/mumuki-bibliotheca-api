@@ -28,7 +28,7 @@ class Bibliotheca::Bot
   def register_post_commit_hook!(slug)
     octokit.create_hook(
         slug.to_s, 'web',
-        {url: slug.bibliotehca_guide_web_hook_url, content_type: 'json'},
+        {url: slug.bibliotheca_guide_web_hook_url, content_type: 'json'},
         {events: ['push'],
          active: true})
   rescue => e

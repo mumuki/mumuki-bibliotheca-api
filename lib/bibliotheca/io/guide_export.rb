@@ -10,7 +10,7 @@ module Bibliotheca::IO
     end
 
     def repo
-      @repo ||= Mumukit::Service::Slug.from(guide.slug)
+      @repo ||= Mumukit::Auth::Slug.parse(guide.slug)
     end
 
     def before_run_in_local_repo

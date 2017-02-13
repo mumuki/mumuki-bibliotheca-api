@@ -3,7 +3,7 @@ get '/books' do
 end
 
 get '/books/writable' do
-  Bibliotheca::Collection::Books.allowed(permissions).as_json
+  Bibliotheca::Collection::Books.allowed(current_user.permissions).as_json
 end
 
 

@@ -3,7 +3,7 @@ get '/guides' do
 end
 
 get '/guides/writable' do
-  Bibliotheca::Collection::Guides.allowed(permissions).as_json
+  Bibliotheca::Collection::Guides.allowed(current_user.permissions).as_json
 end
 
 get '/guides/:id/raw' do
@@ -19,7 +19,7 @@ get '/guides/:guide_id/exercises/:exercise_id/test' do
 end
 
 delete '/guides/:id' do
-  protect! :editor
+  authorize! :editor
   Bibliotheca::Collection::Guides.delete!(params['id'])
   {}
 end

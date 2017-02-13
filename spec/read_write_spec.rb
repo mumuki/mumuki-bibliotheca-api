@@ -4,7 +4,7 @@ describe 'read-write' do
   let(:haskell) { build(:haskell) }
   before { Bibliotheca::Collection::Languages.insert!(haskell) }
 
-  let(:repo) { Mumukit::Service::Slug.new('mumuki', 'functional-haskell-guide-1') }
+  let(:repo) { Mumukit::Auth::Slug.new('mumuki', 'functional-haskell-guide-1') }
   let(:export_log) { Bibliotheca::IO::Log.new }
   let(:import_log) { Bibliotheca::IO::Log.new }
   let(:guide) { Bibliotheca::Guide.new(

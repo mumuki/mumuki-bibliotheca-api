@@ -23,6 +23,7 @@ describe 'routes' do
       end
 
       it { expect(last_response).to be_ok }
+      it { expect(last_response.status).to eq 200 }
       it { expect(JSON.parse(last_response.body)['books'].count).to eq 0 }
     end
 
