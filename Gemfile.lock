@@ -1,17 +1,3 @@
-GIT
-  remote: git://github.com/mumuki/mumukit-login.git
-  revision: 08dfe239f5d7471819d0a1cd7c4ac6cf193e6bf3
-  branch: feature-sso
-  specs:
-    mumukit-login (1.0.0)
-      addressable
-      mumukit-auth (~> 6.1)
-      mumukit-core (~> 0.5)
-      omniauth (~> 1.2)
-      omniauth-auth0 (~> 1.1)
-      omniauth-saml (~> 1.6)
-      rack (>= 1.5)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -87,6 +73,14 @@ GEM
     mumukit-core (0.6.0)
       activesupport (>= 4.1)
       i18n (~> 0.7)
+      rack (>= 1.5)
+    mumukit-login (1.2.0)
+      addressable
+      mumukit-auth (~> 6.1)
+      mumukit-core (~> 0.5)
+      omniauth (~> 1.2)
+      omniauth-auth0 (~> 1.1)
+      omniauth-saml (~> 1.6)
       rack (>= 1.5)
     mumukit-nuntius (2.3.1)
       bunny (~> 2.3)
@@ -196,7 +190,7 @@ DEPENDENCIES
   mumukit-bridge (~> 1.3)
   mumukit-content-type (~> 0.4)
   mumukit-core (~> 0.4)
-  mumukit-login!
+  mumukit-login (~> 1.2)
   mumukit-nuntius (~> 2.2)
   mumukit-service (~> 2.0)
   octokit (~> 4.1)
