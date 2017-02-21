@@ -33,11 +33,10 @@ get '/guides/:organization/:repository' do
 end
 
 post '/guides' do
-  upsert! Bibliotheca::Guide, Bibliotheca::Collection::Guides, [Bibliotheca::IO::GuideExport, Bibliotheca::IO::GuideAtheneumExport]
+  upsert! Bibliotheca::Guide, Bibliotheca::Collection::Guides, Bibliotheca::IO::GuideExport
 end
 
 post '/guides/import/:organization/:repository' do
-  exporting [Bibliotheca::IO::GuideAtheneumExport] do
-    Bibliotheca::IO::GuideImport.new(bot: bot, repo: slug).run!
-  end
+  Bibliotheca::IO::GuideImport.new(bot: bot, repo: slug).run!
+  Mumukit::Nuntius.notify_event! :GuideChanged, slug: slug
 end
