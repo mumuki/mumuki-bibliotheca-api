@@ -3,10 +3,6 @@ require 'spec_helper'
 require_relative '../../app/routes'
 
 describe 'routes' do
-  after do
-    Bibliotheca::Database.clean!
-  end
-
   def app
     Sinatra::Application
   end

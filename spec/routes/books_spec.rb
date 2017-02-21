@@ -7,10 +7,6 @@ describe 'routes' do
     Bibliotheca::Collection::Books.insert!(
       build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: %w(bar/baz1 bar/baz2)))[:id] }
 
-  after do
-    Bibliotheca::Database.clean!
-  end
-
   def app
     Sinatra::Application
   end

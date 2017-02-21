@@ -23,8 +23,6 @@ describe 'routes' do
       build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
   end
 
-  after { Bibliotheca::Database.clean! }
-
   def app
     Sinatra::Application
   end

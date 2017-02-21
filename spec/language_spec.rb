@@ -1,11 +1,6 @@
 require 'spec_helper'
 
 describe Bibliotheca::Language do
-
-  before do
-    Bibliotheca::Database.clean!
-  end
-
   describe '#import_from_json!' do
     let(:json) do
       {'name' => 'ruby',

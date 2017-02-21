@@ -2,10 +2,6 @@ require_relative './spec_helper'
 
 describe Bibliotheca::Collection::Users do
 
-  before do
-    Bibliotheca::Database.clean!
-  end
-
   describe 'upsert_permissions!' do
     let(:uid) { 'jimmy@company.com' }
     let(:user) { Bibliotheca::Collection::Users.find_by_uid! uid }
