@@ -1,4 +1,8 @@
 module Bibliotheca::Event
-end
+  extend Mumukit::Nuntius::EventConsumer::HandlerModule
 
-require_relative './event/user_changed'
+  define_handler :UserChanged do |data|
+    user = data[:user]
+    Bibliotheca::Collection::Users.upsert_permissions! user[:uid], user[:permissions]
+  end
+end
