@@ -74,7 +74,7 @@ GEM
       activesupport (>= 4.1)
       i18n (~> 0.7)
       rack (>= 1.5)
-    mumukit-login (1.2.0)
+    mumukit-login (1.2.3)
       addressable
       mumukit-auth (~> 6.1)
       mumukit-core (~> 0.5)
@@ -103,8 +103,8 @@ GEM
       rack (>= 1.2, < 3)
     octokit (4.1.0)
       sawyer (~> 0.6.0, >= 0.5.3)
-    omniauth (1.5.0)
-      hashie (~> 3.5.0, < 4)
+    omniauth (1.6.1)
+      hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
     omniauth-auth0 (1.4.2)
       omniauth-oauth2 (~> 1.1)
@@ -202,4 +202,4 @@ DEPENDENCIES
   sinatra-contrib
 
 BUNDLED WITH
-   1.14.3
+   1.14.4
