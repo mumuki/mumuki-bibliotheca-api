@@ -1,5 +1,10 @@
+require_relative '../events'
+
+logger = Mumukit::Nuntius::Logger
+
 namespace :events do
-  task :listen do
-    Mumukit::Nuntius::EventConsumer.start 'bibliotheca'
+  task listen: :environment do
+    logger.info 'Listening to events'
+    Mumukit::Nuntius::EventConsumer.start!
   end
 end

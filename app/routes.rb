@@ -42,6 +42,7 @@ helpers do
     document = document_class.new(json_body)
     exporting export_class, document: document, bot: bot, author_email: current_user.email do
       collection_class.upsert_by_slug!(slug.to_s, document)
+    end.tap do
       Mumukit::Nuntius.notify_event! "#{document_class.name}Changed", slug: slug
     end
   end

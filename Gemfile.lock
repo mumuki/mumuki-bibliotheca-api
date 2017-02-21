@@ -82,7 +82,7 @@ GEM
       omniauth-auth0 (~> 1.1)
       omniauth-saml (~> 1.6)
       rack (>= 1.5)
-    mumukit-nuntius (3.1.0)
+    mumukit-nuntius (4.0.0)
       bunny (~> 2.3)
       mumukit-core (~> 0.5)
     mumukit-service (2.0.1)
@@ -191,7 +191,7 @@ DEPENDENCIES
   mumukit-content-type (~> 0.4)
   mumukit-core (~> 0.4)
   mumukit-login (~> 1.2)
-  mumukit-nuntius (~> 3.1)
+  mumukit-nuntius (~> 4.0)
   mumukit-service (~> 2.0)
   octokit (~> 4.1)
   puma
