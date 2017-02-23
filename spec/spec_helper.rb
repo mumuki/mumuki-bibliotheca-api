@@ -1,3 +1,4 @@
+ENV['RACK_ENV'] = 'test'
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
@@ -13,8 +14,6 @@ require_relative './factories/topic_factory'
 require_relative './factories/book_factory'
 require_relative './factories/guide_factory'
 
-ENV['RACK_ENV'] = 'test'
-
 Mongo::Logger.logger.level = ::Logger::INFO
 
 RSpec.configure do |config|
@@ -22,7 +21,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.before { Bibliotheca::Database.clean! }
 end
-  
+
 RSpec::Matchers.define :json_eq do |expected_json_hash|
   match do |actual_json|
     expected_json_hash.with_indifferent_access == ActiveSupport::JSON.decode(actual_json)
