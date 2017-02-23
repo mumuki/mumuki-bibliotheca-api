@@ -12,9 +12,6 @@ describe 'routes' do
             locale: 'es',
             slug: 'baz/foo',
             lessons: %w(bar/baz1 bar/baz2)))[:id] }
-  after do
-    Bibliotheca::Database.clean!
-  end
 
   def app
     Sinatra::Application

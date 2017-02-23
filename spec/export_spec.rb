@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe Bibliotheca::IO::GuideExport do
+  let(:haskell) { build(:haskell) }
+  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+
   let(:guide) { create(:guide) }
   let(:bot) { Bibliotheca::Bot.new('bot', 'bot@foo.org', 'asdfgh') }
   let(:export) { Bibliotheca::IO::GuideExport.new(document: guide, bot: bot, author_email: 'johnny.cash@hotmail.com') }

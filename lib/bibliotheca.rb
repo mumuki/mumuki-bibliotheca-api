@@ -29,7 +29,6 @@ require_relative './bibliotheca/language'
 require_relative './bibliotheca/ordering'
 require_relative './bibliotheca/io'
 require_relative './bibliotheca/collection'
-require_relative './bibliotheca/event'
 
 Mumukit::Nuntius.configure do |c|
   c.app_name = 'bibliotheca'

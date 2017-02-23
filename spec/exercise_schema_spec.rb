@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Bibliotheca::Schema::Field do
   let(:exercise) { Mumukit::Service::Document.new(bar: 4) }
 

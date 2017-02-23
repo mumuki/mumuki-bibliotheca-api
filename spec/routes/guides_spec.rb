@@ -23,8 +23,6 @@ describe 'routes' do
       build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
   end
 
-  after { Bibliotheca::Database.clean! }
-
   def app
     Sinatra::Application
   end
@@ -103,7 +101,6 @@ describe 'routes' do
 
       it 'accepts valid requests' do
         expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
-        allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header(writer: '*')
 
@@ -119,7 +116,6 @@ describe 'routes' do
 
       it 'accepts valid requests with narrower permissions' do
         expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
-        allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header(editor: '*')
 
@@ -135,7 +131,6 @@ describe 'routes' do
 
       it 'accepts re posts' do
         allow_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
-        allow_any_instance_of(RestClient::Request).to receive(:execute)
 
         header 'Authorization', build_auth_header(writer: '*')
 

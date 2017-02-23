@@ -15,6 +15,10 @@ module Bibliotheca::Collection
       find_by_uid! profile.uid
     end
 
+    def self.import_from_json!(json)
+      upsert_permissions! json[:uid], json[:permissions]
+    end
+
     private
 
     def self.mongo_collection_name
