@@ -1,3 +1,3 @@
 get '/organization' do
-  Bibliotheca::Collection::Organizations.find_by!(name: 'base').as_json
+  Bibliotheca::Collection::Organizations.base.as_json
 end

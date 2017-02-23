@@ -5,8 +5,7 @@ Mumukit::Nuntius::EventConsumer.handle do
 
   [:OrganizationCreated, :OrganizationChanged].each do |it|
     event it do |payload|
-      organization = payload[:organization]
-      Bibliotheca::Collection::Organizations.upsert! organization if organization[:name] == 'base'
+      Bibliotheca::Collection::Organizations.import_from_json! payload[:organization]
     end
   end
 end
