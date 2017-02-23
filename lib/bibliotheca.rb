@@ -20,6 +20,7 @@ end
 require_relative './bibliotheca/database'
 require_relative './bibliotheca/bot'
 require_relative './bibliotheca/schema'
+require_relative './bibliotheca/organization'
 require_relative './bibliotheca/exercise'
 require_relative './bibliotheca/guide'
 require_relative './bibliotheca/book'
