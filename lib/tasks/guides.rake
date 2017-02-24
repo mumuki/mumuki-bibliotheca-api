@@ -1,5 +1,6 @@
 namespace :guides do
   def guides_for_organization(org)
+    Octokit.auto_paginate = true
     Octokit.repos(org).map(&:full_name).select { |it| it =~ /guia/ }
   end
 
