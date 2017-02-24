@@ -13,8 +13,12 @@ module Bibliotheca::IO
       end
     end
 
+    def can_run?
+      true
+    end
+
     def run!
-      return unless bot.authenticated?
+      return unless can_run?
 
       puts "#{self.class.name} : running before run hook for repository #{repo}"
       before_run_in_local_repo

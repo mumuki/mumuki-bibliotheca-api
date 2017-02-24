@@ -13,6 +13,10 @@ module Bibliotheca::IO
       @repo ||= Mumukit::Auth::Slug.parse(guide.slug)
     end
 
+    def can_run?
+      bot.authenticated?
+    end
+
     def before_run_in_local_repo
       bot.ensure_exists! repo
     end
