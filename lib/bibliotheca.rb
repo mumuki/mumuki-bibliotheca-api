@@ -36,8 +36,6 @@ Mumukit::Nuntius.configure do |c|
 end
 
 Mumukit::Auth.configure do |c|
-  c.client_id = Mumukit::Service::Env.auth0_client_id
-  c.client_secret = Mumukit::Service::Env.auth0_client_secret
 end
 
 Mumukit::Login.configure do |config|
