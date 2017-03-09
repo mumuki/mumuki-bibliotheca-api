@@ -66,6 +66,14 @@ post '/markdown' do
   {markdown: Mumukit::ContentType::Markdown.to_html(json_body['markdown'])}
 end
 
+post '/markdowns' do
+  json_body.with_indifferent_access.tap do |guide|
+    guide[:exercises].each do |exercise|
+      exercise[:description] = Mumukit::ContentType::Markdown.to_html(exercise[:description])
+    end
+  end
+end
+
 get '/permissions' do
   authenticate!
 
