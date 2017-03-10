@@ -11,22 +11,22 @@ describe Bibliotheca::Guide do
      language: 'haskell',
      locale: 'en',
      exercises: [
-         {name: 'Bar',
-          description: 'a description',
-          test: 'foo bar',
-          layout: 'input_bottom',
-          id: 1},
+       {name: 'Bar',
+        description: 'a description',
+        test: 'foo bar',
+        layout: 'input_bottom',
+        id: 1},
 
-         {type: 'problem',
-          name: 'Foo',
-          tag_list: %w(foo bar),
-          id: 4},
+       {type: 'problem',
+        name: 'Foo',
+        tag_list: %w(foo bar),
+        id: 4},
 
-         {type: 'playground',
-          name: 'Baz',
-          tag_list: %w(baz bar),
-          layout: 'input_bottom',
-          id: 2}]} }
+       {type: 'playground',
+        name: 'Baz',
+        tag_list: %w(baz bar),
+        layout: 'input_bottom',
+        id: 2}]} }
 
 
   context 'stringified keys' do
@@ -90,25 +90,44 @@ describe Bibliotheca::Guide do
     end
 
     context 'run tests' do
-      let(:exercise) {{id: 1, name: 'foo', type: 'problem', layout: 'input_right',
-                       description: 'foo', test: %Q{describe "foo" $ do\n it "eq 1" $ do\n  foo = 1},
-                       solution: 'foo = 1', expectations: [{binding: 'foo', inspection: 'HasBinding'}],
-                       tag_list: [], extra: 'bar = 2'}}
+      let(:exercise) { {id: 1, name: 'foo', type: 'problem', layout: 'input_right',
+                        description: 'foo', test: %Q{describe "foo" $ do\n it "eq 1" $ do\n  foo = 1},
+                        solution: 'foo = 1', expectations: [{binding: 'foo', inspection: 'HasBinding'}],
+                        tag_list: [], extra: 'bar = 2'} }
 
-      let(:guide) { build(:guide, { extra: 'baz = 3', exercises: [exercise]}) }
+      let(:guide) { build(:guide, {extra: 'baz = 3', exercises: [exercise]}) }
 
-      let(:response) {{status: :passed}}
-      let(:request) {{test: exercise[:test],
-                      extra: "baz = 3\nbar = 2",
-                      content: exercise[:solution],
-                      expectations: exercise[:expectations]}}
+      let(:response) { {status: :passed} }
+      let(:request) { {test: exercise[:test],
+                       extra: "baz = 3\nbar = 2",
+                       content: exercise[:solution],
+                       expectations: exercise[:expectations]} }
 
       before do
         allow_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).with(request).and_return(response)
       end
 
-      it { expect(guide.run_tests(1)).to eq(response)  }
-      it { expect{ guide.run_tests(2) }.to raise_error(Bibliotheca::Collection::ExerciseNotFoundError) }
+      it { expect(guide.run_tests(1)).to eq(response) }
+      it { expect { guide.run_tests(2) }.to raise_error(Bibliotheca::Collection::ExerciseNotFoundError) }
+    end
+  end
+
+  describe 'markdownified' do
+    context 'description' do
+      let(:guide) { build(:guide, description: '`foo = (+)`') }
+      it { expect(guide.markdownified.description).to eq("<p><code>foo = (+)</code></p>\n") }
+    end
+    context 'corollary' do
+      let(:guide) { build(:guide, corollary: '[Google](https://google.com)') }
+      it { expect(guide.markdownified.corollary).to eq("<p><a href=\"https://google.com\">Google</a></p>\n") }
+    end
+    context 'teacher_info' do
+      let(:guide) { build(:guide, teacher_info: '**foo**') }
+      it { expect(guide.markdownified.teacher_info).to eq("<p><strong>foo</strong></p>\n") }
+    end
+    context 'exercises' do
+      let(:guide) { build(:guide, exercises: [{description: '**foo**'}]) }
+      it { expect(guide.markdownified.exercises.first.description).to eq("<p><strong>foo</strong></p>\n") }
     end
   end
 end

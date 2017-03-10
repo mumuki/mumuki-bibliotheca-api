@@ -45,8 +45,7 @@ module Bibliotheca
         guide.description = Mumukit::ContentType::Markdown.to_html(guide.description)
         guide.corollary = Mumukit::ContentType::Markdown.to_html(guide.corollary)
         guide.teacher_info = Mumukit::ContentType::Markdown.to_html(guide.teacher_info)
-        guide.hint = Mumukit::ContentType::Markdown.to_html(guide.hint)
-        guide.exercises.each &:markdownified
+        guide.exercises.map! &:markdownified
       end
     end
 
