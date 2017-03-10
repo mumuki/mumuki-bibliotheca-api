@@ -28,13 +28,13 @@ module Bibliotheca
       value = choices.each_with_index
                 .map { |choice, index| choice.merge('index' => index.to_s) }
                 .select { |choice| choice['checked'] }
-                .map { |choice| choice['index']}.join(':')
-      self.test = { 'equal' => value }.to_yaml
+                .map { |choice| choice['index'] }.join(':')
+      self.test = {'equal' => value}.to_yaml
     end
 
     def single_choices_to_test!
-      choice = choices.find { |choice| choice['checked']}
-      self.test = { 'equal' =>  choice['value'] }.to_yaml
+      choice = choices.find { |choice| choice['checked'] }
+      self.test = {'equal' => choice['value']}.to_yaml
     end
 
     def multiple_choice?
@@ -43,6 +43,15 @@ module Bibliotheca
 
     def single_choice?
       editor == 'single_choice'
+    end
+
+    def markdownified
+      self.dup.tap do |exercise|
+        exercise.hint = Mumukit::ContentType::Markdown.to_html(exercise.hint)
+        exercise.corollary = Mumukit::ContentType::Markdown.to_html(exercise.corollary)
+        exercise.description = Mumukit::ContentType::Markdown.to_html(exercise.description)
+        exercise.teacher_info = Mumukit::ContentType::Markdown.to_html(exercise.teacher_info)
+      end
     end
 
     def errors
