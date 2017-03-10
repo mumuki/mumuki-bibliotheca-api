@@ -28,6 +28,10 @@ get '/guides/:organization/:repository/raw' do
   Bibliotheca::Collection::Guides.find_by_slug!(slug.to_s).raw
 end
 
+get '/guides/:organization/:repository/markdown' do
+  Bibliotheca::Collection::Guides.find_by_slug!(slug.to_s).markdownified.as_json
+end
+
 get '/guides/:organization/:repository' do
   Bibliotheca::Collection::Guides.find_by_slug!(slug.to_s).as_json
 end
