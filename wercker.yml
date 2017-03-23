@@ -13,8 +13,8 @@ build:
       name: rspec
       code: bundle exec rspec
 
-deploy:
-  escualo:
+ikumi-deploy:
+  steps:
   - add-ssh-key:
       keyname: ESCUALO_RSA
   - script:
