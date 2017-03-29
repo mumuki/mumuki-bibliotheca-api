@@ -45,6 +45,6 @@ end
 
 class Mumukit::Auth::Slug
   def bibliotheca_guide_web_hook_url
-    "http://bibliotheca.mumuki.io/guides/import/#{to_s}"
+    "http://bibliotheca-api.mumuki.io/guides/import/#{to_s}"
   end
 end
