@@ -8,6 +8,7 @@ module Bibliotheca::Schema::Topic
 
       {name: :name},
       {name: :locale},
+      {name: :appendix},
       {name: :description},
       {name: :teacher_info},
 
