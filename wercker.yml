@@ -14,7 +14,7 @@ build:
       code: bundle exec rspec
 
 ikumi-deploy:
-  escualo:
+  steps:
   - add-ssh-key:
       keyname: ESCUALO_RSA
   - script:
