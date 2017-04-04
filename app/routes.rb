@@ -18,6 +18,10 @@ helpers do
   Mumukit::Login.configure_login_controller! self
 end
 
+before do
+  I18n.locale = 'en' #TODO: Remove hardcoded locale
+end
+
 helpers do
   def authenticate!
     halt 401 unless current_user?
@@ -33,6 +37,10 @@ helpers do
 
   def subject
     Bibliotheca::Collection::Guides.find(params[:id])
+  end
+
+  def login_settings
+    Mumukit::Login::Settings.new Mumukit::Login::Settings.login_methods #TODO: Get login methods from base organization
   end
 
   def route_slug_parts
