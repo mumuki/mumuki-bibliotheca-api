@@ -26,8 +26,8 @@ GEM
     bson (4.2.1)
     bson_ext (1.5.1)
     builder (3.2.2)
-    bunny (2.6.3)
-      amq-protocol (>= 2.0.1)
+    bunny (2.6.5)
+      amq-protocol (>= 2.1.0)
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
     diff-lcs (1.2.5)
@@ -82,7 +82,7 @@ GEM
       omniauth-auth0 (~> 1.1)
       omniauth-saml (~> 1.6)
       rack (>= 1.5)
-    mumukit-nuntius (4.0.0)
+    mumukit-nuntius (4.1.2)
       bunny (~> 2.3)
       mumukit-core (~> 0.5)
     mumukit-service (2.0.1)
@@ -202,4 +202,4 @@ DEPENDENCIES
   sinatra-contrib
 
 BUNDLED WITH
-   1.14.4
+   1.14.6
