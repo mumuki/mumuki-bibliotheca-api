@@ -33,7 +33,7 @@ require_relative './bibliotheca/collection'
 
 module Mumukit::Nuntius
   def self.notify_content_change_event!(content_class, slug)
-    notify_event! content_change_event_name(content_class), slug: slug
+    notify_event! content_change_event_name(content_class), slug: slug.to_s
   end
 
   def self.content_change_event_name(content_class)
