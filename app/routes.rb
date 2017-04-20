@@ -51,7 +51,7 @@ helpers do
     exporting export_class, document: document, bot: bot, author_email: current_user.email do
       collection_class.upsert_by_slug!(slug.to_s, document)
     end.tap do
-      Mumukit::Nuntius.notify_event! "#{document_class.name}Changed", slug: slug
+      Mumukit::Nuntius.notify_content_change_event! document_class, slug
     end
   end
 

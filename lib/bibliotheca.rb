@@ -31,6 +31,16 @@ require_relative './bibliotheca/ordering'
 require_relative './bibliotheca/io'
 require_relative './bibliotheca/collection'
 
+module Mumukit::Nuntius
+  def self.notify_content_change_event!(content_class, slug)
+    notify_event! content_change_event_name(content_class), slug: slug
+  end
+
+  def self.content_change_event_name(content_class)
+    "#{content_class.name.demodulize}Changed"
+  end
+end
+
 Mumukit::Nuntius.configure do |c|
   c.app_name = 'bibliotheca'
 end
