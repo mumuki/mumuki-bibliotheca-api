@@ -4,6 +4,7 @@ require 'mumukit/service'
 require 'mumukit/bridge'
 require 'mumukit/nuntius'
 require 'mumukit/login'
+require 'mumukit/platform'
 
 module Bibliotheca
   class SchemaDocument < Mumukit::Service::Document
@@ -46,6 +47,11 @@ Mumukit::Nuntius.configure do |c|
 end
 
 Mumukit::Auth.configure do |c|
+end
+
+Mumukit::Platform.configure do |config|
+  config.application = Mumukit::Platform.bibliotheca_api
+  config.web_framework = Mumukit::Platform::WebFramework::Sinatra
 end
 
 Mumukit::Login.configure do |config|
