@@ -5,14 +5,23 @@ gem 'rake'
 gem 'git'
 gem 'octokit', '~> 4.1'
 
-gem 'mumukit-content-type', '~> 0.4', require: 'mumukit/content_type'
-gem 'mumukit-core', '~> 0.4'
-gem 'mumukit-bridge', '~> 1.3'
-gem 'mumukit-nuntius', '~> 4.0'
 
-gem 'mumukit-auth', '~> 6.1'
-gem 'mumukit-service', '~> 2.0'
-gem 'mumukit-login', '~> 2.0'
+gem 'mumukit-content-type',
+    git: 'https://github.com/mumuki/mumukit-content-type',
+    require: 'mumukit/content_type',
+    ref: 'v1.0.0-mumuki-rouge'
+gem 'rouge',
+    git: 'https://github.com/mumuki/rouge',
+    ref: '5a8db3387f3a67232569969cd3da40ee04eb9dc3'
+gem 'mumukit-core', '~> 1.0'
+gem 'mumukit-bridge', '~> 3.0'
+gem 'mumukit-nuntius', '~> 5.0'
+
+gem 'mumukit-auth', '~> 7.0'
+gem 'mumukit-service', '~> 3.0'
+gem 'mumukit-login', '~> 3.0'
+
+gem 'mumukit-platform', '~> 0.1'
 
 gem 'sinatra-contrib'
 
