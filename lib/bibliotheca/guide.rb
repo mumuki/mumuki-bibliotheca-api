@@ -57,6 +57,15 @@ module Bibliotheca
       runner.run_tests!(test: exercise.test, extra: "#{self.extra}\n#{exercise.extra}",
                         content: exercise.solution, expectations: self.expectations + exercise.expectations)
     end
+
+    def export!(author_email)
+      exercises.each { |e| e.expectations = e.expectations.as_json if e.expectations }
+      Bibliotheca::IO::GuideExport.new(slug: slug,
+                                       document: self,
+                                       author_email: author_email,
+                                       bot: Bibliotheca::Bot.from_env).run!
+
+    end
   end
 
 end
