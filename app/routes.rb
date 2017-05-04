@@ -7,6 +7,8 @@ require_relative '../lib/bibliotheca'
 
 configure do
   set :app_name, 'bibliotheca'
+  set :static, true
+  set :public_folder, 'public'
 end
 
 Mumukit::Login.configure_login_routes! self
