@@ -11,7 +11,7 @@ describe Bibliotheca::IO::GuideReader do
 
     before { reader.read_exercises { |it| results << it } }
 
-    it { expect(results.size).to eq 4 }
+    it { expect(results.size).to eq 5 }
     it { expect(log.messages).to eq ['Description does not exist for sample_broken'] }
   end
 
@@ -23,7 +23,7 @@ describe Bibliotheca::IO::GuideReader do
       let(:guide) { reader.read_guide! }
 
       it { expect(guide.slug).to eq 'mumuki/functional-haskell-guide-1'}
-      it { expect(guide.exercises.count).to eq 4 }
+      it { expect(guide.exercises.count).to eq 5 }
       it { expect(guide.description).to eq "Awesome guide\n" }
       it { expect(guide.language.name).to eq 'haskell' }
       it { expect(guide.locale).to eq 'en' }
@@ -77,6 +77,21 @@ describe Bibliotheca::IO::GuideReader do
         it { expect(imported_exercise).to_not be nil }
         it { expect(imported_exercise.name).to eq 'playground' }
         it { expect(imported_exercise.type).to eq 'playground' }
+
+      end
+
+      context 'when importing reading' do
+        let(:imported_exercise) { guide.find_exercise_by_id(6) }
+
+        it { expect(imported_exercise).to_not be nil }
+        it { expect(imported_exercise.name).to eq 'reading' }
+        it { expect(imported_exercise.type).to eq 'reading' }
+        it { expect(imported_exercise.test).to be_blank}
+        it { expect(imported_exercise.expectations).to be_blank }
+        it { expect(imported_exercise.hint).to be_blank }
+        it { expect(imported_exercise.corollary).to be_blank }
+        it { expect(imported_exercise.extra).to be_blank }
+        it { expect(imported_exercise.description).to eq "Now read the following text\n"}
 
       end
     end
