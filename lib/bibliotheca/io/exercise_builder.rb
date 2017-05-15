@@ -7,7 +7,7 @@ module Bibliotheca::IO
     end
 
     def expectations_list
-      if type == :playground
+      if [:playground, :reading].include? type
         nil
       else
         (expectations || []).map do |e|
