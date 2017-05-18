@@ -34,6 +34,7 @@ describe Bibliotheca::Exercise do
 
 
   let(:single_json_text_in_guide) { {
+    guide: build(:guide, language: 'text'),
     type: 'problem',
     name: 'Single',
     editor: 'single_choice',
@@ -68,11 +69,14 @@ describe Bibliotheca::Exercise do
   end
 
   describe 'process single choices with text language in guide' do
-    it { expect(Bibliotheca::Exercise.new(single_json_text_in_guide).type).to eq 'problem' }
-    it { expect(Bibliotheca::Exercise.new(single_json_text_in_guide).name).to eq 'Single' }
-    it { expect(Bibliotheca::Exercise.new(single_json_text_in_guide).editor).to eq 'single_choice' }
-    it { expect(Bibliotheca::Exercise.new(single_json_text_in_guide).choices).to eq single_json_text_in_guide['choices'] }
-    it { expect(Bibliotheca::Exercise.new(single_json_text_in_guide).test).to eq "---\nequal: foo\n" }
+    subject { Bibliotheca::Exercise.new(single_json_text_in_guide) }
+    it { expect(subject.type).to eq 'problem' }
+    it { expect(subject.name).to eq 'Single' }
+    it { expect(subject.language).to be nil }
+    it { expect(subject.effective_language_name).to eq 'text' }
+    it { expect(subject.editor).to eq 'single_choice' }
+    it { expect(subject.choices).to eq single_json_text_in_guide['choices'] }
+    it { expect(subject.test).to eq "---\nequal: foo\n" }
   end
 
 
