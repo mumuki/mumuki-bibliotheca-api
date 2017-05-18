@@ -45,27 +45,30 @@ describe Bibliotheca::Exercise do
 
 
   describe 'process multiple choices' do
-    it { expect(Bibliotheca::Exercise.new(multiple_json).type).to eq 'problem' }
-    it { expect(Bibliotheca::Exercise.new(multiple_json).name).to eq 'Multiple' }
-    it { expect(Bibliotheca::Exercise.new(multiple_json).editor).to eq 'multiple_choice' }
-    it { expect(Bibliotheca::Exercise.new(multiple_json).choices).to eq multiple_json['choices'] }
-    it { expect(Bibliotheca::Exercise.new(multiple_json).test).to eq "---\nequal: '0:2'\n" }
+    subject { Bibliotheca::Exercise.new(multiple_json) }
+    it { expect(subject.type).to eq 'problem' }
+    it { expect(subject.name).to eq 'Multiple' }
+    it { expect(subject.editor).to eq 'multiple_choice' }
+    it { expect(subject.choices).to eq multiple_json['choices'] }
+    it { expect(subject.test).to eq "---\nequal: '0:2'\n" }
   end
 
   describe 'process single choices with non-text language' do
-    it { expect(Bibliotheca::Exercise.new(single_json).type).to eq 'problem' }
-    it { expect(Bibliotheca::Exercise.new(single_json).name).to eq 'Single' }
-    it { expect(Bibliotheca::Exercise.new(single_json).editor).to eq 'single_choice' }
-    it { expect(Bibliotheca::Exercise.new(single_json).choices).to eq single_json['choices'] }
-    it { expect(Bibliotheca::Exercise.new(single_json).test).to eq "foo" }
+    subject { Bibliotheca::Exercise.new(single_json) }
+    it { expect(subject.type).to eq 'problem' }
+    it { expect(subject.name).to eq 'Single' }
+    it { expect(subject.editor).to eq 'single_choice' }
+    it { expect(subject.choices).to eq single_json['choices'] }
+    it { expect(subject.test).to eq "foo" }
   end
 
   describe 'process single choices with text language' do
-    it { expect(Bibliotheca::Exercise.new(single_json_text).type).to eq 'problem' }
-    it { expect(Bibliotheca::Exercise.new(single_json_text).name).to eq 'Single' }
-    it { expect(Bibliotheca::Exercise.new(single_json_text).editor).to eq 'single_choice' }
-    it { expect(Bibliotheca::Exercise.new(single_json_text).choices).to eq single_json_text['choices'] }
-    it { expect(Bibliotheca::Exercise.new(single_json_text).test).to eq "---\nequal: foo\n" }
+    subject { Bibliotheca::Exercise.new(single_json_text) }
+    it { expect(subject.type).to eq 'problem' }
+    it { expect(subject.name).to eq 'Single' }
+    it { expect(subject.editor).to eq 'single_choice' }
+    it { expect(subject.choices).to eq single_json_text['choices'] }
+    it { expect(subject.test).to eq "---\nequal: foo\n" }
   end
 
   describe 'process single choices with text language in guide' do
