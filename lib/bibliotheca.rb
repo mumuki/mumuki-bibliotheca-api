@@ -17,6 +17,12 @@ module Bibliotheca
   end
 end
 
+class Hash
+  def indifferent_delete(key)
+    [delete(key.to_sym), delete(key.to_s)].compact.first
+  end
+end
+
 
 require_relative './bibliotheca/database'
 require_relative './bibliotheca/bot'

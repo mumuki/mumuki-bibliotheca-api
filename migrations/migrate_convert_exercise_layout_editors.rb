@@ -19,7 +19,7 @@ def do_migrate!
       exercise.layout = new_options[:layout]
       exercise.editor = new_options[:editor]
 
-      if exercise.effective_language_name(guide) == 'text'
+      if exercise.effective_language_name == 'text'
         exercise.editor = 'text'
       end
       puts '...updated!'
