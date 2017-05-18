@@ -5,7 +5,7 @@ module Bibliotheca
     end
 
     def transforms(original)
-      {exercises: original[:exercises].map { |e| Exercise.new e },
+      {exercises: original[:exercises].map { |e| Exercise.new e.merge(guide: self) },
        language: original[:language].try { |it| Bibliotheca::Collection::Languages.find_by!(name: it) }}
     end
 

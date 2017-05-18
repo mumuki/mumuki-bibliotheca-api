@@ -1,6 +1,7 @@
 module Bibliotheca
   class Exercise < Bibliotheca::SchemaDocument
     def initialize(e)
+      @guide = e.delete(:guide)
       super(e)
       process_choices!
     end
@@ -10,7 +11,7 @@ module Bibliotheca
     end
 
     def effective_language_name(guide)
-      language || guide.language.name
+      language || @guide&.language&.name
     end
 
     def text?
