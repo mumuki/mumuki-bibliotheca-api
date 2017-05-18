@@ -12,4 +12,10 @@ FactoryGirl.define do
     extension 'hs'
     test_extension 'hs'
   end
+
+  factory :text, parent: :language do
+    name 'text'
+    extension 'yml'
+    test_extension 'yml'
+  end
 end

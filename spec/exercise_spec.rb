@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe Bibliotheca::Exercise do
+  before { Bibliotheca::Collection::Languages.insert!(build(:text)) }
+
+  let(:guide) { build(:guide, language: 'text') }
+
   let(:multiple_json) { {
+    guide: guide,
     type: 'problem',
     name: 'Multiple',
     language: 'text',
@@ -12,6 +17,7 @@ describe Bibliotheca::Exercise do
     id: 2}.deep_stringify_keys }
 
   let(:single_json) { {
+    guide: guide,
     type: 'problem',
     name: 'Single',
     language: 'haskell',
@@ -23,6 +29,7 @@ describe Bibliotheca::Exercise do
     id: 2}.deep_stringify_keys }
 
   let(:single_json_text) { {
+    guide: guide,
     type: 'problem',
     name: 'Single',
     language: 'text',
@@ -34,7 +41,7 @@ describe Bibliotheca::Exercise do
 
 
   let(:single_json_text_in_guide) { {
-    guide: build(:guide, language: 'text'),
+    guide: guide,
     type: 'problem',
     name: 'Single',
     editor: 'single_choice',
