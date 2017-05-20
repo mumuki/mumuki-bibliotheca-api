@@ -11,7 +11,7 @@ echo '        \/            \/           \/          \/     \/         \/       
 echo ''
 
 echo "[MumukiDevstart] Installing dependencies...."
-bundle install
+bundle install --quiet
 
 echo "[MumukiDevstart] Starting server...."
 bundle exec puma
