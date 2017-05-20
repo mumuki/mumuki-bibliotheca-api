@@ -22,7 +22,7 @@ Bibliotheca is a service for storing Mumuki content - Books, Topics and Guides. 
 
 1. Install [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 2. Run `curl https://raw.githubusercontent.com/mumuki/mumuki-devinstaller/master/install.sh | bash`
-3. `cd mumuki && vagrant ssh` and then - **inside Vagrant VM** - `cd /vagrant/bibliotheca`
+3. `cd mumuki && vagrant ssh` and then - **inside Vagrant VM** - `cd /vagrant/bibliotheca-api`
 4. Go to step Install Section
 
 ### 1. Install essentials and base libraries
