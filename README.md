@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/mumuki/mumuki-bibliotheca-api.svg?branch=master)](https://travis-ci.org/mumuki/mumuki-bibliotheca-api)
+[![Code Climate](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api/badges/gpa.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api)
+[![Test Coverage](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api/badges/coverage.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api)
+[![Issue Count](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api/badges/issue_count.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api)
 
 # Mumuki Bibliotheca API
 > Storage and formatting API for guides
