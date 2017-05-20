@@ -61,12 +61,12 @@ gem install escualo
 
 ```bash
 git clone https://github.com/mumuki/mumuki-bibliotheca-api bibliotheca-api
-cd bibliotheca
+cd bibliotheca-api
 ```
 
-## Installing and running
+## Installing and Running
 
-## Quick start
+### Quick start
 
 If you want to start the server quickly in developer environment,
 you can just do the following:
@@ -77,7 +77,7 @@ you can just do the following:
 
 This will install your dependencies and boot the server.
 
-## Installing the server
+### Installing the server
 
 If you just want to install dependencies, just do:
 
@@ -85,7 +85,7 @@ If you just want to install dependencies, just do:
 bundle install
 ```
 
-## Running the server
+### Running the server
 
 You can boot the server by using the standard rackup command:
 
@@ -129,10 +129,10 @@ bundle exec rake guides:import[<a github organization>]
 bundle exec rake languages:import
 ```
 
-## Running migrations
+## Running Migrations
 
-```
-# migration_name is the name of the migration file in ./migrations/, without extension and the "migrate_" prefeix
+```bash
+# migration_name is the name of the migration file in ./migrations/, without extension and the "migrate_" prefix
 bundle exec rake db:migrate[<migration_name>]
 ```
 
