@@ -18,11 +18,13 @@ module Bibliotheca
     end
 
     def errors
-      puts '**********************************************'
-      puts "Encoding of description: #{description.encoding.name}"
-      puts "Encoding: #{__ENCODING__.name}"
-      puts "Ruby version: #{RUBY_VERSION}"
-      puts '**********************************************'
+      if ENV['MUMUKI_LOG_ENCODING'].present?
+        puts '**********************************************'
+        puts "Encoding of description: #{description.encoding.name}"
+        puts "Encoding: #{__ENCODING__.name}"
+        puts "Ruby version: #{RUBY_VERSION}"
+        puts '**********************************************'
+      end
       [
         ("Unrecognized guide type #{type}" unless [nil, 'practice', 'learning'].include? type),
         ("Beta flag must be boolean" unless [nil, true, false].include? beta),
