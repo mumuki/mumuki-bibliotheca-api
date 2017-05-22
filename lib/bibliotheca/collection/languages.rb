@@ -13,7 +13,7 @@ module Bibliotheca::Collection
     end
 
     def self.import!(url)
-      import_from_json! Mumukit::Bridge::Runner.new(url).info.merge(url: url)
+      import_from_json! Mumukit::Bridge::Runner.new(url).info.merge('url' => url)
     end
 
     def self.import_from_json!(language_json)

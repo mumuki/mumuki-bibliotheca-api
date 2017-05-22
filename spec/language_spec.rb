@@ -34,10 +34,11 @@ describe Bibliotheca::Language do
          'version' => '2.13',
          'test_extension' => '.rb'
        },
-       'url' => 'http://ruby.runners.mumuki.io'
+       'url' => 'http://ruby.runners.mumuki.io/info'
       }
     end
-    before { Bibliotheca::Collection::Languages.import_from_json! json }
+    before { allow_any_instance_of(Mumukit::Bridge::Runner).to receive(:info).and_return(json) }
+    before { Bibliotheca::Collection::Languages.import! 'http://ruby.runners.mumuki.io' }
     let(:imported_language) { Bibliotheca::Collection::Languages.find_by! name: 'ruby' }
 
     it { expect(Bibliotheca::Collection::Languages.count).to eq 1 }
