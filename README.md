@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/mumuki/mumuki-bibliotheca-api.svg?branch=master)](https://travis-ci.org/mumuki/mumuki-bibliotheca-api)
+[![Code Climate](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api/badges/gpa.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api)
+[![Test Coverage](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api/badges/coverage.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api)
+[![Issue Count](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api/badges/issue_count.svg)](https://codeclimate.com/github/mumuki/mumuki-bibliotheca-api)
 
 # Mumuki Bibliotheca API
 > Storage and formatting API for guides
@@ -13,21 +16,21 @@ Bibliotheca is a service for storing Mumuki content - Books, Topics and Guides. 
 * Pemissions validation
 * Optional changes notifications to Aheneum
 
-## Installing
+## Preparing environment
 
 ### TL;DR install
 
 1. Install [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-2. Run `curl https://raw.githubusercontent.com/mumuki/mumuki-development-installer/master/install.sh | bash`
-3. `cd mumuki && vagrant ssh` and then - **inside Vagrant VM** - `cd /vagrant/bibliotheca`
-4. Go to step 5
+2. Run `curl https://raw.githubusercontent.com/mumuki/mumuki-devinstaller/master/install.sh | bash`
+3. `cd mumuki && vagrant ssh` and then - **inside Vagrant VM** - `cd /vagrant/bibliotheca-api`
+4. Go to [Installing and Running](#installing-and-running)
 
 ### 1. Install essentials and base libraries
 
 > First, we need to install some software: MongoDB and some common Ruby on Rails native dependencies
 
 1. Follow [MongoDB installation guide](https://docs.mongodb.com/v3.2/tutorial/install-mongodb-on-ubuntu/)
-2. Run: 
+2. Run:
 
 ```bash
 sudo apt-get install autoconf curl git build-essential libssl-dev autoconf bison libreadline6 libreadline6-dev zlib1g zlib1g-dev
@@ -55,38 +58,62 @@ gem install bundler
 gem install escualo
 ```
 
-### 4. Set development variables
-
-```bash
-echo "MUMUKI_ATHENEUM_URL=... \
-      MUMUKI_ATHENEUM_CLIENT_SECRET=... \
-      MUMUKI_ATHENEUM_CLIENT_ID=... \
-      MUMUKI_BOT_USERNAME=... \
-      MUMUKI_BOT_EMAIL=... \
-      MUMUKI_BOT_API_TOKEN=... \
-      MUMUKI_AUTH0_CLIENT_ID=... \
-      MUMUKI_AUTH0_CLIENT_SECRET=... \" >> ~/.bashrc # or .bash_profile
-```
-
-### 5. Clone this repository
+### 4. Clone this repository
 
 > Because, err... we need to clone this repostory before developing it :stuck_out_tongue:
 
 ```bash
-git clone https://github.com/mumuki/mumuki-bibliotheca
-cd mumuki-bibliotheca
+git clone https://github.com/mumuki/mumuki-bibliotheca-api bibliotheca-api
+cd bibliotheca-api
 ```
 
-### 6. Install and setup database
+## Installing and Running
+
+### Quick start
+
+If you want to start the server quickly in developer environment,
+you can just do the following:
 
 ```bash
+./devstart
+```
+
+This will install your dependencies and boot the server.
+
+### Installing the server
+
+If you just want to install dependencies, just do:
+
+```
 bundle install
 ```
 
-## Running
+### Running the server
 
-```bash
+You can boot the server by using the standard rackup command:
+
+```
+# using defaults from config/puma.rb and rackup default port 9292
 bundle exec rackup
+
+# changing port
+bundle exec rackup -p 8080
+
+# changing threads count
+MUMUKI_BIBLIOTHECA_API_THREADS=30 bundle exec rackup
+```
+
+Or you can also start it with `puma` command, which gives you more control:
+
+```
+# using defaults from config/puma.rb
+bundle exec puma
+
+# changing ports and threads count, using puma-specific options:
+bundle exec puma -t 2:30 -p 8080
+
+# changing ports and threads count, using environment variables:
+MUMUKI_BIBLIOTHECA_API_PORT=8080 MUMUKI_BIBLIOTHECA_API_THREADS=30 bundle exec puma
 ```
 
 ## Running tests
@@ -103,14 +130,16 @@ bundle exec rake guides:import[<a github organization>]
 
 # import languages from http://thesaurus.mumuki.io
 bundle exec rake languages:import
+```
 
-# running migrations
+## Running Migrations
 
-# migration_name is the name of the migration file in ./migrations/, without extension and the "migrate_" prefeix
+```bash
+# migration_name is the name of the migration file in ./migrations/, without extension and the "migrate_" prefix
 bundle exec rake db:migrate[<migration_name>]
 ```
 
-## See also 
+## See also
 
 [Bibliotheca Web Client](https://github.com/mumuki/mumuki-bibliotheca)
 
