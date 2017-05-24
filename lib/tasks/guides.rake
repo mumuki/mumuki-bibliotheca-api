@@ -12,7 +12,7 @@ namespace :guides do
   end
 
   task :import, [:organization, :url] do |_t, args|
-    args.with_defaults(url: 'http://localhost:9292')
+    args.with_defaults(url: 'http://localhost:3004')
 
     org = args[:organization]
     url = args[:url]
