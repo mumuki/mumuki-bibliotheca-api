@@ -7,5 +7,9 @@ module Bibliotheca
         name
       end
     end
+
+    def run_tests!(request)
+      Mumukit::Bridge::Runner.new(test_runner_url).run_tests! request
+    end
   end
 end
