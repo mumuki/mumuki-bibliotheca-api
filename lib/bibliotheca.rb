@@ -5,6 +5,7 @@ require 'mumukit/bridge'
 require 'mumukit/nuntius'
 require 'mumukit/login'
 require 'mumukit/platform'
+require 'mumukit/inspection'
 
 module Bibliotheca
   class SchemaDocument < Mumukit::Service::Document
