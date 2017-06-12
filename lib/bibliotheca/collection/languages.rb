@@ -25,7 +25,8 @@ module Bibliotheca::Collection
                                            devicon: language_json.dig('language', 'icon', 'name'),
                                            test_runner_url: language_json['url'],
                                            output_content_type: language_json['output_content_type'],
-                                           visible_success_output: language_json.dig('language', 'graphic').present?)
+                                           visible_success_output: language_json.dig('language', 'graphic').present?,
+                                           feedback: language_json.dig('features', 'feedback'))
     end
 
     def self.wrap(it)
