@@ -23,7 +23,9 @@ module Bibliotheca::Collection
                                            test_extension: language_json.dig('test_framework', 'test_extension'),
                                            ace_mode: language_json.dig('language', 'ace_mode'),
                                            devicon: language_json.dig('language', 'icon', 'name'),
-                                           test_runner_url: language_json['url'])
+                                           test_runner_url: language_json['url'],
+                                           output_content_type: language_json['output_content_type'],
+                                           visible_success_output: language_json.dig('language', 'graphic').present?)
     end
 
     def self.wrap(it)
