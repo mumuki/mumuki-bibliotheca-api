@@ -17,16 +17,36 @@ module Bibliotheca
 
 
     def render_test_results(response)
+      if has_test_results?(response)
+        with_full_test_results!(response)
+      else
+        with_full_result!(response)
+      end
+      with_full_expectations!(response)
+      with_feedback!(response)
+    end
+
+    def with_full_result!(response)
+      response[:result] = output_html_content_type(response[:result])
+    end
+
+    def with_full_test_results!(response)
+      response.merge!(visible_success_output: visible_success_output,
+                      test_results: response[:test_results].map { |it| test_results it },
+                      output_content_type: output_html_content_type(response[:result]))
+    end
+
+    def has_test_results?(response)
+      response[:test_results].present?
+    end
+
+    def with_feedback!(response)
+      response[:feedback] = feedback ? output_html_content_type(response[:feedback]) : ''
+    end
+
+    def with_full_expectations!(response)
       response[:expectation_results] = [] if response[:status] == :errored
       response[:expectation_results].map! { |it| {result: it[:result], title: Mumukit::Inspection::I18n.t(it)} }
-      if response[:test_results].present?
-        response.merge!(visible_success_output: visible_success_output,
-                        test_results: response[:test_results].map { |it| test_results it },
-                        output_content_type: output_html_content_type(response[:result]))
-      else
-        response[:result] = output_html_content_type(response[:result])
-        response[:feedback] = feedback ? output_html_content_type(response[:feedback]) : ''
-      end
     end
 
     def output_html_content_type(content)
