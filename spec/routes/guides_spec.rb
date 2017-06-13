@@ -3,7 +3,10 @@ require_relative '../spec_helper'
 require_relative '../../app/routes'
 
 describe 'routes' do
-  before { Bibliotheca::Collection::Languages.insert!(build(:haskell, {feedback: false, visible_success_output: false, output_content_type: 'plain', test_runner_url: ''})) }
+  before { Bibliotheca::Collection::Languages.insert!(build(:haskell, {feedback: false,
+                                                                       visible_success_output: false,
+                                                                       output_content_type: 'plain',
+                                                                       test_runner_url: ''})) }
 
   let(:request) {
     {
@@ -82,7 +85,8 @@ describe 'routes' do
 
   describe('get /guides/:guide_id/exercises/:exercise_id/test') do
     context 'run tests for specific guide\'s exercise' do
-      let(:response) { {testResults: [{title: 'foo', status: 'passed', result: 'ok'}], status: :passed, expectation_results: []}.with_indifferent_access }
+      let(:response) { {testResults: [{title: 'foo', status: 'passed', result: 'ok'}],
+                        status: :passed, expectation_results: []}.with_indifferent_access }
       before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:post_to_server).and_return(response) }
       before { post "/guides/#{guide_id}/exercises/1/test", request.to_json }
       it { expect(last_response).to be_ok }
