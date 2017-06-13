@@ -11,51 +11,103 @@ module Bibliotheca
 
     def run_tests!(request)
       response = Mumukit::Bridge::Runner.new(test_runner_url).run_tests! request
-      render_test_results response
-      response
+      response.ui(self)
     end
+  end
+end
 
 
-    def render_test_results(response)
-      if has_test_results?(response)
-        with_full_test_results!(response)
-      else
-        with_full_result!(response)
+module Mumukit
+  module Bridge
+    class Runner
+      alias __run_tests__! run_tests!
+
+      def run_tests!(request)
+        response = __run_tests__! request
+        Mumukit::RunTest::Response.new response
       end
-      with_full_expectations!(response)
-      with_feedback!(response)
     end
+  end
+end
 
-    def with_full_result!(response)
-      response[:result] = output_html(response[:result])
-    end
 
-    def with_full_test_results!(response)
-      response.merge!(visible_success_output: visible_success_output,
-                      test_results: response[:test_results].map { |it| test_results it },
-                      output_content_type: output_html(response[:result]))
-    end
+module Mumukit
+  module RunTest
+    class Response
 
-    def has_test_results?(response)
-      response[:test_results].present?
-    end
+      attr_reader :response
 
-    def with_feedback!(response)
-      response[:feedback] = output_html(response[:feedback]) if feedback.present? && response[:feedback].present?
-    end
+      def initialize(response)
+        @response = response.to_h.with_indifferent_access
+      end
 
-    def with_full_expectations!(response)
-      response[:expectation_results] = [] if response[:status] == :errored
-      response[:expectation_results].map! { |it| {result: it[:result], title: Mumukit::Inspection::I18n.t(it)} }
-    end
+      def as_json(options)
+        response.as_json(options)
+      end
 
-    def output_html(content)
-      Mumukit::ContentType.for(json[:output_content_type]).to_html(content)
-    end
+      def raw(language)
+        Mumukit::RunTest::Response::Raw.for(response, language)
+      end
 
-    def test_results(test)
-      test[:result] = output_html test[:result]
-      test
+      def ui(language)
+        Mumukit::RunTest::Response::UI.for(response, language)
+      end
+
+
+      class Raw
+        def self.for(response, _)
+          response
+        end
+      end
+
+
+      class UI
+        class << self
+          def for(response, language)
+            response_dup = response.dup
+            if response_dup[:test_results].present?
+              prettify_test_results! response_dup, language
+            else
+              prettify_result! response_dup, language
+            end
+            prettify_expectation_results! response_dup
+            prettify_feedback! response_dup, language
+            response_dup
+          end
+
+          def prettify_result!(response, language)
+            response[:result] = output_html(response[:result], language)
+          end
+
+          def prettify_test_results!(response, language)
+            response.merge!(visible_success_output: language.visible_success_output,
+                            test_results: response[:test_results].map { |it| prettify_test_result! it },
+                            output_content_type: output_html(response[:result]))
+          end
+
+          def prettify_feedback!(response, language)
+            response[:feedback] = output_html(response[:feedback], language) if language.feedback.present? && response[:feedback].present?
+          end
+
+          def prettify_expectation_results!(response)
+            response[:expectation_results] = [] if response[:status] == :errored
+            response[:expectation_results].map! { |it| prettify_expectation_result! it }
+          end
+
+          def output_html(content, language)
+            Mumukit::ContentType.for(language.json[:output_content_type]).to_html(content)
+          end
+
+          def prettify_expectation_result!(expectation)
+            expectation.merge title: Mumukit::Inspection::I18n.t(expectation)
+          end
+
+          def prettify_test_result!(test_result)
+            test_result[:result] = output_html test_result[:result]
+            test_result
+          end
+        end
+      end
     end
   end
 end
