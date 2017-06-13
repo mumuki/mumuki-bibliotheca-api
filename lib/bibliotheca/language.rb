@@ -81,8 +81,8 @@ module Mumukit
 
           def prettify_test_results!(response, language)
             response.merge!(visible_success_output: language.visible_success_output,
-                            test_results: response[:test_results].map { |it| prettify_test_result! it },
-                            output_content_type: output_html(response[:result]))
+                            test_results: response[:test_results].map { |it| prettify_test_result! it, language },
+                            output_content_type: output_html(response[:result], language))
           end
 
           def prettify_feedback!(response, language)
@@ -102,8 +102,8 @@ module Mumukit
             expectation.merge title: Mumukit::Inspection::I18n.t(expectation)
           end
 
-          def prettify_test_result!(test_result)
-            test_result[:result] = output_html test_result[:result]
+          def prettify_test_result!(test_result, language)
+            test_result[:result] = output_html test_result[:result], language
             test_result
           end
         end

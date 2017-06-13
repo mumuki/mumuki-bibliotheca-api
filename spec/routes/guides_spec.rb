@@ -1,9 +1,19 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 require_relative '../../app/routes'
 
 describe 'routes' do
-  before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
+  before { Bibliotheca::Collection::Languages.insert!(build(:haskell, {feedback: false, visible_success_output: false, output_content_type: 'plain', test_runner_url: ''})) }
+
+  let(:request) {
+    {
+      language: 'haskell',
+      solution: {
+        test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
+        content: 'foo = True'
+      }
+    }
+  }
 
   let(:exercise) {
     {id: 1, name: 'foo', type: 'problem', layout: 'input_right', editor: 'code', description: 'foo',
@@ -71,28 +81,19 @@ describe 'routes' do
   end
 
   describe('get /guides/:guide_id/exercises/:exercise_id/test') do
-    describe 'run tests for specific guide\'s exercise' do
-      context 'When guide exists' do
-        context 'and exercise exists too' do
-          let(:response) { {status: 'passed'} }
-          before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:run_tests!).and_return(response) }
-          before { get "/guides/#{guide_id}/exercises/1/test" }
-          it { expect(last_response).to be_ok }
-          it { expect(last_response.body).to json_eq(response) }
-        end
-        context 'and exercise does not exist' do
-          before { get "/guides/#{guide_id}/exercises/2/test" }
-          it { expect(last_response).to_not be_ok }
-          it { expect(last_response.body).to json_eq(message: 'exercise 2 not found') }
-          it { expect(last_response.status).to be(404) }
-        end
-      end
-    end
-    context 'When guide does not exist' do
-      before { get '/guides/0123456789abcdef/exercises/1/test' }
-      it { expect(last_response).to_not be_ok }
-      it { expect(last_response.body).to json_eq(message: 'document {"id":"0123456789abcdef"} not found') }
-      it { expect(last_response.status).to be(404) }
+    context 'run tests for specific guide\'s exercise' do
+      let(:response) { {testResults: [{title: 'foo', status: 'passed', result: 'ok'}], status: :passed, expectation_results: []}.with_indifferent_access }
+      before { expect_any_instance_of(Mumukit::Bridge::Runner).to receive(:post_to_server).and_return(response) }
+      before { post "/guides/#{guide_id}/exercises/1/test", request.to_json }
+      it { expect(last_response).to be_ok }
+      it { expect(last_response.body).to json_eq(response_type: 'structured',
+                                                 test_results: [{title: 'foo', status: 'passed', result: '<pre>ok</pre>'}],
+                                                 status: 'passed',
+                                                 feedback: '',
+                                                 expectation_results: [],
+                                                 result: '',
+                                                 visible_success_output: false,
+                                                 output_content_type: '<pre></pre>') }
     end
   end
 
