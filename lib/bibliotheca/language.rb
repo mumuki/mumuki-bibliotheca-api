@@ -27,13 +27,13 @@ module Bibliotheca
     end
 
     def with_full_result!(response)
-      response[:result] = output_html_content_type(response[:result])
+      response[:result] = output_html(response[:result])
     end
 
     def with_full_test_results!(response)
       response.merge!(visible_success_output: visible_success_output,
                       test_results: response[:test_results].map { |it| test_results it },
-                      output_content_type: output_html_content_type(response[:result]))
+                      output_content_type: output_html(response[:result]))
     end
 
     def has_test_results?(response)
@@ -41,7 +41,7 @@ module Bibliotheca
     end
 
     def with_feedback!(response)
-      response[:feedback] = feedback ? output_html_content_type(response[:feedback]) : ''
+      response[:feedback] = output_html(response[:feedback]) if feedback.present? && response[:feedback].present?
     end
 
     def with_full_expectations!(response)
@@ -49,12 +49,12 @@ module Bibliotheca
       response[:expectation_results].map! { |it| {result: it[:result], title: Mumukit::Inspection::I18n.t(it)} }
     end
 
-    def output_html_content_type(content)
+    def output_html(content)
       Mumukit::ContentType.for(json[:output_content_type]).to_html(content)
     end
 
     def test_results(test)
-      test[:result] = output_html_content_type test[:result]
+      test[:result] = output_html test[:result]
       test
     end
   end
