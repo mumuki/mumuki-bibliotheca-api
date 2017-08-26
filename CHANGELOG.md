@@ -1,5 +1,19 @@
 # Change Log
 
+## [v4.3.0](https://github.com/mumuki/mumuki-bibliotheca-api/tree/v4.3.0) (2017-06-13)
+[Full Changelog](https://github.com/mumuki/mumuki-bibliotheca-api/compare/v4.4.0...v4.3.0)
+
+## [v4.4.0](https://github.com/mumuki/mumuki-bibliotheca-api/tree/v4.4.0) (2017-06-13)
+[Full Changelog](https://github.com/mumuki/mumuki-bibliotheca-api/compare/v4.2.0...v4.4.0)
+
+**Fixed bugs:**
+
+- Don't allow exercises with empty tests or expectations [\#38](https://github.com/mumuki/mumuki-bibliotheca-api/issues/38)
+
+**Merged pull requests:**
+
+- Feature test solution [\#85](https://github.com/mumuki/mumuki-bibliotheca-api/pull/85) ([fedescarpa](https://github.com/fedescarpa))
+
 ## [v4.2.0](https://github.com/mumuki/mumuki-bibliotheca-api/tree/v4.2.0) (2017-05-24)
 [Full Changelog](https://github.com/mumuki/mumuki-bibliotheca-api/compare/v4.1.0...v4.2.0)
 
