@@ -51,6 +51,7 @@ module Mumukit
         @language_json ||= info.merge('url' => test_runner_url)
         {
           name: @language_json['name'],
+          comment_type: @language_json['comment_type'],
           extension: @language_json.dig('language', 'extension'),
           test_extension: @language_json.dig('test_framework', 'test_extension'),
           ace_mode: @language_json.dig('language', 'ace_mode'),
