@@ -45,30 +45,6 @@ post '/guides/import/:organization/:repository' do
   Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, slug
 end
 
-post '/upload' do
-  body = OpenStruct.new json_body
-  token = bot.token
-  data = {
-    path: "images/#{body.filename}",
-    branch: 'master',
-    message: 'Upload new image',
-    content: body.content,
-    commiter: {
-      name: bot.name,
-      email: bot.email
-    }
-  }
-
-  body.filename = body.filename.gsub(/\.(.*){2,4}/) { |it| "_#{(Time.now.to_f * 1000).to_i}#{it}" }
-
-  response = RestClient.put("https://api.github.com/repos/#{body.organization}/#{body.repository}/contents/images/#{body.filename}",
-                            data.to_json,
-                            {
-                              accept: 'application/vnd.github.v3+json',
-                              content_type: :json,
-                              user_agent: headers['user_agent'],
-                              authorization: "token #{token}"
-                            }
-  )
-  JSON.parse(response)
+post '/upload/:organization/:repository' do
+  bot.upload_image!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
 end

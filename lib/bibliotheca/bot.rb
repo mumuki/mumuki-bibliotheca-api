@@ -27,16 +27,24 @@ class Bibliotheca::Bot
 
   def register_post_commit_hook!(slug)
     octokit.create_hook(
-        slug.to_s, 'web',
-        {url: slug.bibliotheca_guide_web_hook_url, content_type: 'json'},
-        {events: ['push'],
-         active: true})
+      slug.to_s, 'web',
+      {url: slug.bibliotheca_guide_web_hook_url, content_type: 'json'},
+      {events: ['push'],
+       active: true})
   rescue => e
     puts "not registering post commit hook: #{e.message}"
   end
 
   def authenticated?
     !!token
+  end
+
+  def upload_image!(slug, filename, content)
+    path = "images/#{filename.gsub(/\.(.*){2,4}/) { |it| "_#{(Time.now.to_f * 1000).to_i}#{it}" }}"
+    octokit.create_contents(slug.to_s,
+                            path,
+                            'Upload new image',
+                            content).content.to_h
   end
 
   def self.from_env
