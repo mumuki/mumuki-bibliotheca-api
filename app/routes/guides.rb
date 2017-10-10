@@ -44,3 +44,7 @@ post '/guides/import/:organization/:repository' do
   Bibliotheca::IO::GuideImport.new(bot: bot, repo: slug).run!
   Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, slug
 end
+
+post '/guides/:organization/:repository/images' do
+  bot.upload_image!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
+end
