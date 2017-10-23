@@ -62,10 +62,10 @@ module Mumukit
           feedback: @language_json.dig('features', 'feedback'),
           highlight_mode: @language_json.dig('language', 'ace_mode'),
           prompt: (@language_json.dig('language', 'prompt') || 'ム') + ' ',
-          queriable: @language_json.dig('features', 'query')
+          queriable: @language_json.dig('features', 'query'),
+          triable: @language_json.dig('features', 'try')
         }
       end
     end
   end
 end
-
