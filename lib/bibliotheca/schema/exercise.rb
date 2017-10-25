@@ -24,7 +24,7 @@ module Bibliotheca::Schema::Exercise
        transform: proc { |it| {'expectations' => it.map(&:stringify_keys)}.to_yaml },
        default: []},
 
-      {name: :goal, kind: :file, extension: 'yml'},
+      {name: :goal, kind: :metadata},
       {name: :test, kind: :file, extension: :test},
       {name: :extra, kind: :file, extension: :code},
       {name: :default, kind: :file, extension: :code, reverse: :default_content},
