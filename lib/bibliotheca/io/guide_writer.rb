@@ -78,7 +78,7 @@ module Bibliotheca::IO
     def metadata_yaml(e)
       Bibliotheca::Schema::Exercise.metadata_fields.map do |field|
         [field.name.to_s, field.get_field_value(e)]
-      end.to_h.to_yaml
+      end.to_h.compact.to_yaml
     end
 
     def extra_filename(guide)

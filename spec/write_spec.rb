@@ -123,7 +123,7 @@ describe Bibliotheca::IO::GuideWriter do
         it { expect(File.read 'spec/data/export/00200_bar/description.md').to eq 'a description' }
 
         it { expect(File.exist? 'spec/data/export/00200_bar/meta.yml').to be true }
-        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: code\ntype: problem\nextra_visible: false\nlanguage: \nteacher_info: \nmanual_evaluation: false\nchoices: []\n" }
+        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: code\ntype: problem\nextra_visible: false\nmanual_evaluation: false\nchoices: []\n" }
 
 
         it { expect(File.exist? 'spec/data/export/00200_bar/test.hs').to be true }
@@ -141,7 +141,7 @@ describe Bibliotheca::IO::GuideWriter do
         it { expect(File.read 'spec/data/export/00300_multiple/description.md').to eq 'a multiple' }
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/meta.yml').to be true }
-        it { expect(File.read 'spec/data/export/00300_multiple/meta.yml').to eq "---\ntags:\n- mult\nlayout: input_right\neditor: multiple_choice\ntype: problem\nextra_visible: false\nlanguage: text\nteacher_info: \nmanual_evaluation: false\nchoices:\n- value: foo\n  checked: true\n- value: bar\n  checked: false\n" }
+        it { expect(File.read 'spec/data/export/00300_multiple/meta.yml').to eq "---\ntags:\n- mult\nlayout: input_right\neditor: multiple_choice\ntype: problem\nextra_visible: false\nlanguage: text\nmanual_evaluation: false\nchoices:\n- value: foo\n  checked: true\n- value: bar\n  checked: false\n" }
 
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/test.hs').to be true }
