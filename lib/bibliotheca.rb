@@ -63,7 +63,7 @@ end
 
 Mumukit::Login.configure do |config|
   config.user_class = Bibliotheca::Collection::Users
-  config.framework = Mumukit::Login::Framework::Sinatra
+  config.framework = Mumukit::Platform::WebFramework::Sinatra
 end
 
 class Mumukit::Auth::Slug
