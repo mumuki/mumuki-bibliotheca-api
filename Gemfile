@@ -13,14 +13,14 @@ gem 'mumukit-content-type',
 gem 'rouge',
     git: 'https://github.com/mumuki/rouge',
     ref: '5a8db3387f3a67232569969cd3da40ee04eb9dc3'
-gem 'mumukit-core', '~> 1.0'
+gem 'mumukit-core', '~> 1.1'
 gem 'mumukit-bridge', '~> 3.2'
 gem 'mumukit-nuntius', '~> 5.0'
 gem 'mumukit-inspection', '~> 1.0'
 
 gem 'mumukit-auth', '~> 7.0'
 gem 'mumukit-service', '~> 3.0'
-gem 'mumukit-login', '~> 3.0'
+gem 'mumukit-login', '~> 4.0'
 
 gem 'mumukit-platform', '~> 0.1'
 
