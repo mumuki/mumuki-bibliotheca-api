@@ -31,22 +31,22 @@ RSpec::Matchers.define :json_eq do |expected_json_hash|
 end
 
 RSpec::Matchers.define :json_like do |expected, options={}|
-  except = options[:except] || []
+
   match do |actual|
-    actual.as_json.with_indifferent_access.except(except) == expected.as_json.with_indifferent_access
+    actual.as_json.with_indifferent_access.as_json(options) == expected.as_json.with_indifferent_access.as_json(options)
   end
 
   failure_message_for_should do |actual|
     <<-EOS
-    expected: #{expected.as_json} (#{expected.class})
-         got: #{actual.as_json} (#{actual.class})
+    expected: #{expected.as_json.with_indifferent_access.as_json(options)} (#{expected.class})
+         got: #{actual.as_json.with_indifferent_access.as_json(options)} (#{actual.class})
     EOS
   end
 
   failure_message_for_should_not do |actual|
     <<-EOS
-    expected: value != #{expected.as_json} (#{expected.class})
-         got:          #{actual.as_json} (#{actual.class})
+    expected: value != #{expected.as_json.with_indifferent_access.as_json(options)} (#{expected.class})
+         got:          #{actual.as_json.with_indifferent_access.as_json(options)} (#{actual.class})
     EOS
   end
 end
