@@ -68,6 +68,10 @@ error Bibliotheca::Collection::ExerciseNotFoundError do
   halt 404
 end
 
+error Bibliotheca::Collection::GuideAlreadyExists do
+  halt 400
+end
+
 error Bibliotheca::IO::OrganizationNotFoundError do
   halt 404
 end

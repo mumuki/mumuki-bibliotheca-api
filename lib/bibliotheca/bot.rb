@@ -47,6 +47,10 @@ class Bibliotheca::Bot
                             content).content.to_h
   end
 
+  def fork!(slug, fork_organization)
+    octokit.fork slug.to_s, {organization: fork_organization}
+  end
+
   def self.from_env
     new Mumukit::Service::Env.bot_username,
         Mumukit::Service::Env.bot_email,
