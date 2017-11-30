@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Bibliotheca::Guide do
   let(:haskell) { build(:haskell) }
+  let(:bot) { Bibliotheca::Bot.from_env }
+
   before { Bibliotheca::Collection::Languages.insert!(haskell) }
 
   let(:json) {
@@ -130,4 +132,28 @@ describe Bibliotheca::Guide do
       it { expect(guide.markdownified.exercises.first.description).to eq("<p><strong>foo</strong></p>\n") }
     end
   end
+
+  describe 'fork' do
+
+    let(:guide_from) { build :guide, slug: 'foo/bar' }
+    let(:slug_from) { guide_from.slug.to_mumukit_slug }
+    let(:slug_to) { 'baz/bar'.to_mumukit_slug }
+    let(:guide_to) { Bibliotheca::Collection::Guides.find_by_slug! slug_to.to_s }
+
+    before { Bibliotheca::Collection::Guides.insert! guide_from }
+    before { Bibliotheca::Collection::Guides.insert! build(:guide, slug: 'test/bar') }
+
+    context 'fork works' do
+      before { expect_any_instance_of(Bibliotheca::Bot).to receive(:fork!).with(slug_from.to_s, slug_to.organization) }
+      before { Bibliotheca::Guide.fork_to! slug_from, slug_to, bot }
+      it { expect(guide_from.as_json).to json_like guide_to.as_json, {except: [:slug, :id]} }
+    end
+
+    context 'fork does not work if guide already exists' do
+      before { expect_any_instance_of(Bibliotheca::Bot).to_not receive(:fork!).with(slug_from.to_s, 'test') }
+      it { expect { Bibliotheca::Guide.fork_to! slug_from, 'test/bar', bot }.to raise_error Bibliotheca::Collection::GuideAlreadyExists }
+    end
+
+  end
+
 end

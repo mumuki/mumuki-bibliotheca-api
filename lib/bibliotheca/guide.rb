@@ -68,6 +68,23 @@ module Bibliotheca
                                        bot: Bibliotheca::Bot.from_env).run!
 
     end
+
+    def copy_to!(organization)
+      self.dup.tap do |copy|
+        copy.slug = Mumukit::Auth::Slug.new(organization, Mumukit::Auth::Slug.parse(slug).repository).to_s
+        id_object = Bibliotheca::Collection::Guides.insert! copy
+        copy.id = id_object[:id]
+      end
+    end
+
+    def self.fork_to!(slug_from, slug_to, bot)
+      slug = slug_to.to_s
+      raise Bibliotheca::Collection::GuideAlreadyExists.new slug if Bibliotheca::Collection::Guides.any? slug: slug
+      organization = slug_to.organization
+      bot.fork! slug_from.to_s, organization
+      Bibliotheca::Collection::Guides.find_by_slug!(slug_from.to_s).copy_to! organization
+    end
+
   end
 
 end
