@@ -16,7 +16,7 @@ module Bibliotheca::Collection
     end
 
     def self.import_from_json!(json)
-      upsert_permissions! json[:uid], json[:permissions]
+      json[:permissions].try { |it| upsert_permissions! json[:uid], it }
     end
 
     private
