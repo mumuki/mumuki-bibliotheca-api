@@ -77,13 +77,13 @@ Mumukit::Auth.configure do |c|
 end
 
 Mumukit::Platform.configure do |config|
+  config.user_class = Bibliotheca::Collection::Users
+  config.organization_class = Bibliotheca::Collection::Organizations
   config.application = Mumukit::Platform.bibliotheca_api
   config.web_framework = Mumukit::Platform::WebFramework::Sinatra
 end
 
 Mumukit::Login.configure do |config|
-  config.user_class = Bibliotheca::Collection::Users
-  config.framework = Mumukit::Platform::WebFramework::Sinatra
 end
 
 class Mumukit::Auth::Slug

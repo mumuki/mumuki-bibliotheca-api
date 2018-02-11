@@ -7,6 +7,10 @@ module Bibliotheca::Collection
       find_by!(name: 'base')
     end
 
+    def self.find_by_name!(name)
+      find_by! name: name
+    end
+
     def self.import_from_json!(organization_json)
       upsert_by! :name, Bibliotheca::Organization.new(organization_json) if organization_json[:name] == 'base'
     end
