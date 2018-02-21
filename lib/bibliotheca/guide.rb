@@ -72,20 +72,13 @@ module Bibliotheca
     def fork_to!(organization, bot)
       slug = self.slug
       rebased_copy(organization).tap do |it|
+        raise Bibliotheca::Collection::GuideAlreadyExists.new it.slug if Bibliotheca::Collection::Guides.any? slug: it.slug
+
         Bibliotheca::Collection::Guides.insert! it
+
         bot.fork! slug, organization
         Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, it
       end
-
-    end
-
-    def self.fork_to!(slug_from, slug_to, bot)
-      slug = slug_to.to_s
-      raise Bibliotheca::Collection::GuideAlreadyExists.new slug if Bibliotheca::Collection::Guides.any? slug: slug
-      organization = slug_to.organization
-
-      Bibliotheca::Collection::Guides.find_by_slug!(slug_from.to_s).fork_to! organization, bot
     end
   end
-
 end

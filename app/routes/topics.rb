@@ -16,7 +16,5 @@ end
 
 
 post '/book/:organization/:repository/fork' do
-  authorize! :writer
-  destination = Mumukit::Auth::Slug.new json_body['organization'], params[:repository]
-  Bibliotheca::Collection::Topics.find_by_slug!(slug.to_s).fork_to! destination, bot
+  fork! Bibliotheca::Collection::Topics
 end

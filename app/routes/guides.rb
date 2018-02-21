@@ -50,7 +50,5 @@ post '/guides/:organization/:repository/images' do
 end
 
 post '/guides/:organization/:repository/fork' do
-  authorize! :writer
-  destination = Mumukit::Auth::Slug.new json_body['organization'], params[:repository]
-  Bibliotheca::Guide.fork_to!(slug, destination, bot).as_json
+  fork! Bibliotheca::Collection::Guides
 end
