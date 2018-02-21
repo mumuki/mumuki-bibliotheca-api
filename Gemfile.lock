@@ -78,7 +78,7 @@ GEM
     mumukit-auth (7.0.0)
       jwt
       mumukit-core (~> 1.0)
-    mumukit-bridge (3.2.1)
+    mumukit-bridge (3.5.0)
       mumukit-core (~> 1.0)
       rest-client
     mumukit-core (1.1.0)
@@ -202,7 +202,7 @@ DEPENDENCIES
   factory_girl
   git
   mumukit-auth (~> 7.0)
-  mumukit-bridge (~> 3.2)
+  mumukit-bridge (~> 3.5)
   mumukit-content-type!
   mumukit-core (~> 1.1)
   mumukit-inspection (~> 1.0)
@@ -220,4 +220,4 @@ DEPENDENCIES
   sinatra-contrib
 
 BUNDLED WITH
-   1.16.0.pre.3
+   1.16.1
