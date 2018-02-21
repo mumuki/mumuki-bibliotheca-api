@@ -74,6 +74,7 @@ module Bibliotheca
       rebased_copy(organization).tap do |it|
         Bibliotheca::Collection::Guides.insert! it
         bot.fork! slug, organization
+        Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, it
       end
 
     end

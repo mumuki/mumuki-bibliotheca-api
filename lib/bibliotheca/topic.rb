@@ -19,8 +19,8 @@ module Bibliotheca
         end
 
         Bibliotheca::Collection::Topics.insert! it
+        Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Topic, it
       end
-
     end
   end
 end
