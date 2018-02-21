@@ -101,6 +101,28 @@ describe 'routes' do
     end
   end
 
+  describe 'post /guides/fork' do
+    context 'when request is valid' do
+      it 'accepts valid requests' do
+        expect_any_instance_of(Bibliotheca::IO::GuideExport).to receive(:run!)
+        expect_any_instance_of(Bibliotheca::Bot).to receive(:fork!)
+
+        header 'Authorization', build_auth_header(writer: '*')
+
+        post '/guides', {slug: 'bar/baz',
+                         language: 'haskell',
+                         name: 'Baz Guide',
+                         description: 'foo',
+                         exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
+
+        post '/guides/bar/baz/fork', { organization: 'foo' }.to_json
+
+        expect(last_response).to be_ok
+        expect(JSON.parse(last_response.body)['slug']).to eq 'foo/baz'
+      end
+    end
+  end
+
   describe 'post /guides' do
     context 'when request is valid' do
 

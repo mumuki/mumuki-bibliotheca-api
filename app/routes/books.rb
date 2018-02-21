@@ -14,3 +14,7 @@ end
 post '/books' do
   upsert! Bibliotheca::Book, Bibliotheca::Collection::Books
 end
+
+post '/book/:organization/:repository/fork' do
+  fork! Bibliotheca::Collection::Books
+end

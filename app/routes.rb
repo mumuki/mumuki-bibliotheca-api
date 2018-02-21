@@ -62,6 +62,12 @@ helpers do
       export_class&.new(options.merge(slug: slug))&.run!
     end
   end
+
+  def fork!(collection_class)
+    authorize! :writer
+    destination = json_body['organization']
+    collection_class.find_by_slug!(slug.to_s).fork_to!(destination, bot).as_json
+  end
 end
 
 error Bibliotheca::Collection::ExerciseNotFoundError do
