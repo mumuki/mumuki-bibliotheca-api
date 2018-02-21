@@ -7,6 +7,12 @@ require 'mumukit/login'
 require 'mumukit/platform'
 require 'mumukit/inspection'
 
+class Mumukit::Auth::Slug
+  def rebase(new_organizaton)
+    Mumukit::Auth::Slug.new(new_organizaton, repository)
+  end
+end
+
 module Bibliotheca
   class SchemaDocument < Mumukit::Service::Document
     delegate :defaults, to: :schema
@@ -14,6 +20,18 @@ module Bibliotheca
     def initialize(json)
       super(json)
       @raw = schema.slice(@raw)
+    end
+
+    def rebase!(organization)
+      self.slug = self.slug.to_mumukit_slug.rebase(organization).to_s
+    end
+
+    def copy
+      dup.tap { |it| it.id = nil }
+    end
+
+    def rebased_copy(organization)
+      copy.tap { |it| it.rebase! organization }
     end
   end
 end
