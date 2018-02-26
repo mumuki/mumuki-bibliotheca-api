@@ -1,6 +1,6 @@
 module Bibliotheca
   class User < Mumukit::Service::Document
-    include Mumukit::Login::UserPermissionsHelpers
+    include Mumukit::Platform::User::Helpers
 
     def permissions
       Mumukit::Auth::Permissions.parse self[:permissions]

@@ -97,7 +97,7 @@ describe Bibliotheca::Exercise do
     end
     context 'corollary' do
       let(:exercise) { build(:exercise, corollary: '[Google](https://google.com)') }
-      it { expect(exercise.markdownified.corollary).to eq("<p><a href=\"https://google.com\">Google</a></p>\n") }
+      it { expect(exercise.markdownified.corollary).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
     end
     context 'teacher_info' do
       let(:exercise) { build(:exercise, teacher_info: '**foo**') }

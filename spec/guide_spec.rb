@@ -121,7 +121,7 @@ describe Bibliotheca::Guide do
     end
     context 'corollary' do
       let(:guide) { build(:guide, corollary: '[Google](https://google.com)') }
-      it { expect(guide.markdownified.corollary).to eq("<p><a href=\"https://google.com\">Google</a></p>\n") }
+      it { expect(guide.markdownified.corollary).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
     end
     context 'teacher_info' do
       let(:guide) { build(:guide, teacher_info: '**foo**') }
