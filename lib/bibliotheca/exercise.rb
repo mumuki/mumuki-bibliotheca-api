@@ -4,6 +4,7 @@ module Bibliotheca
       @guide = e.indifferent_delete(:guide)
       super(e)
       process_choices!
+      set_boards!
     end
 
     def schema
@@ -53,6 +54,23 @@ module Bibliotheca
         exercise.description = Mumukit::ContentType::Markdown.to_html(exercise.description)
         exercise.teacher_info = Mumukit::ContentType::Markdown.to_html(exercise.teacher_info)
       end
+    end
+
+    def set_boards!
+      if kids?
+        return unless self.test.present?
+        examples = YAML.load(self.test)['examples'].first
+        self.initial_state = to_gs_board(examples['initial_board'])
+        self.final_state = to_gs_board(examples['final_board'])
+      end
+    end
+
+    def to_gs_board(board)
+      "<gs-board> #{board} </gs-board>"
+    end
+
+    def kids?
+      effective_language_name == 'gobstones' && editor == 'custom'
     end
 
     def errors

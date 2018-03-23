@@ -31,7 +31,9 @@ module Bibliotheca::Schema::Exercise
 
       {name: :description, kind: :file, extension: 'md'},
       {name: :hint, kind: :file, extension: 'md'},
-      {name: :corollary, kind: :file, extension: 'md'}
+      {name: :corollary, kind: :file, extension: 'md'},
+      {name: :initial_state, kind: :file, extension: 'md'},
+      {name: :final_state, kind: :file, extension: 'md'}
     ]
   end
 
