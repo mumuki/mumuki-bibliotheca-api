@@ -61,12 +61,16 @@ module Bibliotheca
         return unless self.test.present?
         examples = YAML.load(self.test)['examples'].first
         self.initial_state = to_gs_board(examples['initial_board'])
-        self.final_state = to_gs_board(examples['final_board'])
+        self.final_state = to_gs_board(examples['final_board']) || boom_board
       end
     end
 
     def to_gs_board(board)
-      "<gs-board> #{board} </gs-board>"
+      "<gs-board> #{board} </gs-board>" if board
+    end
+
+    def boom_board
+      "<img src='https://user-images.githubusercontent.com/1631752/37945593-54b482c0-3157-11e8-9f32-bd25d7bf901b.png'>"
     end
 
     def kids?
