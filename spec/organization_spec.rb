@@ -3,16 +3,22 @@ require 'spec_helper'
 describe Bibliotheca::Collection::Organizations do
   let(:json) { {
     name: organization_name,
-    contact_email: 'issues@mumuki.io',
-    books: ['MumukiProject/mumuki-libro-metaprogramacion'],
-    locale: 'es-AR',
-    public: false,
-    description: '...',
-    login_methods: %w(facebook twitter google),
-    logo_url: 'http://mumuki.io/aLogo.png',
-    terms_of_service: 'A TOS HERE',
-    theme_stylesheet_url: '.theme { color: red }',
-    extension_javascript_url: 'doSomething = function() { }'
+    book: 'MumukiProject/mumuki-libro-metaprogramacion',
+    profile: {
+      contact_email: 'issues@mumuki.io',
+      locale: 'es-AR',
+      description: '...',
+      logo_url: 'http://mumuki.io/aLogo.png',
+      terms_of_service: 'A TOS HERE'
+    },
+    theme: {
+      theme_stylesheet_url: '.theme { color: red }',
+      extension_javascript_url: 'doSomething = function() { }'
+    },
+    settings: {
+      public: false,
+      login_methods: %w(facebook twitter google),
+    }
   } }
 
   context 'when organization is base and new' do
