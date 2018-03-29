@@ -11,5 +11,6 @@ begin
   Pry.start
 rescue LoadError
   require 'irb'
+  require 'irb/completion'
   IRB.start(__FILE__)
 end
