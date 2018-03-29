@@ -11,8 +11,9 @@ module Bibliotheca::Collection
       find_by! name: name
     end
 
-    def self.import_from_json!(organization_json)
-      upsert_by! :name, Bibliotheca::Organization.new(organization_json) if organization_json[:name] == 'base'
+    def self.import_from_json!(json)
+      json = Mumukit::Platform::Organization::Helpers.slice_platform_json json
+      upsert_by! :name, Bibliotheca::Organization.new(json) if json[:name] == 'base'
     end
 
     private
