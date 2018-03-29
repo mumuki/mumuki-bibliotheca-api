@@ -24,6 +24,7 @@ gem 'puma'
 
 group :development do
   gem 'rest-client'
+  gem 'pry'
 end
 
 group :test do
