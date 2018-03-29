@@ -1,29 +1,3 @@
-GIT
-  remote: git://github.com/mumuki/mumukit-login.git
-  revision: 73bd5bfedfcf973d2c30d63d13442673ba35b7ed
-  branch: feature-unified-platform-model
-  specs:
-    mumukit-login (5.0.0)
-      addressable
-      mumukit-auth (~> 7.0)
-      mumukit-core (~> 1.1)
-      mumukit-platform (~> 1.1)
-      omniauth (~> 1.2)
-      omniauth-auth0 (~> 1.1)
-      omniauth-saml (~> 1.6)
-      rack (>= 1.5)
-
-GIT
-  remote: git://github.com/mumuki/mumukit-platform.git
-  revision: 25012758061bc722593708e2669ddf111a190e92
-  branch: feature-unified-platform-model
-  specs:
-    mumukit-platform (1.2.0)
-      activemodel (>= 4.0)
-      mumukit-auth (~> 7.0)
-      mumukit-core (~> 1.2)
-      mumukit-nuntius (~> 6.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -86,9 +60,23 @@ GEM
       rack (>= 1.5)
     mumukit-inspection (1.0.0)
       mumukit-core (~> 1.0)
+    mumukit-login (5.0.0)
+      addressable
+      mumukit-auth (~> 7.0)
+      mumukit-core (~> 1.1)
+      mumukit-platform (~> 1.1)
+      omniauth (~> 1.2)
+      omniauth-auth0 (~> 1.1)
+      omniauth-saml (~> 1.6)
+      rack (>= 1.5)
     mumukit-nuntius (6.0.0)
       bunny (~> 2.3)
       mumukit-core (~> 1.0)
+    mumukit-platform (1.3.0)
+      activemodel (>= 4.0)
+      mumukit-auth (~> 7.0)
+      mumukit-core (~> 1.2)
+      mumukit-nuntius (~> 6.0)
     mumukit-service (3.0.0)
       bson_ext
       mongo (~> 2.1)
@@ -184,9 +172,9 @@ DEPENDENCIES
   mumukit-content-type (~> 1.3)
   mumukit-core (~> 1.1)
   mumukit-inspection (~> 1.0)
-  mumukit-login!
+  mumukit-login (~> 5.0)
   mumukit-nuntius (~> 6.0)
-  mumukit-platform!
+  mumukit-platform (~> 1.3)
   mumukit-service (~> 3.0)
   octokit (~> 4.1)
   pry
