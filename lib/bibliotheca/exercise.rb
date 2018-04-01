@@ -4,6 +4,7 @@ module Bibliotheca
       @guide = e.indifferent_delete(:guide)
       super(e)
       process_choices!
+      set_states!
     end
 
     def schema
@@ -53,6 +54,26 @@ module Bibliotheca
         exercise.description = Mumukit::ContentType::Markdown.to_html(exercise.description)
         exercise.teacher_info = Mumukit::ContentType::Markdown.to_html(exercise.teacher_info)
       end
+    end
+
+    def set_states!
+      return unless self.kids?
+      raise 'Only Gobstones language is currently supported' unless effective_language_name === 'gobstones'
+      examples = YAML.load(self.test)['examples'].first
+      self.initial_state = to_gs_board(examples['initial_board'])
+      self.final_state = to_gs_board(examples['final_board']) || boom_board
+    end
+
+    def to_gs_board(board)
+      "<gs-board> #{board} </gs-board>" if board
+    end
+
+    def boom_board
+      "<img src='https://user-images.githubusercontent.com/1631752/37945593-54b482c0-3157-11e8-9f32-bd25d7bf901b.png'>"
+    end
+
+    def kids?
+      layout == 'input_kids'
     end
 
     def errors
