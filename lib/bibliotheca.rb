@@ -71,8 +71,6 @@ Mumukit::Nuntius.configure do |c|
   c.app_name = 'bibliotheca'
 end
 
-Mumukit::Nuntius.establish_connection
-
 Mumukit::Auth.configure do |c|
 end
 
