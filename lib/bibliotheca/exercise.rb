@@ -4,7 +4,7 @@ module Bibliotheca
       @guide = e.indifferent_delete(:guide)
       super(e)
       process_choices!
-      set_states!
+      process_kids_states!
     end
 
     def schema
@@ -56,11 +56,14 @@ module Bibliotheca
       end
     end
 
-    def set_states!
+    def process_kids_states!
       return unless self.kids? && self.test
       raise 'Only Gobstones language is currently supported' unless effective_language_name === 'gobstones'
       examples = YAML.load(self.test)['examples']
-      return if examples.blank?
+      set_kids_states!(examples) unless examples.blank?
+    end
+
+    def set_kids_states!(examples)
       first_example = examples.first
       self.initial_state = to_gs_board(first_example['initial_board'])
       self.final_state = to_gs_board(first_example['final_board']) || boom_board
