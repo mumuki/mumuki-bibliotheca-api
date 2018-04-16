@@ -19,6 +19,10 @@ module Bibliotheca
       effective_language_name == 'text'
     end
 
+    def gobstones?
+      effective_language_name === 'gobstones'
+    end
+
     def process_choices!
       if text?
         multiple_choices_to_test! if multiple_choice?
@@ -57,10 +61,14 @@ module Bibliotheca
     end
 
     def process_kids_states!
-      return unless self.kids? && self.test
-      raise 'Only Gobstones language is currently supported' unless effective_language_name === 'gobstones'
-      examples = YAML.load(self.test)['examples']
-      set_kids_states!(examples) unless examples.blank?
+      return unless self.kids?
+      raise 'Only Gobstones language is currently supported' unless gobstones?
+      examples = kids_test_examples
+      set_kids_states!(examples) if examples.present?
+    end
+
+    def kids_test_examples
+      YAML.load(self.test)['examples'] if self.test
     end
 
     def set_kids_states!(examples)
