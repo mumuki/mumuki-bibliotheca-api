@@ -57,11 +57,13 @@ module Bibliotheca
     end
 
     def set_states!
-      return unless self.kids?
+      return unless self.kids? && self.test
       raise 'Only Gobstones language is currently supported' unless effective_language_name === 'gobstones'
-      examples = YAML.load(self.test)['examples'].first
-      self.initial_state = to_gs_board(examples['initial_board'])
-      self.final_state = to_gs_board(examples['final_board']) || boom_board
+      examples = YAML.load(self.test)['examples']
+      return if examples.blank?
+      first_example = examples.first
+      self.initial_state = to_gs_board(first_example['initial_board'])
+      self.final_state = to_gs_board(first_example['final_board']) || boom_board
     end
 
     def to_gs_board(board)
