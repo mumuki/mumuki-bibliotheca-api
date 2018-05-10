@@ -10,7 +10,7 @@ gem 'mumukit-content-type', '~> 1.3'
 gem 'mumukit-core', '~> 1.1'
 gem 'mumukit-bridge', '~> 3.5'
 gem 'mumukit-nuntius', '~> 6.1'
-gem 'mumukit-inspection', '~> 1.0'
+gem 'mumukit-inspection', '~> 3.2'
 
 gem 'mumukit-auth', '~> 7.0'
 gem 'mumukit-service', '~> 3.0'

@@ -23,7 +23,7 @@ describe 'routes' do
      test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
      manual_evaluation: false,
      choices: [],
-     expectations: [{binding: 'foo', inspection: 'HasBinding'}], tag_list: [], extra_visible: false} }
+     expectations: [{ "binding" => 'foo', "inspection" => 'HasBinding'}], tag_list: [], extra_visible: false} }
 
   let!(:guide_id) {
     Bibliotheca::Collection::Guides.insert!(

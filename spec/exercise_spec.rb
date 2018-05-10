@@ -156,4 +156,11 @@ describe Bibliotheca::Exercise do
       it { expect(exercise.final_state).to eq exercise.boom_board }
     end
   end
+
+  context 'errors' do
+    context 'empty inspections' do
+      let(:exercise) { build(:exercise, expectations: [{ "binding" => "program", "inspection" => "" }]) }
+      it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid expectations") }
+    end
+  end
 end

@@ -94,7 +94,7 @@ describe Bibliotheca::Guide do
     context 'run tests' do
       let(:exercise) { {id: 1, name: 'foo', type: 'problem', layout: 'input_right',
                         description: 'foo', test: %Q{describe "foo" $ do\n it "eq 1" $ do\n  foo = 1},
-                        solution: 'foo = 1', expectations: [{binding: 'foo', inspection: 'HasBinding'}],
+                        solution: 'foo = 1', expectations: [{ "binding" => 'foo', "inspection" => 'HasBinding'}],
                         tag_list: [], extra: 'bar = 2'} }
 
       let(:guide) { build(:guide, {extra: 'baz = 3', exercises: [exercise]}) }
