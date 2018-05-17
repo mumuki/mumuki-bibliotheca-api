@@ -57,7 +57,7 @@ describe Bibliotheca::Collection::Guides do
           'foo/goo',
           Bibliotheca::Guide.new(
             name: 'foobaz',
-            slug: 'foo/goo',
+            slug: 'foo/gOo',
             language: 'haskell',
             description: 'foo',
             exercises: [{name: 'baz', description: '#goo'}]))[:id] }
