@@ -6,16 +6,6 @@ module Bibliotheca::IO
       meta['locale']
     end
 
-    def expectations_list
-      if [:playground, :reading].include? type
-        nil
-      else
-        (expectations || []).map do |e|
-          {binding: e['binding'], inspection: e['inspection']}
-        end
-      end
-    end
-
     def build
       build_metadata.merge(build_simple_fields).compact
     end
