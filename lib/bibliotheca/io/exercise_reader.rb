@@ -34,5 +34,9 @@ module Bibliotheca::IO
     def expectations(root)
       yaml(root, 'expectations')
     end
+
+    def assistance_rules(root)
+      yaml(root, 'assistance_rules')
+    end
   end
 end

@@ -21,8 +21,10 @@ module Bibliotheca::Schema::Exercise
       {name: :choices, kind: :metadata, default: []},
 
       {name: :expectations, kind: :file, extension: 'yml',
-       transform: proc { |it| {'expectations' => it.map(&:stringify_keys)}.to_yaml },
-       default: []},
+       transform: yaml_list('expectations'), default: []},
+
+      {name: :assistance_rules, kind: :file, extension: 'yml',
+        transform: yaml_list('rules'), default: []},
 
       {name: :goal, kind: :metadata},
       {name: :test, kind: :file, extension: :test},
@@ -35,6 +37,10 @@ module Bibliotheca::Schema::Exercise
       {name: :initial_state, kind: :file, extension: 'md'},
       {name: :final_state, kind: :file, extension: 'md'}
     ]
+  end
+
+  def self.yaml_list(key)
+    proc { |it| {key => it.map(&:stringify_keys)}.to_yaml }
   end
 
   def self.new_field(it)
