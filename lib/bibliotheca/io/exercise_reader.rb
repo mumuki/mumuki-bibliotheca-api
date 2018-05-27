@@ -27,16 +27,20 @@ module Bibliotheca::IO
       read_yaml_file "#{root}/#{filename}.yml"
     end
 
+    def yaml_list(root, filename, key)
+      yaml(root, filename).try { |it| it[key] }
+    end
+
     def meta(root)
       yaml(root, 'meta')
     end
 
     def expectations(root)
-      yaml(root, 'expectations')
+      yaml_list(root, 'expectations', 'expectations')
     end
 
     def assistance_rules(root)
-      yaml(root, 'assistance_rules')
+      yaml_list(root, 'assistance_rules', 'rules')
     end
   end
 end
