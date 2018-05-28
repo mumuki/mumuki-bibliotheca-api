@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+echo ''
+echo '__________._____.   .__  .__        __  .__                             _____         .__ '
+echo '\______   \__\_ |__ |  | |__| _____/  |_|  |__   ____   ____ _____     /  _  \ ______ |__|'
+echo ' |    |  _/  || __ \|  | |  |/  _ \   __\  |  \_/ __ \_/ ___\\__  \   /  /_\  \\____ \|  |'
+echo ' |    |   \  || \_\ \  |_|  (  <_> )  | |   Y  \  ___/\  \___ / __ \_/    |    \  |_> >  |'
+echo ' |______  /__||___  /____/__|\____/|__| |___|  /\___  >\___  >____  /\____|__  /   __/|__|'
+echo '        \/        \/                         \/     \/     \/     \/         \/|__|       '
+echo ''
+
+
+echo "[MumukiDevstart::BibliothecaApi] Installing dependencies...."
+bundle install --quiet
+
+echo "[MumukiDevstart::BibliothecaApi] Seeding languages...."
+MUMUKI_THESAURUS_URL=http://thesaurus.mumuki.io bundle exec rake languages:import
+
+echo "[MumukiDevstart::BibliothecaApi] Seeding guides...."
+MUMUKI_BIBLIOTHECA_API_URL=https://bibliotheca-api.mumuki.io bundle exec rake content:import
+
+echo "[MumukiDevstart::BibliothecaApi] Seeding sample users...."
+mongo bibliotheca <<EOF
+  function updateStudent(uid, permissions) {
+    print('Creating ' + uid + ' with permissions: ' + JSON.stringify(permissions));
+    db.users.update(
+      {uid: uid},
+      {uid: uid, email: uid, first_name: 'Foo', last_name: 'Bar', name: 'Foo Bar', permissions: permissions},
+      {upsert: true}
+    );
+  }
+  updateStudent('student@mumuki.org', {});
+  updateStudent('editor@mumuki.org', {editor: '*/*'});
+  updateStudent('admin@mumuki.org', {owner: '*/*'});
+EOF
