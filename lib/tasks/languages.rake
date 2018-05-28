@@ -1,12 +1,7 @@
 namespace :languages do
   task :import do |t, args|
-    Mumukit::Bridge::Thesaurus.new(Mumukit::Platform.config.thesaurus_url).runners.each do |url|
-      puts "Importing Language #{url}"
-      begin
-        Bibliotheca::Collection::Languages.import! url
-      rescue => e
-        puts "Ignoring Language #{url} because of import error #{e}"
-      end
+    Mumukit::Platform.thesaurus_bridge.import_languages! do |runner_url|
+      Bibliotheca::Collection::Languages.import! runner_url
     end
   end
 end

@@ -11,7 +11,7 @@ namespace :guides do
     end
   end
 
-  task :import, [:organization, :url] do |_t, args|
+  task :import_from_github, [:organization, :url] do |_t, args|
     args.with_defaults(url: 'http://localhost:3004')
 
     org = args[:organization]
