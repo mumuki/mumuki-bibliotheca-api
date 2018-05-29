@@ -20,7 +20,6 @@ module Bibliotheca
     def initialize(json)
       super(json)
       @raw = schema.slice(@raw)
-      self.slug = @raw[:slug].downcase if @raw[:slug]
     end
 
     def rebase!(organization)
