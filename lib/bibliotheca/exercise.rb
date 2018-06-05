@@ -63,22 +63,24 @@ module Bibliotheca
     def process_kids_states!
       return unless self.kids?
       raise 'Only Gobstones language is currently supported' unless gobstones?
-      examples = kids_test_examples
-      set_kids_states!(examples) if examples.present?
+      examples = kids_test&.dig('examples')
+      with_head = kids_test&.dig('check_head_position')
+      set_kids_states!(examples, with_head) if examples.present?
     end
 
-    def kids_test_examples
-      YAML.load(self.test)['examples'] if self.test
+    def kids_test
+      YAML.load(self.test) if self.test
     end
 
-    def set_kids_states!(examples)
+    def set_kids_states!(examples, with_head)
       first_example = examples.first
-      self.initial_state = to_gs_board(first_example['initial_board'])
-      self.final_state = to_gs_board(first_example['final_board']) || boom_board
+
+      self.initial_state = to_gs_board(first_example['initial_board'], true)
+      self.final_state = to_gs_board(first_example['final_board'], with_head) || boom_board
     end
 
-    def to_gs_board(board)
-      "<gs-board> #{board} </gs-board>" if board
+    def to_gs_board(board, with_head)
+      "<gs-board#{with_head ? "" : " without-header"}> #{board} </gs-board>" if board
     end
 
     def boom_board
