@@ -135,6 +135,39 @@ describe Bibliotheca::Exercise do
       it { expect(exercise.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
       it { expect(exercise.final_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
     end
+    context 'with examples' do
+      let(:exercise) { build(:exercise, layout: 'input_kids', language: 'gobstones', test: "
+        check_head_position: #{check_head_position}
+
+        examples:
+         - title: 'Si hay celdas al Este, se mueve'
+           initial_board: |
+             GBB/1.0
+             size 2 2
+             head 0 0
+           final_board: |
+             GBB/1.0
+             size 2 2
+             head 1 0
+         - title: 'Si no hay celdas al Este, no hace nada'
+           initial_board: |
+             GBB/1.0
+             size 2 2
+             head 1 0
+           final_board: |
+             GBB/1.0
+             size 2 2
+             head 1 0") }
+      let(:check_head_position) { true }
+
+      it { expect(exercise.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
+      it { expect(exercise.final_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
+
+      context 'with check_head_position: false' do
+        it { expect(exercise.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
+        it { expect(exercise.final_state).to eq "<gs-board without-header> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
+      end
+    end
     context 'without test' do
       let(:exercise) { build(:exercise, layout: 'input_kids', language: 'gobstones', test: nil) }
       it { expect(exercise.initial_state).to be_nil }
