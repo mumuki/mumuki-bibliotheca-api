@@ -1,4 +1,11 @@
 module Bibliotheca::Collection
+  def self.insert_hash!(type, hash)
+    base_class_name = type.classify
+    resourceClass = "Bibliotheca::#{base_class_name}".constantize
+    collectionClass = "Bibliotheca::Collection::#{base_class_name.pluralize}".constantize
+
+    collectionClass.insert! resourceClass.new(hash)
+  end
 end
 
 
