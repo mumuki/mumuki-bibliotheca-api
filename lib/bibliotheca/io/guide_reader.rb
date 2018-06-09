@@ -92,7 +92,8 @@ module Bibliotheca::IO
         builder.test = exercise_reader.test_code(root)
         builder.extra = exercise_reader.extra(root)
         builder.default = exercise_reader.default(root)
-        builder.expectations = exercise_reader.expectations(root).try { |it| it['expectations'] }
+        builder.expectations = exercise_reader.expectations(root)
+        builder.assistance_rules = exercise_reader.assistance_rules(root)
         yield builder
       end
     end

@@ -101,7 +101,8 @@ module Bibliotheca
         ('Description must be present' unless description.present?),
         ("Invalid extra_visible flag #{extra_visible}" unless [nil, true, false].include? extra_visible),
         ("Invalid manual_evaluation flag #{manual_evaluation}" unless [nil, true, false].include? manual_evaluation),
-        ("Invalid expectations" unless expectations.all? { |it| Mumukit::Inspection::parse(it["inspection"]) rescue false })
+        ("Invalid expectations" unless expectations.all? { |it| Mumukit::Inspection::parse(it["inspection"]) rescue false }),
+        ("Invalid assistance_rules" unless (Mumukit::Assistant.parse assistance_rules.map &:deep_symbolize_keys rescue false))
       ].compact
     end
   end
