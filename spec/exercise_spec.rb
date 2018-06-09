@@ -162,5 +162,10 @@ describe Bibliotheca::Exercise do
       let(:exercise) { build(:exercise, expectations: [{ "binding" => "program", "inspection" => "" }]) }
       it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid expectations") }
     end
+
+    context 'invalid assistance_rules' do
+      let(:exercise) { build(:exercise, assistance_rules: [{ when: 'content_empty', then: ['asd'] }]) }
+      it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid assistance_rules") }
+    end
   end
 end
