@@ -60,6 +60,7 @@ describe Bibliotheca::IO::GuideReader do
         let(:imported_exercise) { guide.find_exercise_by_id(3) }
 
         it { expect(imported_exercise).to_not be nil }
+        it { expect(imported_exercise.name).to eq "custom_name" }
         it { expect(imported_exercise.hint).to eq "Try this: blah blah\n" }
         it { expect(imported_exercise.corollary).to eq "And the corollary is...\n" }
       end

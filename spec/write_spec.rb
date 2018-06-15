@@ -11,6 +11,7 @@ describe Bibliotheca::IO::GuideWriter do
   let!(:exercise_1) { guide.exercises.first }
   let(:exercise_2) { guide.exercises.second }
   let(:exercise_3) { guide.exercises.third }
+  let(:exercise_4) { guide.exercises.fourth }
 
   let(:guide) { Bibliotheca::Guide.new(
       name: 'Guide Name',
@@ -52,6 +53,18 @@ describe Bibliotheca::IO::GuideWriter do
            type: 'problem',
            layout: 'input_right',
            choices: [{'value' => 'foo', 'checked' => true}, {'value' => 'bar', 'checked' => false}]
+           },
+
+          {description: 'an exercises with characters that are not FS friendly',
+           name: 'with/rare\\characters<in>its|name.',
+           tag_list: %w(mult),
+           id: 400,
+           language: 'text',
+           editor: 'multiple_choice',
+           position: 3,
+           type: 'problem',
+           layout: 'input_right',
+           choices: [{'value' => 'foo', 'checked' => true}, {'value' => 'bar', 'checked' => false}]
            }]) }
 
   let(:writer) { Bibliotheca::IO::GuideWriter.new(dir, log) }
@@ -66,7 +79,7 @@ describe Bibliotheca::IO::GuideWriter do
       before { writer.write_meta! guide }
 
       it { expect(File.exist? 'spec/data/export/meta.yml').to be true }
-      it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\ntype: practice\nbeta: false\nteacher_info: an info\nlanguage: haskell\nid_format: \"%05d\"\norder:\n- 100\n- 200\n- 300\n" }
+      it { expect(File.read 'spec/data/export/meta.yml').to eq "---\nname: Guide Name\nlocale: en\ntype: practice\nbeta: false\nteacher_info: an info\nlanguage: haskell\nid_format: \"%05d\"\norder:\n- 100\n- 200\n- 300\n- 400\n" }
     end
 
     describe '#write_description' do
@@ -123,7 +136,7 @@ describe Bibliotheca::IO::GuideWriter do
         it { expect(File.read 'spec/data/export/00200_bar/description.md').to eq 'a description' }
 
         it { expect(File.exist? 'spec/data/export/00200_bar/meta.yml').to be true }
-        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: code\ntype: problem\nextra_visible: false\nmanual_evaluation: false\nchoices: []\n" }
+        it { expect(File.read 'spec/data/export/00200_bar/meta.yml').to eq "---\ntags:\n- baz\n- bar\nlayout: input_right\neditor: code\ntype: problem\nextra_visible: false\nmanual_evaluation: false\nchoices: []\nname: bar\n" }
 
 
         it { expect(File.exist? 'spec/data/export/00200_bar/test.hs').to be true }
@@ -141,13 +154,22 @@ describe Bibliotheca::IO::GuideWriter do
         it { expect(File.read 'spec/data/export/00300_multiple/description.md').to eq 'a multiple' }
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/meta.yml').to be true }
-        it { expect(File.read 'spec/data/export/00300_multiple/meta.yml').to eq "---\ntags:\n- mult\nlayout: input_right\neditor: multiple_choice\ntype: problem\nextra_visible: false\nlanguage: text\nmanual_evaluation: false\nchoices:\n- value: foo\n  checked: true\n- value: bar\n  checked: false\n" }
+        it { expect(File.read 'spec/data/export/00300_multiple/meta.yml').to eq "---\ntags:\n- mult\nlayout: input_right\neditor: multiple_choice\ntype: problem\nextra_visible: false\nlanguage: text\nmanual_evaluation: false\nchoices:\n- value: foo\n  checked: true\n- value: bar\n  checked: false\nname: multiple\n" }
 
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/test.hs').to be true }
         it { expect(File.read 'spec/data/export/00300_multiple/test.hs').to eq "---\nequal: '0'\n" }
 
         it { expect(File.exist? 'spec/data/export/00300_multiple/expectations.yml').to be false }
+      end
+
+      context 'with rare characters' do
+        before { writer.write_exercise! guide, exercise_4 }
+
+        it { expect(Dir.exist? 'spec/data/export/00400_with_rare_characters_in_its_name_/').to be true }
+
+        it { expect(File.exist? 'spec/data/export/00400_with_rare_characters_in_its_name_/meta.yml').to be true }
+        it { expect(File.read 'spec/data/export/00400_with_rare_characters_in_its_name_/meta.yml').to eq "---\ntags:\n- mult\nlayout: input_right\neditor: multiple_choice\ntype: problem\nextra_visible: false\nlanguage: text\nmanual_evaluation: false\nchoices:\n- value: foo\n  checked: true\n- value: bar\n  checked: false\nname: with/rare\\characters<in>its|name.\n" }
       end
 
     end
@@ -183,7 +205,7 @@ describe Bibliotheca::IO::GuideWriter do
       it { expect(File.exist? 'spec/data/export/LICENSE.txt').to be true }
       it { expect(File.exist? 'spec/data/export/COPYRIGHT.txt').to be true }
       it { expect(File.exist? 'spec/data/export/COLLABORATORS.txt').to be true }
-      it { expect(Dir['spec/data/export/*'].size).to eq 11 }
+      it { expect(Dir['spec/data/export/*'].size).to eq 12 }
     end
   end
 end

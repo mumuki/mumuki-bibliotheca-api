@@ -83,9 +83,11 @@ module Bibliotheca::IO
         builder = ExerciseBuilder.new
         exercise_reader = ExerciseReader.new(dir)
 
-        builder.meta = exercise_reader.meta(root) || (log.no_meta(name); next)
+        meta = exercise_reader.meta(root) || (log.no_meta(name); next)
+
+        builder.meta = meta
         builder.id = id
-        builder.name = name
+        builder.name = meta['name'] || name
         builder.description = exercise_reader.markdown(root, 'description') || (log.no_description name; next)
         builder.hint = exercise_reader.markdown(root, 'hint')
         builder.corollary = exercise_reader.markdown(root, 'corollary')
