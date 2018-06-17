@@ -22,7 +22,7 @@ module Bibliotheca::IO
 
 
     def write_exercise!(guide, e)
-      dirname = File.join dir, "#{guide.format_id(e)}_#{e.name}"
+      dirname = File.join dir, to_fs_friendly_name("#{guide.format_id(e)}_#{e.name}")
 
       FileUtils.mkdir_p dirname
 
@@ -78,7 +78,7 @@ module Bibliotheca::IO
     def metadata_yaml(e)
       Bibliotheca::Schema::Exercise.metadata_fields.map do |field|
         [field.name.to_s, field.get_field_value(e)]
-      end.to_h.compact.to_yaml
+      end.to_h.compact.merge('name' => e.name).to_yaml
     end
 
     def extra_filename(guide)
@@ -114,6 +114,10 @@ module Bibliotheca::IO
 
     def licenses_dir(name)
       File.join __dir__, 'licenses', name
+    end
+
+    def to_fs_friendly_name(dirname)
+      dirname.gsub /[\x00\/\\:\*\.\?\"<>\|]/, '_'
     end
   end
 end
