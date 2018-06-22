@@ -47,6 +47,14 @@ class Bibliotheca::Bot
                             content).content.to_h
   end
 
+  def upload_gist!(content, extension = 'txt')
+    filename = "content.#{extension}"
+    result = octokit.create_gist(files: {
+                                  filename => { content: content }
+                                 })
+    { raw_url: result.files[filename].raw_url }
+  end
+
   def fork!(slug, fork_organization)
     octokit.fork slug.to_s, {organization: fork_organization}
   end
