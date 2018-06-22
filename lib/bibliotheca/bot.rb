@@ -39,11 +39,11 @@ class Bibliotheca::Bot
     !!token
   end
 
-  def upload_image!(slug, filename, content)
-    path = "images/#{filename.gsub(/\.(.*){2,4}/) { |it| "_#{(Time.now.to_f * 1000).to_i}#{it}" }}"
+  def upload_asset!(slug, filename, content)
+    path = "assets/#{filename.gsub(/\.(.*){2,4}/) { |it| "_#{(Time.now.to_f * 1000).to_i}#{it}" }}"
     octokit.create_contents(slug.to_s,
                             path,
-                            'Upload new image',
+                            'Uploading new asset',
                             content).content.to_h
   end
 
