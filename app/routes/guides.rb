@@ -45,10 +45,15 @@ post '/guides/import/:organization/:repository' do
   Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, slug
 end
 
-post '/guides/:organization/:repository/images' do
-  bot.upload_image!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
+post '/guides/:organization/:repository/assets' do
+  bot.upload_asset!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
 end
 
 post '/guides/:organization/:repository/fork' do
   fork! Bibliotheca::Collection::Guides
+end
+
+# <b>DEPRECATED:</b> Please use <tt>/assets</tt> instead of /images.
+post '/guides/:organization/:repository/images' do
+  bot.upload_asset!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
 end
