@@ -94,6 +94,10 @@ post '/markdowns' do
   end
 end
 
+post '/gists' do
+  bot.upload_gist!(json_body['content'], json_body['extension']).as_json
+end
+
 get '/permissions' do
   authenticate!
 
