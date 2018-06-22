@@ -49,6 +49,10 @@ post '/guides/:organization/:repository/images' do
   bot.upload_image!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
 end
 
+post '/guides/:organization/:repository/gists' do
+  bot.upload_gist!(json_body['content'], json_body['extension']).as_json
+end
+
 post '/guides/:organization/:repository/fork' do
   fork! Bibliotheca::Collection::Guides
 end
