@@ -166,6 +166,11 @@ describe Bibliotheca::Exercise do
     end
   end
 
+  context 'valid randomizations' do
+    let(:exercise) { build(:exercise, randomizations: { some_word: { type: :one_of, value: %w('some' 'word') }, some_number: { type: :range, value: [1, 10] } }) }
+    it { expect { exercise.validate! }.not_to raise_error }
+  end
+
   context 'errors' do
     context 'empty inspections' do
       let(:exercise) { build(:exercise, expectations: [{ "binding" => "program", "inspection" => "" }]) }
