@@ -80,6 +80,8 @@ GEM
       mumukit-bridge (~> 3.5)
       mumukit-core (~> 1.2)
       mumukit-nuntius (~> 6.0)
+    mumukit-randomizer (1.0.0)
+      activesupport
     mumukit-service (3.0.0)
       bson_ext
       mongo (~> 2.1)
@@ -179,6 +181,7 @@ DEPENDENCIES
   mumukit-login (~> 5.0)
   mumukit-nuntius (~> 6.1)
   mumukit-platform (~> 1.6)
+  mumukit-randomizer (~> 1.0)
   mumukit-service (~> 3.0)
   octokit (~> 4.1)
   pry

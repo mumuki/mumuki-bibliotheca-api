@@ -42,5 +42,9 @@ module Bibliotheca::IO
     def assistance_rules(root)
       yaml_list(root, 'assistance_rules', 'rules')
     end
+
+    def randomizations(root)
+      yaml(root, 'randomizations')
+    end
   end
 end

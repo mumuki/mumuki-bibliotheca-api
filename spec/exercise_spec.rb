@@ -166,6 +166,11 @@ describe Bibliotheca::Exercise do
     end
   end
 
+  context 'valid randomizations' do
+    let(:exercise) { build(:exercise, randomizations: { some_word: { type: :one_of, value: %w('some' 'word') }, some_number: { type: :range, value: [1, 10] } }) }
+    it { expect { exercise.validate! }.not_to raise_error }
+  end
+
   context 'errors' do
     context 'empty inspections' do
       let(:exercise) { build(:exercise, expectations: [{ "binding" => "program", "inspection" => "" }]) }
@@ -175,6 +180,11 @@ describe Bibliotheca::Exercise do
     context 'invalid assistance_rules' do
       let(:exercise) { build(:exercise, assistance_rules: [{ when: 'content_empty', then: ['asd'] }]) }
       it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid assistance_rules") }
+    end
+
+    context 'invalid randomizations' do
+      let(:exercise) { build(:exercise, randomizations: { type: :range, value: [1] }) }
+      it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid randomizations") }
     end
   end
 end

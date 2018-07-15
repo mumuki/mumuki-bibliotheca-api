@@ -25,6 +25,7 @@ describe 'routes' do
      choices: [],
      expectations: [{"binding" => 'foo', "inspection" => 'HasBinding'}],
      assistance_rules: [{"when" => 'content_empty', "then" => 'a message'}],
+     randomizations: {},
      tag_list: [],
      extra_visible: false} }
 

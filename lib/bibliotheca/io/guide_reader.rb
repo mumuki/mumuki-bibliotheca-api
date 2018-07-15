@@ -96,6 +96,7 @@ module Bibliotheca::IO
         builder.default = exercise_reader.default(root)
         builder.expectations = exercise_reader.expectations(root)
         builder.assistance_rules = exercise_reader.assistance_rules(root)
+        builder.randomizations = exercise_reader.randomizations(root)
         yield builder
       end
     end

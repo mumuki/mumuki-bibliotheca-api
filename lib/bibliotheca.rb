@@ -7,6 +7,7 @@ require 'mumukit/login'
 require 'mumukit/platform'
 require 'mumukit/inspection'
 require 'mumukit/assistant'
+require 'mumukit/randomizer'
 
 class Mumukit::Auth::Slug
   def rebase(new_organizaton)

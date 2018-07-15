@@ -12,6 +12,7 @@ gem 'mumukit-bridge', '~> 3.5'
 gem 'mumukit-nuntius', '~> 6.1'
 gem 'mumukit-inspection', '~> 3.2'
 gem 'mumukit-assistant', '~> 0.1'
+gem 'mumukit-randomizer', '~> 1.0'
 
 gem 'mumukit-auth', '~> 7.0'
 gem 'mumukit-service', '~> 3.0'

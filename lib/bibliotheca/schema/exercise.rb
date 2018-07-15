@@ -26,6 +26,8 @@ module Bibliotheca::Schema::Exercise
       {name: :assistance_rules, kind: :file, extension: 'yml',
         transform: yaml_list('rules'), default: []},
 
+      {name: :randomizations, kind: :file, extension: 'yml'},
+
       {name: :goal, kind: :metadata},
       {name: :test, kind: :file, extension: :test},
       {name: :extra, kind: :file, extension: :code},
