@@ -18,7 +18,7 @@ gem 'mumukit-auth', '~> 7.0'
 gem 'mumukit-service', '~> 3.0'
 
 gem 'mumukit-platform', '~> 1.6'
-gem 'mumukit-login', '~> 5.0'
+gem 'mumukit-login', '~> 5.2.0'
 
 gem 'sinatra-contrib'
 
