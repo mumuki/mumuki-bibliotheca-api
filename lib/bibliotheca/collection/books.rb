@@ -24,7 +24,7 @@ module Bibliotheca::Collection
 
   class BookArray < Mumukit::Service::DocumentArray
     def options
-      {only: [:id, :name, :slug]}
+      {only: [:id, :name, :slug, :chapters]}
     end
 
     def key
