@@ -38,6 +38,8 @@ describe 'routes' do
       build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
     Bibliotheca::Collection::Guides.insert!(
       build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
+    Bibliotheca::Collection::Guides.insert!(
+      build(:guide, name: 'foo4', language: 'haskell', slug: 'bar/foo4', exercises: [], private: true))
   end
 
   def app
@@ -55,10 +57,22 @@ describe 'routes' do
   end
 
   describe('get /guides') do
-    before { get '/guides' }
+    context 'When user has permission to access private guides' do
+      before do
+        header 'Authorization', build_auth_header(writer: 'bar/*')
+        get '/guides'
+      end
 
-    it { expect(last_response).to be_ok }
-    it { expect(JSON.parse(last_response.body)['guides'].count).to eq 3 }
+      it { expect(last_response).to be_ok }
+      it { expect(JSON.parse(last_response.body)['guides'].count).to eq 4 }
+    end
+
+    context 'When user has not permission to access private guides' do
+      before { get '/guides' }
+
+      it { expect(last_response).to be_ok }
+      it { expect(JSON.parse(last_response.body)['guides'].count).to eq 3 }
+    end
   end
 
 
@@ -75,6 +89,7 @@ describe 'routes' do
                                                     slug: 'foo/bar',
                                                     description: 'foo',
                                                     exercises: [exercise],
+                                                    private: false,
                                                     id: guide_id,
                                                     expectations: []}) }
       end
