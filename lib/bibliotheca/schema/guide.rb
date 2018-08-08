@@ -21,7 +21,8 @@ module Bibliotheca::Schema::Guide
       {name: :corollary},
       {name: :extra},
       {name: :AUTHORS, reverse: :authors},
-      {name: :COLLABORATORS, reverse: :collaborators}
+      {name: :COLLABORATORS, reverse: :collaborators},
+      {name: :private, default: false}
     ]
   end
 end

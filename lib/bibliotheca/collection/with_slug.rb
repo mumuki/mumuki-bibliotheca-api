@@ -1,6 +1,10 @@
 module Bibliotheca::Collection::WithSlug
   def allowed(permissions)
-    project { |it| permissions.has_permission? :writer, it.slug }
+    project { |it| permissions&.writer?(it.slug) }
+  end
+
+  def visible(permissions)
+    project { |it| !it.private || permissions&.writer?(it.slug) }
   end
 
   def find_by_slug!(slug)
@@ -12,5 +16,4 @@ module Bibliotheca::Collection::WithSlug
     upsert_by! :slug, document
   end
   alias upsert_by_slug upsert_by_slug!
-
 end

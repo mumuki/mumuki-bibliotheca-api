@@ -1,9 +1,9 @@
 get '/guides' do
-  Bibliotheca::Collection::Guides.all.as_json
+  Bibliotheca::Collection::Guides.visible(current_user&.permissions).as_json
 end
 
 get '/guides/writable' do
-  Bibliotheca::Collection::Guides.allowed(current_user.permissions).as_json
+  Bibliotheca::Collection::Guides.allowed(current_user&.permissions).as_json
 end
 
 get '/guides/:id/raw' do

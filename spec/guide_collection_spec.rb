@@ -30,6 +30,7 @@ describe Bibliotheca::Collection::Guides do
         name: 'foo',
         language: 'haskell',
         description: 'foo',
+        private: false,
         exercises: [], id: id, expectations: []}) }
 
     it { expect(inserted.raw.to_json).to json_eq ({

@@ -18,7 +18,7 @@ module Bibliotheca::IO
     end
 
     def before_run_in_local_repo
-      bot.ensure_exists! repo
+      bot.ensure_exists! repo, guide.private
     end
 
     def run_in_local_repo(dir, local_repo)

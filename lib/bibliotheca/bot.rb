@@ -11,8 +11,8 @@ class Bibliotheca::Bot
     @token = token
   end
 
-  def ensure_exists!(slug)
-    create!(slug) unless exists?(slug)
+  def ensure_exists!(slug, private)
+    create!(slug, private) unless exists?(slug)
   end
 
   def clone_into(repo, dir, &block)
@@ -66,8 +66,15 @@ class Bibliotheca::Bot
     false
   end
 
-  def create!(slug)
+  def create!(slug, private)
     octokit.create_repository(slug.repository, organization: slug.organization)
+    try_set_private!(slug) if private
+  end
+
+  def try_set_private!(slug)
+    octokit.set_private(slug.to_s)
+  rescue Octokit::NotFound
+    puts "#{slug.to_s} repository can't be set as private"
   end
 
   def writable_github_url_for(slug)
