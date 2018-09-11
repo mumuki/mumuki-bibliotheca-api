@@ -2,7 +2,6 @@ require 'mumukit/content_type'
 require 'mumukit/service/routes'
 
 require_relative './session_store'
-require_relative './omniauth'
 require_relative '../lib/bibliotheca'
 
 configure do
@@ -11,11 +10,8 @@ configure do
   set :public_folder, 'public'
 end
 
-Mumukit::Login.configure_login_routes! self
-
 helpers do
   Mumukit::Login.configure_controller! self
-  Mumukit::Login.configure_login_controller! self
 end
 
 before do
@@ -37,10 +33,6 @@ helpers do
 
   def subject
     Bibliotheca::Collection::Guides.find(params[:id])
-  end
-
-  def login_settings
-    Mumukit::Login::Settings.new Mumukit::Login::Settings.login_methods #TODO: Get login methods from base organization
   end
 
   def route_slug_parts
