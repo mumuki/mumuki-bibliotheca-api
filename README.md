@@ -34,7 +34,7 @@ sudo apt-get install autoconf curl git build-essential libssl-dev autoconf bison
 > [rbenv](https://github.com/rbenv/rbenv) is a ruby versions manager, similar to rvm, nvm, and so on.
 
 ```bash
-curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc # or .bash_profile
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc # or .bash_profile
 ```
