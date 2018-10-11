@@ -19,8 +19,5 @@ post '/book/:organization/:repository/fork' do
 end
 
 delete '/topics/:organization/:repository' do
-  authorize! :editor
-  id = Bibliotheca::Collection::Topics.find_by_slug!(slug.to_s).id
-  Bibliotheca::Collection::Topics.delete! id
-  {}
+  delete! Bibliotheca::Collection::Topics
 end
