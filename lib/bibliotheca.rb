@@ -44,6 +44,12 @@ class Hash
   end
 end
 
+module Mumuki
+  module Bibliotheca
+    Nuntius = Mumukit::Nuntius::Component.new('bibliotheca')
+  end
+end
+
 
 require_relative './bibliotheca/database'
 require_relative './bibliotheca/bot'
@@ -59,22 +65,21 @@ require_relative './bibliotheca/ordering'
 require_relative './bibliotheca/io'
 require_relative './bibliotheca/collection'
 
-module Mumukit::Nuntius
-  def self.notify_content_change_event!(content_class, slug)
+class Mumukit::Nuntius::Component
+  def notify_content_change_event!(content_class, slug)
     notify_event! event_name(content_class), slug: slug.to_s
   end
 
-  def self.notify_content_delete_event!(content_class, slug)
+  def notify_content_delete_event!(content_class, slug)
     notify_event! event_name(content_class, 'Deleted'), slug: slug.to_s
   end
 
-  def self.event_name(content_class, event = 'Changed')
+  def event_name(content_class, event = 'Changed')
     "#{content_class.name.demodulize}#{event}"
   end
 end
 
 Mumukit::Nuntius.configure do |c|
-  c.app_name = 'bibliotheca'
 end
 
 Mumukit::Auth.configure do |c|

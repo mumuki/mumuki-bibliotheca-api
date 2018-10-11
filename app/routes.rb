@@ -45,7 +45,7 @@ helpers do
     exporting export_class, document: document, bot: bot, author_email: current_user.email do
       collection_class.upsert_by_slug!(slug.to_s, document)
     end.tap do
-      Mumukit::Nuntius.notify_content_change_event! document_class, slug
+      Mumuki::Bibliotheca::Nuntius.notify_content_change_event! document_class, slug
     end
   end
 
@@ -65,7 +65,7 @@ helpers do
     authorize! :editor
     id = collection_class.find_by_slug!(slug.to_s).id
     collection_class.delete! id
-    Mumukit::Nuntius.notify_content_delete_event! collection_class, slug
+    Mumuki::Bibliotheca::Nuntius.notify_content_delete_event! collection_class, slug
     {}
   end
 end

@@ -77,7 +77,7 @@ module Bibliotheca
         Bibliotheca::Collection::Guides.insert! it
 
         bot.fork! slug, organization
-        Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, it
+        Mumuki::Bibliotheca::Nuntius.notify_content_change_event! Bibliotheca::Guide, it
       end
     end
   end

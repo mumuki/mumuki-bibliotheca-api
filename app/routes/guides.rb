@@ -42,7 +42,7 @@ end
 
 post '/guides/import/:organization/:repository' do
   Bibliotheca::IO::GuideImport.new(bot: bot, repo: slug).run!
-  Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Guide, slug
+  Mumuki::Bibliotheca::Nuntius.notify_content_change_event! Bibliotheca::Guide, slug
 end
 
 post '/guides/:organization/:repository/assets' do

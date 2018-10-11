@@ -14,8 +14,5 @@ raise 'Missing bot username' unless Mumukit::Service::Env.bot_username
 raise 'Missing bot email' unless Mumukit::Service::Env.bot_email
 raise 'Missing secret key' unless Mumukit::Login.config.mucookie_secret_key
 
-## Start Nuntius
-Mumukit::Nuntius.establish_connection
-
 ## Start server
 run Sinatra::Application

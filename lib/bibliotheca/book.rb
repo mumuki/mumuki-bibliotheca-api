@@ -23,7 +23,7 @@ module Bibliotheca
         end
 
         Bibliotheca::Collection::Books.insert! it
-        Mumukit::Nuntius.notify_content_change_event! Bibliotheca::Book, it
+        Mumuki::Bibliotheca::Nuntius.notify_content_change_event! Bibliotheca::Book, it
       end
     end
   end

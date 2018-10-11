@@ -1,4 +1,4 @@
-Mumukit::Nuntius::EventConsumer.handle do
+Mumuki::Bibliotheca::Nuntius.event_consumer.handle do
   # Emitted by:
   #    * new logins in laboratory
   #    * new logins in classroom
