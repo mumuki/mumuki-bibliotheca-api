@@ -78,4 +78,31 @@ describe 'routes' do
                                          chapters: ['foo/bar']}, except: :id)
     end
   end
+
+  describe 'delete /books/baz/foo' do
+    describe 'when the user has permissions' do
+      before {
+        header 'Authorization', build_auth_header(editor: 'baz/*')
+        delete '/books/baz/foo'
+      }
+
+      it { expect(last_response).to be_ok }
+      it { expect(last_response.body).to json_eq({}) }
+
+      it 'indeed deletes the entity' do
+        get '/books/baz/foo'
+
+        expect(last_response.status).to be(404)
+      end
+    end
+
+    describe 'when the user doesnt have permissions' do
+      before {
+        header 'Authorization', build_auth_header(writer: 'baz/*')
+        delete '/books/baz/foo'
+      }
+
+      it { expect(last_response.status).to be(403) }
+    end
+  end
 end

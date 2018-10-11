@@ -61,11 +61,15 @@ require_relative './bibliotheca/collection'
 
 module Mumukit::Nuntius
   def self.notify_content_change_event!(content_class, slug)
-    notify_event! content_change_event_name(content_class), slug: slug.to_s
+    notify_event! event_name(content_class), slug: slug.to_s
   end
 
-  def self.content_change_event_name(content_class)
-    "#{content_class.name.demodulize}Changed"
+  def self.notify_content_delete_event!(content_class, slug)
+    notify_event! event_name(content_class, 'Deleted'), slug: slug.to_s
+  end
+
+  def self.event_name(content_class, event = 'Changed')
+    "#{content_class.name.demodulize}#{event}"
   end
 end
 

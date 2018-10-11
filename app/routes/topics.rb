@@ -14,7 +14,10 @@ post '/topics' do
   upsert! Bibliotheca::Topic, Bibliotheca::Collection::Topics
 end
 
-
 post '/book/:organization/:repository/fork' do
   fork! Bibliotheca::Collection::Topics
+end
+
+delete '/topics/:organization/:repository' do
+  delete! Bibliotheca::Collection::Topics
 end
