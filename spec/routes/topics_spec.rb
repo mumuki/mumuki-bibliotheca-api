@@ -81,4 +81,31 @@ describe 'routes' do
                                           lessons: ['foo/bar']}, except: :id)
     end
   end
+
+  describe 'delete /topics/baz/foo' do
+    describe 'when the user has permissions' do
+      before {
+        header 'Authorization', build_auth_header(editor: 'baz/*')
+        delete '/topics/baz/foo'
+      }
+
+      it { expect(last_response).to be_ok }
+      it { expect(last_response.body).to json_eq({}) }
+
+      it 'indeed deletes the entity' do
+        get '/topics/baz/foo'
+
+        expect(last_response.status).to be(404)
+      end
+    end
+
+    describe 'when the user doesnt have permissions' do
+      before {
+        header 'Authorization', build_auth_header(writer: 'baz/*')
+        delete '/topics/baz/foo'
+      }
+
+      it { expect(last_response.status).to be(403) }
+    end
+  end
 end
