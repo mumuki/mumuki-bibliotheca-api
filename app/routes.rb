@@ -65,6 +65,7 @@ helpers do
     authorize! :editor
     id = collection_class.find_by_slug!(slug.to_s).id
     collection_class.delete! id
+    Mumukit::Nuntius.notify_content_delete_event! collection_class, slug
     {}
   end
 end
