@@ -32,7 +32,7 @@ module Bibliotheca::Schema::Exercise
       {name: :test, kind: :file, extension: :test},
       {name: :extra, kind: :file, extension: :code},
       {name: :default, kind: :file, extension: :code, reverse: :default_content},
-      {name: :free_form_editor, kind: :file, extension: 'html'},
+      {name: :free_form_editor_source, kind: :file, extension: 'html'},
 
       {name: :description, kind: :file, extension: 'md'},
       {name: :hint, kind: :file, extension: 'md'},
