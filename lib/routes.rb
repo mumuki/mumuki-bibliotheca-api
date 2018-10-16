@@ -11,17 +11,14 @@ require 'json'
 require 'yaml'
 
 
-access_logger = Logger.new(File.expand_path '../../../logs/sinatra.log', __FILE__)
-error_logfile = File.new(File.expand_path('../../../logs/error.log', __FILE__), 'a+')
-
 configure do
   enable :cross_origin
   set :allow_methods, [:get, :put, :post, :options, :delete]
   set :show_exceptions, false
 
-  use ::Rack::CommonLogger, access_logger
+  use ::Rack::CommonLogger, Rails.logger
 
-  Mongo::Logger.logger = ::Logger.new(File.expand_path '../../../logs/mongo.log', __FILE__)
+  Mongo::Logger.logger = Rails.logger
   Mongo::Logger.logger.level = ::Logger::INFO
 end
 
@@ -49,7 +46,6 @@ end
 
 before do
   content_type 'application/json', 'charset' => 'utf-8'
-  env["rack.errors"] = error_logfile
 end
 
 after do
