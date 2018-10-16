@@ -1,11 +1,15 @@
 ENV['RACK_ENV'] = 'test'
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
+ENV['RAILS_ENV'] = 'test'
 
-require 'factory_girl'
+require File.expand_path("../dummy/config/environment.rb", __FILE__)
+require 'rspec/rails'
+require 'codeclimate-test-reporter'
+require 'mumukit/core/rspec'
+require 'factory_bot_rails'
+
+ActiveRecord::Migration.maintain_test_schema!
 
 require 'rack/test'
-
 require 'mumukit/auth'
 require 'mumukit/content_type'
 
@@ -19,9 +23,12 @@ require_relative './factories/exercise_factory'
 Mongo::Logger.logger.level = ::Logger::INFO
 
 RSpec.configure do |config|
-  config.include Rack::Test::Methods
-  config.include FactoryGirl::Syntax::Methods
-  config.before { Bibliotheca::Database.clean! }
+  config.use_transactional_fixtures = true
+  config.infer_base_class_for_anonymous_controllers = false
+    config.include Rack::Test::Methods
+    config.include FactoryGirl::Syntax::Methods
+    config.before { Bibliotheca::Database.clean! }
+    config.infer_spec_type_from_file_location!
 end
 
 RSpec::Matchers.define :json_eq do |expected_json_hash|
@@ -64,3 +71,5 @@ def build_auth_header(permissions, email='bot@mumuki.org')
   Bibliotheca::Collection::Users.upsert_permissions! email, permissions
   Mumukit::Auth::Token.encode email, {}
 end
+
+SimpleCov.start

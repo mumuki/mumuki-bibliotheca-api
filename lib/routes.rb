@@ -1,0 +1,207 @@
+require 'sinatra'
+require 'mumukit/content_type'
+
+
+require 'sinatra'
+require 'sinatra/cross_origin'
+require 'logger'
+require 'mumukit/auth'
+
+require 'json'
+require 'yaml'
+
+
+access_logger = Logger.new(File.expand_path '../../../logs/sinatra.log', __FILE__)
+error_logfile = File.new(File.expand_path('../../../logs/error.log', __FILE__), 'a+')
+
+configure do
+  enable :cross_origin
+  set :allow_methods, [:get, :put, :post, :options, :delete]
+  set :show_exceptions, false
+
+  use ::Rack::CommonLogger, access_logger
+
+  Mongo::Logger.logger = ::Logger.new(File.expand_path '../../../logs/mongo.log', __FILE__)
+  Mongo::Logger.logger.level = ::Logger::INFO
+end
+
+helpers do
+  def json_body
+    @json_body ||= JSON.parse(request.body.read) rescue nil
+  end
+
+  def slug
+    if route_slug_parts.present?
+      Mumukit::Auth::Slug.join(*route_slug_parts)
+    elsif subject
+      Mumukit::Auth::Slug.parse(subject.slug)
+    elsif json_body
+      Mumukit::Auth::Slug.parse(json_body['slug'])
+    else
+      raise Mumukit::Auth::InvalidSlugFormatError.new('Slug not available')
+    end
+  end
+
+  def route_slug_parts
+    []
+  end
+end
+
+before do
+  content_type 'application/json', 'charset' => 'utf-8'
+  env["rack.errors"] = error_logfile
+end
+
+after do
+  error_message = env['sinatra.error']
+  if response.body.is_a?(Array)&& response.body[0].is_a?(String)
+    if content_type != 'application/csv'
+      content_type 'text/html'
+      response.body[0] = <<HTML
+    <html>
+      <body>
+        #{response.body[0]}
+      </body>
+    </html>
+HTML
+    end
+    response.body = response.body[0]
+  elsif error_message.blank?
+    response.body = response.body.to_json
+  else
+    response.body = {message: env['sinatra.error'].message}.to_json
+  end
+end
+
+error JSON::ParserError do
+  halt 400
+end
+
+error Mumukit::Service::DocumentValidationError do
+  halt 400
+end
+
+error Mumukit::Service::DocumentNotFoundError do
+  halt 404
+end
+
+error Mumukit::Auth::InvalidTokenError do
+  halt 401
+end
+
+error Mumukit::Auth::UnauthorizedAccessError do
+  halt 403
+end
+
+error Mumukit::Auth::InvalidSlugFormatError do
+  halt 400
+end
+
+options '*' do
+  response.headers['Allow'] = settings.allow_methods.map { |it| it.to_s.upcase }.join(',')
+  response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization'
+  200
+end
+
+configure do
+  set :app_name, 'bibliotheca'
+  set :static, true
+  set :public_folder, 'public'
+end
+
+helpers do
+  Mumukit::Login.configure_controller! self
+end
+
+before do
+  I18n.locale = 'en' #TODO: Remove hardcoded locale
+end
+
+helpers do
+  def authenticate!
+    halt 401 unless current_user?
+  end
+
+  def authorization_slug
+    slug
+  end
+
+  def bot
+    Bibliotheca::Bot.from_env
+  end
+
+  def subject
+    Bibliotheca::Collection::Guides.find(params[:id])
+  end
+
+  def route_slug_parts
+    [params[:organization], params[:repository]].compact
+  end
+
+  def upsert!(document_class, collection_class, export_class = nil)
+    authorize! :writer
+    document = document_class.new(json_body)
+    exporting export_class, document: document, bot: bot, author_email: current_user.email do
+      collection_class.upsert_by_slug!(slug.to_s, document)
+    end.tap do
+      Mumukit::Nuntius.notify_content_change_event! document_class, slug
+    end
+  end
+
+  def exporting(export_class, options={}, &block)
+    block.call.tap do
+      export_class&.new(options.merge(slug: slug))&.run!
+    end
+  end
+
+  def fork!(collection_class)
+    authorize! :writer
+    destination = json_body['organization']
+    collection_class.find_by_slug!(slug.to_s).fork_to!(destination, bot).as_json
+  end
+
+  def delete!(collection_class)
+    authorize! :editor
+    id = collection_class.find_by_slug!(slug.to_s).id
+    collection_class.delete! id
+    Mumukit::Nuntius.notify_content_delete_event! collection_class, slug
+    {}
+  end
+end
+
+error Bibliotheca::Collection::ExerciseNotFoundError do
+  halt 404
+end
+
+error Bibliotheca::Collection::GuideAlreadyExists do
+  halt 400
+end
+
+error Bibliotheca::IO::OrganizationNotFoundError do
+  halt 404
+end
+
+post '/markdown' do
+  {markdown: Mumukit::ContentType::Markdown.to_html(json_body['markdown'])}
+end
+
+post '/markdowns' do
+  json_body.with_indifferent_access.tap do |guide|
+    guide[:exercises].each do |exercise|
+      exercise[:description] = Mumukit::ContentType::Markdown.to_html(exercise[:description])
+    end
+  end
+end
+
+get '/permissions' do
+  authenticate!
+
+  {permissions: current_user.permissions}
+end
+
+
+require_relative './routes/organization'
+require_relative './routes/languages'
+require_relative './routes/guides'
+require_relative './routes/books'
+require_relative './routes/topics'

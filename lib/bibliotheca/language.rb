@@ -90,7 +90,8 @@ module Mumukit
           end
 
           def prettify_expectation_results!(response)
-            response[:expectation_results] = [] if response[:status] == :errored
+            puts response
+            response[:expectation_results] ||= []
             response[:expectation_results].map! { |it| prettify_expectation_result! it }
           end
 

@@ -1,7 +1,5 @@
 require_relative '../spec_helper'
 
-require_relative '../../app/routes'
-
 describe 'routes' do
   before { Bibliotheca::Collection::Languages.insert!(build(:haskell, {feedback: false,
                                                                        visible_success_output: false,

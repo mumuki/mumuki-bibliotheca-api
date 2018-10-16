@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require_relative '../../app/routes'
-
 describe 'routes' do
   def app
     Sinatra::Application

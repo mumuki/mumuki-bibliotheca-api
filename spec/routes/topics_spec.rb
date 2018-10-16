@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require_relative '../../app/routes'
-
 describe 'routes' do
 
   let!(:topic_id) {
