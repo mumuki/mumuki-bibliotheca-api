@@ -23,3 +23,4 @@ group :development do
   gem 'web-console'
 end
 
+gem 'mumuki-domain', path: '../laboratory/domain'

@@ -63,7 +63,6 @@ module Bibliotheca
   end
 end
 
-require_relative './schema/organization'
 require_relative './schema/exercise'
 require_relative './schema/guide'
 require_relative './schema/book'

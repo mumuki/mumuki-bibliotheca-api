@@ -67,9 +67,9 @@ Mumukit::Auth.configure do |c|
   c.clients.default = {id: 'test-client', secret: 'thisIsATestSecret'}
 end
 
-def build_auth_header(permissions, email='bot@mumuki.org')
-  Bibliotheca::Collection::Users.upsert_permissions! email, permissions
-  Mumukit::Auth::Token.encode email, {}
+def build_auth_header(permissions, uid='bot@mumuki.org')
+  User.new(uid: uid, permissions: permissions).save!
+  Mumukit::Auth::Token.encode uid, {}
 end
 
 SimpleCov.start

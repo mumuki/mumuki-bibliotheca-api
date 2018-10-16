@@ -7,3 +7,4 @@ spec/dummy/tmp/
 **/logs/**
 **/*.log
 coverage/**
+Gemfile.lock

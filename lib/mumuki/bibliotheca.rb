@@ -5,5 +5,6 @@ module Mumuki
   end
 end
 
+require 'mumuki/domain'
 require_relative '../bibliotheca'
 require_relative '../routes'

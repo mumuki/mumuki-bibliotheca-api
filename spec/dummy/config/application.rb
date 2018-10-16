@@ -26,6 +26,10 @@ module Dummy
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    Mumuki::Domain::Engine.paths['db/migrate'].expanded.each do |expanded_path|
+      config.paths['db/migrate'] << expanded_path
+    end
   end
 end
 

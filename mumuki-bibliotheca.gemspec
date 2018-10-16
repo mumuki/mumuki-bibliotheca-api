@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'mumukit-inspection', '~> 3.2'
   s.add_dependency 'mumukit-assistant', '~> 0.1'
   s.add_dependency 'mumukit-randomizer', '~> 1.1'
+  s.add_dependency 'mumuki-domain', '~> 5.7'
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency 'pg', '~> 0.18.0'
 end

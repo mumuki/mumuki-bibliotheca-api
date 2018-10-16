@@ -1,20 +1,27 @@
-default: &default
-  adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+common: &common
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  pool: 5
+  username: mumuki
+  password: mumuki
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  <<: *common
+  database: mumuki_development
+  pool: 5
+  timeout: 5000
   mongo:
     host: localhost
     port: 27017
     database: bibliotheca
 
 test:
-  <<: *default
-  database: db/test.sqlite3
+  <<: *common
+  database: mumuki_test
+  pool: 5
+  timeout: 5000
   mongo:
-    host: <%=ENV['MONGO_PORT_27017_TCP_ADDR'] || 'localhost' %>
-    port: <%=ENV['MONGO_PORT_27017_TCP_PORT'] || 27017 %>
+    host: localhost
+    port: 27017
     database: bibliotheca-test

@@ -48,12 +48,10 @@ end
 require_relative './bibliotheca/database'
 require_relative './bibliotheca/bot'
 require_relative './bibliotheca/schema'
-require_relative './bibliotheca/organization'
 require_relative './bibliotheca/exercise'
 require_relative './bibliotheca/guide'
 require_relative './bibliotheca/book'
 require_relative './bibliotheca/topic'
-require_relative './bibliotheca/user'
 require_relative './bibliotheca/language'
 require_relative './bibliotheca/ordering'
 require_relative './bibliotheca/io'
@@ -81,8 +79,6 @@ Mumukit::Auth.configure do |c|
 end
 
 Mumukit::Platform.configure do |config|
-  config.user_class = Bibliotheca::Collection::Users
-  config.organization_class = Bibliotheca::Collection::Organizations
   config.application = Mumukit::Platform.bibliotheca_api
   config.web_framework = Mumukit::Platform::WebFramework::Sinatra
 end
