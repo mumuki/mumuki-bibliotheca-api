@@ -51,15 +51,6 @@ module Bibliotheca
       end
     end
 
-
-    def run_tests(exercise_id)
-      exercise = find_exercise_by_id(exercise_id)
-      raise Bibliotheca::Collection::ExerciseNotFoundError, "exercise #{exercise_id} not found" unless exercise
-      runner = Mumukit::Bridge::Runner.new(exercise_language(exercise).test_runner_url)
-      runner.run_tests!(test: exercise.test, extra: "#{self.extra}\n#{exercise.extra}",
-                        content: exercise.solution, expectations: self.expectations + exercise.expectations)
-    end
-
     def export!(author_email)
       exercises.each { |e| e.expectations = e.expectations.as_json if e.expectations }
       Bibliotheca::IO::GuideExport.new(slug: slug,

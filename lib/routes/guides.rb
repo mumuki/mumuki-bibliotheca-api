@@ -14,10 +14,6 @@ get '/guides/:id' do
   Bibliotheca::Collection::Guides.find!(params['id']).as_json
 end
 
-post '/guides/:guide_id/exercises/:exercise_id/test' do
-  Bibliotheca::Collection::Languages.find_by!(name: json_body['language']).run_tests!(json_body['solution'])
-end
-
 delete '/guides/:id' do
   authorize! :editor
   Bibliotheca::Collection::Guides.delete!(params['id'])
