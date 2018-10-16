@@ -10,7 +10,6 @@ group :test do
   gem 'capybara', '~> 2.3.0'
   gem 'codeclimate-test-reporter', require: nil
   gem 'rack-test'
-  gem 'factory_girl'
 end
 
 group :development do

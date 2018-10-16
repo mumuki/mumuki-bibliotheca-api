@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :language, class: Bibliotheca::Language do
     sequence(:name) { |n| "lang#{n}" }
     sequence(:extension) { |n| "ext#{n}" }
@@ -8,14 +8,14 @@ FactoryGirl.define do
   end
 
   factory :haskell, parent: :language do
-    name 'haskell'
-    extension 'hs'
-    test_extension 'hs'
+    name { 'haskell' }
+    extension { 'hs' }
+    test_extension { 'hs' }
   end
 
   factory :text, parent: :language do
-    name 'text'
-    extension 'yml'
-    test_extension 'yml'
+    name { 'text' }
+    extension { 'yml' }
+    test_extension { 'yml' }
   end
 end
