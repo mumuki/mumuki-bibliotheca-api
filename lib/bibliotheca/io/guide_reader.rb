@@ -49,6 +49,8 @@ module Bibliotheca::IO
     def read_meta!(builder)
       meta = read_yaml_file(File.join(dir, 'meta.yml'))
 
+      raise 'Missing meta.yml' unless meta
+
       builder.language = Bibliotheca::Collection::Languages.find_by! name: meta['language']
       builder.locale = meta['locale']
 

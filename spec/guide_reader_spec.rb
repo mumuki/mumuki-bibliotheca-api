@@ -106,7 +106,7 @@ describe Bibliotheca::IO::GuideReader do
       let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/incompelete-guide', repo, log) }
 
       it 'fails' do
-        expect { reader.read_guide! }.to raise_exception
+        expect { reader.read_guide! }.to raise_error('Missing meta.yml')
       end
     end
     context 'when guide has full data' do
