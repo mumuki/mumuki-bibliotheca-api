@@ -12,3 +12,14 @@ group :test do
   gem 'rack-test'
   gem 'factory_girl'
 end
+
+group :development do
+  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-byebug' unless Gem.win_platform?
+  gem 'pry-stack_explorer'
+  gem 'binding_of_caller'
+  gem 'web-console'
+end
+
