@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bibliotheca::IO::GuideReader do
   context 'when optional properties are specified' do
-    before { Bibliotheca::Collection::Languages.insert!(build(:haskell)) }
+    before { create(:haskell) }
 
     let(:log) { Bibliotheca::IO::Log.new }
     let(:repo) { Mumukit::Auth::Slug.new('mumuki', 'functional-haskell-guide-1') }

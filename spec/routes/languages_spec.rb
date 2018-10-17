@@ -6,8 +6,7 @@ describe 'routes' do
   end
 
   describe('get /languages') do
-    let(:haskell) { build(:haskell) }
-    before { Bibliotheca::Collection::Languages.insert!(haskell) }
+    let!(:haskell) { create(:haskell) }
 
     before do
       get '/languages'

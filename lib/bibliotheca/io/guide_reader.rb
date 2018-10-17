@@ -51,7 +51,7 @@ module Bibliotheca::IO
 
       raise 'Missing meta.yml' unless meta
 
-      builder.language = Bibliotheca::Collection::Languages.find_by! name: meta['language']
+      builder.language = Language.find_by! name: meta['language']
       builder.locale = meta['locale']
 
       read! 'name', builder, meta

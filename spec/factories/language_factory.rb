@@ -1,10 +1,9 @@
 FactoryBot.define do
-  factory :language, class: Bibliotheca::Language do
+  factory :language do
     sequence(:name) { |n| "lang#{n}" }
     sequence(:extension) { |n| "ext#{n}" }
     sequence(:test_extension) { |n| "ext#{n}" }
-
-    initialize_with { new(attributes) }
+    runner_url { Faker::Internet.url }
   end
 
   factory :haskell, parent: :language do

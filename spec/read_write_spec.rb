@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'read-write' do
-  let(:haskell) { build(:haskell) }
-  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+  let!(:haskell) { create(:haskell) }
 
   let(:repo) { Mumukit::Auth::Slug.new('mumuki', 'functional-haskell-guide-1') }
   let(:export_log) { Bibliotheca::IO::Log.new }

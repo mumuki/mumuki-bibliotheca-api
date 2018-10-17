@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 describe Bibliotheca::Book do
-  let(:haskell) { build(:haskell) }
   let(:bot) { double(Bibliotheca::Bot) }
 
-  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+  let!(:haskell) { create(:haskell) }
 
   before { Bibliotheca::Collection::Guides.insert!(first_guide) }
   before { Bibliotheca::Collection::Guides.insert!(second_guide) }

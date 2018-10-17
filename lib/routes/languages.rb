@@ -1,3 +1,3 @@
 get '/languages' do
-  Bibliotheca::Collection::Languages.all.as_json
+  {languages: Language.all.as_json(only: [:extension, :name, :test_extension])}
 end

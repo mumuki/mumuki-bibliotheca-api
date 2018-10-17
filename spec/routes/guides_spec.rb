@@ -1,10 +1,8 @@
 require_relative '../spec_helper'
 
 describe 'routes' do
-  before { Bibliotheca::Collection::Languages.insert!(build(:haskell, {feedback: false,
-                                                                       visible_success_output: false,
-                                                                       output_content_type: 'plain',
-                                                                       test_runner_url: ''})) }
+  before { create(:haskell, visible_success_output: false,
+                            output_content_type: 'plain') }
 
   let(:request) {
     {

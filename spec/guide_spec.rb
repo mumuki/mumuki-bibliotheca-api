@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 describe Bibliotheca::Guide do
-  let(:haskell) { build(:haskell) }
   let(:bot) { Bibliotheca::Bot.from_env }
 
-  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+  let!(:haskell) { create(:haskell) }
 
   let(:json) {
     {name: 'my guide',

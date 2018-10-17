@@ -6,7 +6,7 @@ module Bibliotheca
 
     def transforms(original)
       {exercises: original[:exercises].map { |e| Exercise.new e.merge(guide: self) },
-       language: original[:language].try { |it| Bibliotheca::Collection::Languages.find_by!(name: it) }}
+       language: original[:language].try { |it| Language.find_by!(name: it) }}
     end
 
     def format_id(exercise)
@@ -58,6 +58,10 @@ module Bibliotheca
                                        author_email: author_email,
                                        bot: Bibliotheca::Bot.from_env).run!
 
+    end
+
+    def as_json(options={})
+      super.tap { |json| json['language'] = json['language']['name'] }
     end
 
     def fork_to!(organization, bot)

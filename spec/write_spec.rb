@@ -4,8 +4,7 @@ describe Bibliotheca::IO::GuideWriter do
   let(:bot) { Bibliotheca::Bot.new('mumukibot', 'zaraza') }
   let(:log) { Bibliotheca::IO::Log.new }
 
-  let(:haskell) { build(:haskell) }
-  before { Bibliotheca::Collection::Languages.insert!(haskell) }
+  let!(:haskell) { create(:haskell) }
 
 
   let!(:exercise_1) { guide.exercises.first }

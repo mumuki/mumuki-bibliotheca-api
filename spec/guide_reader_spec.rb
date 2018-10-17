@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Bibliotheca::IO::GuideReader do
   let(:log) { Bibliotheca::IO::Log.new }
   let(:repo) { Mumukit::Auth::Slug.new('mumuki', 'functional-haskell-guide-1') }
-  let(:haskell) { build(:haskell) }
 
   describe 'read_exercises' do
     let(:results) { [] }
@@ -16,7 +15,7 @@ describe Bibliotheca::IO::GuideReader do
   end
 
   describe '#read_guide!' do
-    before { Bibliotheca::Collection::Languages.insert!(haskell) }
+    let!(:haskell) { create(:haskell) }
 
     context 'when guide is ok' do
       let(:reader) { Bibliotheca::IO::GuideReader.new('spec/data/simple-guide', repo, log) }

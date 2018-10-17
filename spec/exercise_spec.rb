@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Bibliotheca::Exercise do
-  before { Bibliotheca::Collection::Languages.insert!(build(:text)) }
+  before { create(:text) }
 
   let(:guide) { build(:guide, language: 'text') }
 
