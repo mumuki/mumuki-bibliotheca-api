@@ -1,15 +1,21 @@
 require 'spec_helper'
 
 describe 'routes' do
+  let!(:guide_1) { create(:guide, slug: 'bar/baz1') }
+  let!(:guide_2) { create(:guide, slug: 'bar/baz2') }
 
-  let!(:topic_id) {
-    Bibliotheca::Collection::Topics.insert!(
-      build(:topic,
-            name: 'the topic',
-            description: 'this is important!',
-            locale: 'es',
-            slug: 'baz/foo',
-            lessons: %w(bar/baz1 bar/baz2)))[:id] }
+  let(:topic) do
+    create(:topic).tap do |it|
+      it.import_from_resource_h!(
+        name: 'the topic',
+        description: 'this is important!',
+        locale: 'es',
+        slug: 'baz/foo',
+        lessons: %w(bar/baz1 bar/baz2))
+    end
+  end
+  let!(:topic_id) { topic.id }
+
 
   def app
     Sinatra::Application
@@ -61,7 +67,7 @@ describe 'routes' do
 
 
   describe 'post /topics' do
-    let(:created_topic) { Bibliotheca::Collection::Topics.find_by!(slug: 'bar/a-topic') }
+    let(:created_topic) { Topic.find_by!(slug: 'bar/a-topic') }
     it 'accepts valid requests' do
       header 'Authorization', build_auth_header(writer: '*')
       post '/topics', {slug: 'bar/a-topic',

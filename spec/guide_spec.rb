@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Bibliotheca::Guide do
-  let(:bot) { Bibliotheca::Bot.from_env }
+describe Guide do
+  let(:bot) { Mumuki::Domain::Bot::Base.new }
 
   let!(:haskell) { create(:haskell) }
 
@@ -32,7 +32,7 @@ describe Bibliotheca::Guide do
 
   context 'stringified keys' do
     let(:stringified) { json.stringify_keys }
-    let(:guide) { Bibliotheca::Guide.new stringified }
+    let(:guide) { Guide.new stringified }
 
     it { expect(guide.name).to eq 'my guide' }
     it { expect(guide.exercises.first.name).to eq 'Bar' }
@@ -40,7 +40,7 @@ describe Bibliotheca::Guide do
   end
 
   context 'symbolized keys' do
-    let(:guide) { Bibliotheca::Guide.new json }
+    let(:guide) { Guide.new json }
 
     it { expect(guide.name).to eq 'my guide' }
     it { expect(guide.exercises.first.name).to eq 'Bar' }
@@ -115,20 +115,20 @@ describe Bibliotheca::Guide do
     let(:guide_from) { build :guide, slug: 'foo/bar' }
     let(:slug_from) { guide_from.slug }
     let(:slug_to) { 'baz/bar'.to_mumukit_slug }
-    let(:guide_to) { Bibliotheca::Collection::Guides.find_by_slug! slug_to.to_s }
+    let(:guide_to) { Mumuki::Bibliotheca::Collection::Guides.find_by_slug! slug_to.to_s }
 
-    before { Bibliotheca::Collection::Guides.insert! guide_from }
-    before { Bibliotheca::Collection::Guides.insert! build(:guide, slug: 'test/bar') }
+    before { Mumuki::Bibliotheca::Collection::Guides.insert! guide_from }
+    before { Mumuki::Bibliotheca::Collection::Guides.insert! build(:guide, slug: 'test/bar') }
 
     context 'fork works' do
-      before { expect_any_instance_of(Bibliotheca::Bot).to receive(:fork!).with(slug_from, slug_to.organization) }
-      before { Bibliotheca::Collection::Guides.find_by_slug!(slug_from).fork_to! 'baz', bot }
+      before { expect_any_instance_of(Mumuki::Bibliotheca::Bot).to receive(:fork!).with(slug_from, slug_to.organization) }
+      before { Mumuki::Bibliotheca::Collection::Guides.find_by_slug!(slug_from).fork_to! 'baz', bot }
       it { expect(guide_from.as_json).to json_like guide_to.as_json, {except: [:slug, :id]} }
     end
 
     context 'fork does not work if guide already exists' do
-      before { expect_any_instance_of(Bibliotheca::Bot).to_not receive(:fork!).with(slug_from, 'test') }
-      it { expect { Bibliotheca::Collection::Guides.find_by_slug!(slug_from).fork_to! 'test', bot }.to raise_error Bibliotheca::Collection::GuideAlreadyExists }
+      before { expect_any_instance_of(Mumuki::Bibliotheca::Bot).to_not receive(:fork!).with(slug_from, 'test') }
+      it { expect { Mumuki::Bibliotheca::Collection::Guides.find_by_slug!(slug_from).fork_to! 'test', bot }.to raise_error Bibliotheca::Collection::GuideAlreadyExists }
     end
 
   end

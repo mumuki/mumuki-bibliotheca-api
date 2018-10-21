@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'mumukit/content_type'
 
-
 require 'sinatra'
 require 'sinatra/cross_origin'
 require 'logger'
@@ -9,7 +8,6 @@ require 'mumukit/auth'
 
 require 'json'
 require 'yaml'
-
 
 configure do
   enable :cross_origin
@@ -139,8 +137,6 @@ helpers do
     document = document_class.new(json_body)
     exporting export_class, document: document, bot: bot, author_email: current_user.email do
       collection_class.upsert_by_slug!(slug.to_s, document)
-    end.tap do
-      Mumukit::Nuntius.notify_content_change_event! document_class, slug
     end
   end
 
@@ -165,18 +161,6 @@ helpers do
   end
 end
 
-error Bibliotheca::Collection::ExerciseNotFoundError do
-  halt 404
-end
-
-error Bibliotheca::Collection::GuideAlreadyExists do
-  halt 400
-end
-
-error Bibliotheca::IO::OrganizationNotFoundError do
-  halt 404
-end
-
 post '/markdown' do
   {markdown: Mumukit::ContentType::Markdown.to_html(json_body['markdown'])}
 end
@@ -196,8 +180,8 @@ get '/permissions' do
 end
 
 
-require_relative './routes/organization'
-require_relative './routes/languages'
-require_relative './routes/guides'
-require_relative './routes/books'
-require_relative './routes/topics'
+require_relative './sinatra/organization'
+require_relative './sinatra/languages'
+require_relative './sinatra/guides'
+require_relative './sinatra/books'
+require_relative './sinatra/topics'

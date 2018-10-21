@@ -1,13 +1,9 @@
 FactoryBot.define do
-  factory :book, class: Bibliotheca::Book do
+  factory :book do
     name { 'my book' }
-    slug { 'foo/bar' }
+    slug { "flbulgarelli/mumuki-sample-book-#{SecureRandom.uuid}" }
     chapters { [] }
     locale { 'en' }
     description { 'this book is for everyone and nobody' }
-
-    initialize_with do
-      Bibliotheca::Book.new(attributes)
-    end
   end
 end

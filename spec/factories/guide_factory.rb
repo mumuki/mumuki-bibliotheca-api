@@ -1,14 +1,10 @@
 FactoryBot.define do
-  factory :guide, class: Bibliotheca::Guide do
+  factory :guide do
     name { 'my guide' }
-    slug { 'foo/bar' }
+    slug { "flbulgarelli/mumuki-sample-guide-#{SecureRandom.uuid}" }
     exercises { [] }
     type { 'practice' }
-    language { 'haskell' }
+    language
     description { 'foo' }
-
-    initialize_with do
-      Bibliotheca::Guide.new(attributes)
-    end
   end
 end

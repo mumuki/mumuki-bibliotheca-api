@@ -1,5 +1,5 @@
 module Mumuki
-  module Bibliotheca
+  module Mumuki::Bibliotheca
     class Engine < ::Rails::Engine
       config.generators.api_only = true
     end

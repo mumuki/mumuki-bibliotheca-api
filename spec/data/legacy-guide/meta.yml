@@ -1,8 +1,0 @@
-name: Introduction
-language: haskell
-locale: en
-learning: true
-original_id_format: '%03d'
-beta: true
-order:
-- 1

@@ -13,7 +13,7 @@ require 'rack/test'
 require 'mumukit/auth'
 require 'mumukit/content_type'
 
-require_relative '../lib/bibliotheca'
+require_relative '../lib/mumuki/bibliotheca'
 require_relative './factories/language_factory'
 require_relative './factories/topic_factory'
 require_relative './factories/book_factory'
@@ -27,7 +27,6 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
     config.include Rack::Test::Methods
     config.include FactoryBot::Syntax::Methods
-    config.before { Bibliotheca::Database.clean! }
     config.infer_spec_type_from_file_location!
 end
 

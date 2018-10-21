@@ -1,13 +1,9 @@
 FactoryBot.define do
-  factory :topic, class: Bibliotheca::Topic do
+  factory :topic do
     name { 'my topic' }
-    slug { 'foo/bar' }
+    slug { "flbulgarelli/mumuki-sample-topic-#{SecureRandom.uuid}" }
     lessons { [] }
     locale { 'en' }
     description { 'this topic is really interesting' }
-
-    initialize_with do
-      Bibliotheca::Topic.new(attributes)
-    end
   end
 end

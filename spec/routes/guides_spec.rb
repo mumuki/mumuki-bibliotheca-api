@@ -6,7 +6,7 @@ describe 'routes' do
 
   let(:request) {
     {
-      language: 'haskell',
+      language: { name: 'haskell' },
       solution: {
         test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
         content: 'foo = True'
@@ -25,17 +25,17 @@ describe 'routes' do
      tag_list: [],
      extra_visible: false} }
 
-  let!(:guide_id) {
-    Bibliotheca::Collection::Guides.insert!(
-      build(:guide, name: 'foo', language: 'haskell', slug: 'foo/bar', exercises: [exercise]))[:id] }
+  let(:guide) do
+    create(:guide).tap do |it|
+      it.import_from_resource_h!(name: 'foo', language: { name: 'haskell' }, slug: 'foo/bar', exercises: [exercise])
+    end
+  end
+  let!(:guide_id) { guide.id }
 
   before do
-    Bibliotheca::Collection::Guides.insert!(
-      build(:guide, name: 'foo2', language: 'haskell', slug: 'baz/bar2', exercises: []))
-    Bibliotheca::Collection::Guides.insert!(
-      build(:guide, name: 'foo3', language: 'haskell', slug: 'baz/foo', exercises: []))
-    Bibliotheca::Collection::Guides.insert!(
-      build(:guide, name: 'foo4', language: 'haskell', slug: 'bar/foo4', exercises: [], private: true))
+    create(:guide).import_from_resource_h! name: 'foo2', language: { name: 'haskell' }, slug: 'baz/bar2', exercises: []
+    create(:guide).import_from_resource_h! name: 'foo3', language: { name: 'haskell' }, slug: 'baz/foo', exercises: []
+    create(:guide).import_from_resource_h! name: 'foo4', language: { name: 'haskell' }, slug: 'bar/foo4', exercises: [], private: true
   end
 
   def app
@@ -49,7 +49,7 @@ describe 'routes' do
     end
 
     it { expect(last_response).to be_ok }
-    it { expect(last_response.body).to json_eq guides: [{name: 'foo', slug: 'foo/bar', id: guide_id, language: 'haskell', type: 'practice'}] }
+    it { expect(last_response.body).to json_eq guides: [{name: 'foo', slug: 'foo/bar', id: guide_id, language: { name: 'haskell' }, type: 'practice'}] }
   end
 
   describe('get /guides') do
@@ -81,7 +81,7 @@ describe 'routes' do
                                                     type: 'practice',
                                                     id_format: '%05d',
                                                     name: 'foo',
-                                                    language: 'haskell',
+                                                    language: { name: 'haskell' },
                                                     slug: 'foo/bar',
                                                     description: 'foo',
                                                     exercises: [exercise],
@@ -107,7 +107,7 @@ describe 'routes' do
         header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          name: 'Baz Guide',
                          description: 'foo',
                          exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
@@ -129,7 +129,7 @@ describe 'routes' do
         header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          name: 'Baz Guide',
                          description: 'foo',
                          exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
@@ -144,7 +144,7 @@ describe 'routes' do
         header 'Authorization', build_auth_header(editor: '*')
 
         post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          name: 'Baz Guide',
                          description: 'foo',
                          exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
@@ -160,14 +160,14 @@ describe 'routes' do
 
         post '/guides', {slug: 'bar/baz',
                          name: 'Baz Guide',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          description: 'foo',
                          exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
         id = JSON.parse(last_response.body)['id']
 
         post '/guides', {slug: 'bar/baz',
                          name: 'Bar Baz Guide',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          description: 'foo',
                          exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
 
@@ -181,7 +181,7 @@ describe 'routes' do
         header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          name: 'Baz Guide',
                          description: 'foo',
                          exercises: [{name: 'Exercise 1', description: 'foo'}]}.to_json
@@ -196,7 +196,7 @@ describe 'routes' do
         header 'Authorization', build_auth_header(writer: '*')
 
         post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
+                         language: { name: 'haskell' },
                          name: 'Baz Guide',
                          description: 'foo',
                          exercises: [{name: 'Exercise 1/fdf', description: 'foo'}]}.to_json
@@ -280,15 +280,15 @@ describe 'routes' do
   end
 
   describe 'delete /guides/:id' do
-    let(:guide) { build(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
-    let(:id) { Bibliotheca::Collection::Guides.insert!(guide)[:id] }
+    let(:guide) { create(:guide, slug: 'pdep-utn/mumuki-funcional-guia-0') }
+    let(:id) { guide[:id] }
 
     context 'when user is authenticated and has permissions' do
       before { header 'Authorization', build_auth_header(editor: '*') }
       before { delete "/guides/#{id}" }
 
       it { expect(last_response).to be_ok }
-      it { expect(Bibliotheca::Collection::Guides.exists? id).to be false }
+      it { expect(Guide.exists? id: id).to be false }
     end
 
     context 'when user is authenticated but does not have enough permissions' do
@@ -297,14 +297,14 @@ describe 'routes' do
 
       it { expect(last_response).to_not be_ok }
       it { expect(last_response.status).to eq 403 }
-      it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
+      it { expect(Guide.exists? id: id).to be true }
     end
 
     context 'when user is not authenticated' do
       before { delete "/guides/#{id}" }
 
       it { expect(last_response).to_not be_ok }
-      it { expect(Bibliotheca::Collection::Guides.exists? id).to be true }
+      it { expect(Guide.exists? id: id).to be true }
     end
 
   end

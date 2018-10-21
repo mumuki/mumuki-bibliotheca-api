@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Bibliotheca::Exercise do
+describe Exercise do
   before { create(:text) }
 
   let(:guide) { build(:guide, language: 'text') }
@@ -52,7 +52,7 @@ describe Bibliotheca::Exercise do
 
 
   describe 'process multiple choices' do
-    subject { Bibliotheca::Exercise.new(multiple_json) }
+    subject { Exercise.new(multiple_json) }
     it { expect(subject.type).to eq 'problem' }
     it { expect(subject.name).to eq 'Multiple' }
     it { expect(subject.editor).to eq 'multiple_choice' }
@@ -61,7 +61,7 @@ describe Bibliotheca::Exercise do
   end
 
   describe 'process single choices with non-text language' do
-    subject { Bibliotheca::Exercise.new(single_json) }
+    subject { Exercise.new(single_json) }
     it { expect(subject.type).to eq 'problem' }
     it { expect(subject.name).to eq 'Single' }
     it { expect(subject.editor).to eq 'single_choice' }
@@ -70,7 +70,7 @@ describe Bibliotheca::Exercise do
   end
 
   describe 'process single choices with text language' do
-    subject { Bibliotheca::Exercise.new(single_json_text) }
+    subject { Exercise.new(single_json_text) }
     it { expect(subject.type).to eq 'problem' }
     it { expect(subject.name).to eq 'Single' }
     it { expect(subject.editor).to eq 'single_choice' }
@@ -79,7 +79,7 @@ describe Bibliotheca::Exercise do
   end
 
   describe 'process single choices with text language in guide' do
-    subject { Bibliotheca::Exercise.new(single_json_text_in_guide) }
+    subject { Exercise.new(single_json_text_in_guide) }
     it { expect(subject.type).to eq 'problem' }
     it { expect(subject.name).to eq 'Single' }
     it { expect(subject.language).to be nil }

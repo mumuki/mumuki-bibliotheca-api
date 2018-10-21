@@ -11,17 +11,9 @@ development:
   database: mumuki_development
   pool: 5
   timeout: 5000
-  mongo:
-    host: localhost
-    port: 27017
-    database: bibliotheca
 
 test:
   <<: *common
   database: mumuki_test
   pool: 5
   timeout: 5000
-  mongo:
-    host: localhost
-    port: 27017
-    database: bibliotheca-test
