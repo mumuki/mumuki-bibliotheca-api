@@ -97,6 +97,7 @@ module Bibliotheca::IO
         builder.expectations = exercise_reader.expectations(root)
         builder.assistance_rules = exercise_reader.assistance_rules(root)
         builder.randomizations = exercise_reader.randomizations(root)
+        builder.free_form_editor_source = exercise_reader.free_form_editor_source(root)
         yield builder
       end
     end
