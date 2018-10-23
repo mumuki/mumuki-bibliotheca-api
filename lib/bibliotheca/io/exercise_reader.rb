@@ -46,5 +46,9 @@ module Bibliotheca::IO
     def randomizations(root)
       yaml(root, 'randomizations')
     end
+
+    def free_form_editor_source(root)
+      read_code_file(root, 'free_form_editor_source')
+    end
   end
 end
