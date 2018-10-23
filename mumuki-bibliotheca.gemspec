@@ -19,9 +19,10 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 5.1.6"
 
   s.add_dependency 'sinatra-contrib'
+  s.add_dependency 'sinatra-cross_origin', '~> 0.3.1'
 
   s.add_dependency 'mumukit-auth', '~> 7.4'
-  s.add_dependency 'mumukit-service', '~> 3.0'
+  s.add_dependency 'mumukit-sync', '~> 0.0'
   s.add_dependency 'mumukit-platform', '~> 2.7'
   s.add_dependency 'mumukit-login', '~> 6.1'
   s.add_dependency 'mumukit-content-type', '~> 1.3'

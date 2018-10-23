@@ -1,91 +1,86 @@
 require 'spec_helper'
 
-describe Mumuki::Bibliotheca::Book do
-  let(:bot) { double(Mumuki::Bibliotheca::Bot) }
-
+describe Book do
+  let(:syncer) { double(:syncer) }
   let!(:haskell) { create(:haskell) }
-
-  before { create(:guide, first_guide) }
-  before { create(:guide, second_guide) }
-  before { create(:guide, third_guide) }
-
-  before { create(:topic, first_topic) }
-  before { create(:topic, second_topic) }
-
-  let(:first_guide) {
-    Guide.new name: 'first',
-              description: 'foobar',
-              slug: 'original/first-guide',
-              language: 'haskell',
-              exercises: [],
-              locale: 'en'
+  let!(:first_guide) {
+    import_from_api! :guide,
+                    name: 'first',
+                    description: 'foobar',
+                    slug: 'original/first-guide',
+                    language: 'haskell',
+                    exercises: [],
+                    locale: 'en'
   }
 
-  let(:second_guide) {
-    Guide.new name: 'second',
-              description: 'foobar',
-              slug: 'original/second-guide',
-              language: 'haskell',
-              exercises: [],
-              locale: 'en'
+  let!(:second_guide) {
+    import_from_api! :guide,
+                    name: 'second',
+                    description: 'foobar',
+                    slug: 'original/second-guide',
+                    language: 'haskell',
+                    exercises: [],
+                    locale: 'en'
   }
 
-  let(:third_guide) {
-    Guide.new name: 'third',
-              description: 'foobar',
-              slug: 'original/third-guide',
-              language: 'haskell',
-              exercises: [],
-              locale: 'en'
+  let!(:third_guide) {
+    import_from_api! :guide,
+                    name: 'third',
+                    description: 'foobar',
+                    slug: 'original/third-guide',
+                    language: 'haskell',
+                    exercises: [],
+                    locale: 'en'
   }
 
-  let(:first_topic) {
-    Topic.new name: 'first',
-              slug: 'original/first-topic',
-              locale: 'en',
-              description: 'foobar',
-              lessons: ['original/first-guide', 'original/second-guide'] }
+  let!(:first_topic) {
+    import_from_api! :topic,
+                      name: 'first',
+                      slug: 'original/first-topic',
+                      locale: 'en',
+                      description: 'foobar',
+                      lessons: ['original/first-guide', 'original/second-guide'] }
 
-  let(:second_topic) {
-    Topic.new name: 'second',
-              slug: 'original/second-topic',
-              locale: 'en',
-              description: 'foobar',
-              lessons: ['original/third-guide'] }
+  let!(:second_topic) {
+    import_from_api! :topic,
+                      name: 'second',
+                      slug: 'original/second-topic',
+                      locale: 'en',
+                      description: 'foobar',
+                      lessons: ['original/third-guide'] }
 
   describe 'fork_to!' do
-    let(:book) { Mumuki::Bibliotheca::Book.new name: 'book',
-                                       locale: 'en',
-                                       description: 'foobar',
-                                       slug: 'original/book',
-                                       chapters: ['original/first-topic', 'original/second-topic'] }
-    let(:book_id) { Mumuki::Bibliotheca::Collection::Books.find_by!(slug: 'original/book').id }
-    let(:forked_book_id) { Mumuki::Bibliotheca::Collection::Books.find_by!(slug: 'another/book').id }
-
-    before { Mumuki::Bibliotheca::Collection::Books.insert!(book) }
+    let!(:book) { import_from_api! :book,
+                                  name: 'book',
+                                  locale: 'en',
+                                  description: 'foobar',
+                                  slug: 'original/book',
+                                  chapters: ['original/first-topic', 'original/second-topic'] }
+    let(:book_id) { Book.find_by!(slug: 'original/book').id }
+    let(:forked_book_id) { Book.find_by!(slug: 'another/book').id }
 
     before do
-      expect(bot).to receive(:fork!).with('original/first-guide', 'another')
-      expect(bot).to receive(:fork!).with('original/second-guide', 'another')
-      expect(bot).to receive(:fork!).with('original/third-guide', 'another')
+      expect(syncer).to receive(:export!).with(instance_of(Book))
+      expect(syncer).to receive(:export!).with(instance_of(Book))
+      expect(syncer).to receive(:export!).with(instance_of(Book))
     end
 
-    let!(:forked_book) { book.fork_to! 'another', bot }
+    let!(:forked_book) { book.fork_to! 'another', syncer }
 
     it { expect(book_id).to_not eq forked_book_id  }
     it { expect(forked_book_id).to_not be nil  }
     it { expect(forked_book.slug).to eq 'another/book' }
 
-    it { expect(Mumuki::Bibliotheca::Collection::Guides.count).to eq 6 }
-    it { expect(Mumuki::Bibliotheca::Collection::Topics.count).to eq 4 }
-    it { expect(Mumuki::Bibliotheca::Collection::Books.count).to eq 2 }
+    it { expect(Guide.count).to eq 6 }
+    it { expect(Topic.count).to eq 4 }
+    it { expect(Book.count).to eq 2 }
 
-    it { expect(Mumuki::Bibliotheca::Collection::Guides.find_by!(slug: 'another/first-guide')).to_not be nil }
-    it { expect(Mumuki::Bibliotheca::Collection::Guides.find_by!(slug: 'another/second-guide')).to_not be nil }
-    it { expect(Mumuki::Bibliotheca::Collection::Guides.find_by!(slug: 'another/third-guide')).to_not be nil }
+    it { expect(Guide.find_by!(slug: 'another/first-guide')).to_not be nil }
+    it { expect(Guide.find_by!(slug: 'another/second-guide')).to_not be nil }
+    it { expect(Guide.find_by!(slug: 'another/third-guide')).to_not be nil }
 
-    it { expect(Mumuki::Bibliotheca::Collection::Topics.find_by!(slug: 'another/first-topic')).to_not be nil }
-    it { expect(Mumuki::Bibliotheca::Collection::Topics.find_by!(slug: 'another/second-topic')).to_not be nil }
+    it { expect(Topic.find_by!(slug: 'another/first-topic')).to_not be nil }
+    it { expect(Topic.find_by!(slug: 'another/second-topic')).to_not be nil }
   end
 
 end

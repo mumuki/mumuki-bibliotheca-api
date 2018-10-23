@@ -20,8 +20,6 @@ require_relative './factories/book_factory'
 require_relative './factories/guide_factory'
 require_relative './factories/exercise_factory'
 
-Mongo::Logger.logger.level = ::Logger::INFO
-
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
@@ -69,6 +67,10 @@ end
 def build_auth_header(permissions, uid='bot@mumuki.org')
   User.new(uid: uid, permissions: permissions).save!
   Mumukit::Auth::Token.encode uid, {}
+end
+
+def import_from_api!(kind, json)
+  Mumuki::Bibliotheca.api_syncer(json).locate_and_import! kind, json.with_indifferent_access[:slug]
 end
 
 SimpleCov.start

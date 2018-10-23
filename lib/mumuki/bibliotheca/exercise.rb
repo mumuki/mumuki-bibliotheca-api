@@ -6,15 +6,6 @@ module Mumuki:Bibliotheca
       process_kids_states!
     end
 
-    def markdownified
-      self.dup.tap do |exercise|
-        exercise.hint = Mumukit::ContentType::Markdown.to_html(exercise.hint)
-        exercise.corollary = Mumukit::ContentType::Markdown.to_html(exercise.corollary)
-        exercise.description = Mumukit::ContentType::Markdown.to_html(exercise.description)
-        exercise.teacher_info = Mumukit::ContentType::Markdown.to_html(exercise.teacher_info)
-      end
-    end
-
     def process_kids_states!
       return unless self.input_kids?
       raise 'Only Gobstones language is currently supported' unless language.gobstones?

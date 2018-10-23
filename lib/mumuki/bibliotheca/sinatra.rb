@@ -15,9 +15,6 @@ configure do
   set :show_exceptions, false
 
   use ::Rack::CommonLogger, Rails.logger
-
-  Mongo::Logger.logger = Rails.logger
-  Mongo::Logger.logger.level = ::Logger::INFO
 end
 
 helpers do
@@ -71,14 +68,6 @@ error JSON::ParserError do
   halt 400
 end
 
-error Mumukit::Service::DocumentValidationError do
-  halt 400
-end
-
-error Mumukit::Service::DocumentNotFoundError do
-  halt 404
-end
-
 error Mumukit::Auth::InvalidTokenError do
   halt 401
 end
@@ -89,6 +78,10 @@ end
 
 error Mumukit::Auth::InvalidSlugFormatError do
   halt 400
+end
+
+error ActiveRecord::RecordNotFound do
+  halt 404
 end
 
 options '*' do
@@ -121,29 +114,21 @@ helpers do
   end
 
   def bot
-    Bibliotheca::Bot.from_env
+    Mumukit::Sync::Store::Github::Bot.from_env
   end
 
   def subject
-    Bibliotheca::Collection::Guides.find(params[:id])
+    Guide.find(params[:id])
   end
 
   def route_slug_parts
     [params[:organization], params[:repository]].compact
   end
 
-  def upsert!(document_class, collection_class, export_class = nil)
+  def upsert!(content_kind)
     authorize! :writer
-    document = document_class.new(json_body)
-    exporting export_class, document: document, bot: bot, author_email: current_user.email do
-      collection_class.upsert_by_slug!(slug.to_s, document)
-    end
-  end
-
-  def exporting(export_class, options={}, &block)
-    block.call.tap do
-      export_class&.new(options.merge(slug: slug))&.run!
-    end
+    Mumuki::Bibliotheca.api_syncer(json_body).locate_and_import! content_kind, slug.to_s
+    Mumuki::Bibliotheca.history_syncer(bot, current_user.email).locate_and_export! content_kind, slug.to_s
   end
 
   def fork!(collection_class)
@@ -154,9 +139,7 @@ helpers do
 
   def delete!(collection_class)
     authorize! :editor
-    id = collection_class.find_by_slug!(slug.to_s).id
-    collection_class.delete! id
-    Mumukit::Nuntius.notify_content_delete_event! collection_class, slug
+    collection_class.find_by_slug!(slug.to_s).destroy!
     {}
   end
 end

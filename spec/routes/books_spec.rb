@@ -1,9 +1,18 @@
 require 'spec_helper'
 
 describe 'routes' do
-  let!(:book_id) {
-    Bibliotheca::Collection::Books.insert!(
-      build(:book, name: 'the book', locale: 'es', slug: 'baz/foo', chapters: %w(bar/baz1 bar/baz2)))[:id] }
+  before { create(:topic, slug: 'bar/baz1') }
+  before { create(:topic, slug: 'bar/baz2') }
+
+  let(:book) do
+    import_from_api! :book,
+                      name: 'the book',
+                      description: 'the description',
+                      locale: 'es',
+                      slug: 'baz/foo',
+                      chapters: %w(bar/baz1 bar/baz2)
+  end
+  let!(:book_id) { book.id }
 
   def app
     Sinatra::Application
@@ -47,12 +56,12 @@ describe 'routes' do
 
     it { expect(last_response).to be_ok }
     it { expect(last_response.body).to json_eq(
-                                         id: book_id,
                                          name: 'the book',
                                          description: 'this book is for everyone and nobody',
                                          locale: 'es',
                                          slug: 'baz/foo',
-                                         chapters: %w(bar/baz1 bar/baz2)) }
+                                         chapters: %w(bar/baz1 bar/baz2),
+                                         complements: []) }
   end
 
   describe 'post /books' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181016203853) do
+ActiveRecord::Schema.define(version: 20181022220518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,6 +185,9 @@ ActiveRecord::Schema.define(version: 20181016203853) do
     t.integer "type", default: 0, null: false
     t.text "authors"
     t.text "contributors"
+    t.string "id_format", default: "%05d"
+    t.boolean "private", default: false
+    t.text "teacher_info"
     t.index ["name"], name: "index_guides_on_name"
     t.index ["slug"], name: "index_guides_on_slug", unique: true
   end

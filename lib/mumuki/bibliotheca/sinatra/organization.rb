@@ -1,3 +1,3 @@
 get '/organization' do
-  Organization.base.as_json
+  Organization.base.to_resource_h
 end

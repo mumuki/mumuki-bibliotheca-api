@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Guide do
-  let(:bot) { Mumuki::Domain::Bot::Base.new }
+  let(:syncer) { double(:syncer) }
 
   let!(:haskell) { create(:haskell) }
 
@@ -16,23 +16,28 @@ describe Guide do
         description: 'a description',
         test: 'foo bar',
         layout: 'input_bottom',
+        manual_evaluation: true,
         id: 1},
 
        {type: 'problem',
+        description: 'other description',
         name: 'Foo',
         tag_list: %w(foo bar),
+        manual_evaluation: true,
         id: 4},
 
        {type: 'playground',
+        description: 'another description',
         name: 'Baz',
         tag_list: %w(baz bar),
         layout: 'input_bottom',
+        manual_evaluation: true,
         id: 2}]} }
 
 
   context 'stringified keys' do
     let(:stringified) { json.stringify_keys }
-    let(:guide) { Guide.new stringified }
+    let(:guide) { import_from_api! :guide, stringified }
 
     it { expect(guide.name).to eq 'my guide' }
     it { expect(guide.exercises.first.name).to eq 'Bar' }
@@ -40,7 +45,7 @@ describe Guide do
   end
 
   context 'symbolized keys' do
-    let(:guide) { Guide.new json }
+    let(:guide) { import_from_api! :guide, json }
 
     it { expect(guide.name).to eq 'my guide' }
     it { expect(guide.exercises.first.name).to eq 'Bar' }
@@ -61,74 +66,47 @@ describe Guide do
   end
 
   describe 'validations' do
-    context 'no name' do
-      let(:guide) { build(:guide, name: nil) }
-
-      it { expect(guide.errors).to include 'Name must be present' }
-      it { expect(guide.errors.size).to eq 1 }
-    end
-
     context 'bad type' do
-      let(:guide) { build(:guide, type: 'fdfd') }
-
-      it { expect(guide.errors).to include 'Unrecognized guide type fdfd' }
-      it { expect(guide.errors.size).to eq 1 }
-
-    end
-
-    context 'bad beta' do
-      let(:guide) { build(:guide, beta: 'true') }
-
-      it { expect(guide.errors).to include 'Beta flag must be boolean' }
-      it { expect(guide.errors.size).to eq 1 }
-    end
-
-    context 'no language' do
-      let(:guide) { build(:guide, language: nil) }
-
-      it { expect(guide.errors).to include 'Language must be present' }
-      it { expect(guide.errors.size).to eq 1 }
+      it { expect { create(:guide, type: 'fdfd') }.to raise_error "'fdfd' is not a valid type" }
     end
   end
 
-  describe 'markdownified' do
+  describe 'to_markdownified_resource_h' do
     context 'description' do
       let(:guide) { build(:guide, description: '`foo = (+)`') }
-      it { expect(guide.markdownified.description).to eq("<p><code>foo = (+)</code></p>\n") }
+      it { expect(guide.to_markdownified_resource_h[:description]).to eq("<p><code>foo = (+)</code></p>\n") }
     end
     context 'corollary' do
       let(:guide) { build(:guide, corollary: '[Google](https://google.com)') }
-      it { expect(guide.markdownified.corollary).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
+      it { expect(guide.to_markdownified_resource_h[:corollary]).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
     end
     context 'teacher_info' do
       let(:guide) { build(:guide, teacher_info: '**foo**') }
-      it { expect(guide.markdownified.teacher_info).to eq("<p><strong>foo</strong></p>\n") }
+      it { expect(guide.to_markdownified_resource_h[:teacher_info]).to eq("<p><strong>foo</strong></p>\n") }
     end
     context 'exercises' do
-      let(:guide) { build(:guide, exercises: [{description: '**foo**'}]) }
-      it { expect(guide.markdownified.exercises.first.description).to eq("<p><strong>foo</strong></p>\n") }
+      let(:guide) { build(:guide, exercises: [build(:exercise, description: '**foo**', expectations: [])]) }
+      it { expect(guide.to_markdownified_resource_h[:exercises].first[:description]).to eq("<p><strong>foo</strong></p>\n") }
     end
   end
 
   describe 'fork' do
 
-    let(:guide_from) { build :guide, slug: 'foo/bar' }
+    let!(:guide_from) { create :guide, slug: 'foo/bar' }
     let(:slug_from) { guide_from.slug }
     let(:slug_to) { 'baz/bar'.to_mumukit_slug }
-    let(:guide_to) { Mumuki::Bibliotheca::Collection::Guides.find_by_slug! slug_to.to_s }
-
-    before { Mumuki::Bibliotheca::Collection::Guides.insert! guide_from }
-    before { Mumuki::Bibliotheca::Collection::Guides.insert! build(:guide, slug: 'test/bar') }
+    let(:guide_to) { Guide.find_by_slug! slug_to.to_s }
+    let!(:guide) { create(:guide, slug: 'test/bar') }
 
     context 'fork works' do
-      before { expect_any_instance_of(Mumuki::Bibliotheca::Bot).to receive(:fork!).with(slug_from, slug_to.organization) }
-      before { Mumuki::Bibliotheca::Collection::Guides.find_by_slug!(slug_from).fork_to! 'baz', bot }
-      it { expect(guide_from.as_json).to json_like guide_to.as_json, {except: [:slug, :id]} }
+      before { expect(syncer).to receive(:export!).with(instance_of(Guide)) }
+      before { Guide.find_by_slug!(slug_from).fork_to! 'baz', syncer }
+      it { expect(guide_from.as_json).to json_like guide_to.as_json, {except: [:slug, :id, :created_at, :updated_at]} }
     end
 
     context 'fork does not work if guide already exists' do
-      before { expect_any_instance_of(Mumuki::Bibliotheca::Bot).to_not receive(:fork!).with(slug_from, 'test') }
-      it { expect { Mumuki::Bibliotheca::Collection::Guides.find_by_slug!(slug_from).fork_to! 'test', bot }.to raise_error Bibliotheca::Collection::GuideAlreadyExists }
+      before { expect(syncer).to_not receive(:export!) }
+      it { expect { Guide.find_by_slug!(slug_from).fork_to! 'test', syncer }.to raise_error ActiveRecord::RecordInvalid }
     end
 
   end

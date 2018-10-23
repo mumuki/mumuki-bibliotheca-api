@@ -10,6 +10,7 @@ FactoryBot.define do
     name { 'haskell' }
     extension { 'hs' }
     test_extension { 'hs' }
+    queriable { true }
   end
 
   factory :text, parent: :language do

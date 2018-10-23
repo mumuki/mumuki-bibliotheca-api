@@ -1,29 +1,31 @@
+helpers do
+  def list_guides(guides)
+    { guides: guides.as_json(only: [:name, :slug, :type, :language]) }
+  end
+end
+
 get '/guides' do
-  Guide.visible(current_user&.permissions).as_json
+  list_guides Guide.visible(current_user&.permissions)
 end
 
 get '/guides/writable' do
-  Guide.allowed(current_user&.permissions).as_json
-end
-
-get '/guides/:organization/:repository/raw' do
-  Guide.find_by_slug!(slug.to_s).raw
+  list_guides Guide.allowed(current_user&.permissions)
 end
 
 get '/guides/:organization/:repository/markdown' do
-  Guide.find_by_slug!(slug.to_s).markdownified.as_json
+  Guide.find_by_slug!(slug.to_s).to_markdownified_resource_h
 end
 
 get '/guides/:organization/:repository' do
-  Guide.find_by_slug!(slug.to_s).as_json
+  Guide.find_by_slug!(slug.to_s).to_resource_h
 end
 
 post '/guides' do
-  upsert! Guide, Guide, Bibliotheca::IO::GuideExport
+  upsert! :guide
 end
 
 post '/guides/import/:organization/:repository' do
-  Mumukit::Sync::Syncer.new(Mumukit::Sync::Store::Github.new(bot)).import!
+  Mumuki::Bibliotheca.history_syncer(bot).import! Guide.find_by_slug!(slug.to_s)
 end
 
 post '/guides/:organization/:repository/assets' do

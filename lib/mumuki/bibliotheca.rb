@@ -7,7 +7,6 @@ end
 
 require 'mumukit/core'
 require 'mumukit/auth'
-require 'mumukit/service'
 require 'mumukit/bridge'
 require 'mumukit/nuntius'
 require 'mumukit/login'
@@ -15,6 +14,7 @@ require 'mumukit/platform'
 require 'mumukit/inspection'
 require 'mumukit/assistant'
 require 'mumukit/randomizer'
+require 'mumukit/sync'
 
 require 'mumuki/domain'
 
@@ -41,3 +41,25 @@ class Mumukit::Auth::Slug
 end
 
 require_relative './bibliotheca/sinatra'
+
+module Mumuki::Bibliotheca
+  def self.history_syncer(bot, username = nil)
+    Mumukit::Sync::Syncer.new(Mumukit::Sync::Store::Github.new(bot, username))
+  end
+
+  def self.api_syncer(json)
+    Mumukit::Sync::Syncer.new(
+      ApiSource.new(json),
+      [Mumukit::Sync::Inflator::SingleChoice.new, Mumukit::Sync::Inflator::MultipleChoice.new])
+  end
+
+  class ApiSource < Mumukit::Sync::Store::Json
+    def pre_transform(key, json)
+      Mumukit::Sync.constantize(key).whitelist_attributes(json, relations: true)
+    end
+
+    def post_transform(key, json)
+      key == :guide ? json.merge(language: {name: json[:language]}) : json
+    end
+  end
+end

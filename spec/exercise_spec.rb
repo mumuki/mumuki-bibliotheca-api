@@ -89,22 +89,22 @@ describe Exercise do
     it { expect(subject.test).to eq "---\nequal: foo\n" }
   end
 
-  describe 'markdownified' do
+  describe 'to_markdownified_resource_h' do
     context 'description' do
       let(:exercise) { build(:exercise, description: '`foo = (+)`') }
-      it { expect(exercise.markdownified.description).to eq("<p><code>foo = (+)</code></p>\n") }
+      it { expect(exercise.to_markdownified_resource_h[:description]).to eq("<p><code>foo = (+)</code></p>\n") }
     end
     context 'corollary' do
       let(:exercise) { build(:exercise, corollary: '[Google](https://google.com)') }
-      it { expect(exercise.markdownified.corollary).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
+      it { expect(exercise.to_markdownified_resource_h[:corollary]).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
     end
     context 'teacher_info' do
       let(:exercise) { build(:exercise, teacher_info: '**foo**') }
-      it { expect(exercise.markdownified.teacher_info).to eq("<p><strong>foo</strong></p>\n") }
+      it { expect(exercise.to_markdownified_resource_h[:teacher_info]).to eq("<p><strong>foo</strong></p>\n") }
     end
     context 'hint' do
       let(:exercise) { build(:exercise, hint: '***foo***') }
-      it { expect(exercise.markdownified.hint).to eq("<p><strong><em>foo</em></strong></p>\n") }
+      it { expect(exercise.to_markdownified_resource_h[:hint]).to eq("<p><strong><em>foo</em></strong></p>\n") }
     end
   end
 
@@ -174,17 +174,17 @@ describe Exercise do
   context 'errors' do
     context 'empty inspections' do
       let(:exercise) { build(:exercise, expectations: [{ "binding" => "program", "inspection" => "" }]) }
-      it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid expectations") }
+      it { expect { exercise.validate! }.to raise_error("Invalid expectations") }
     end
 
     context 'invalid assistance_rules' do
       let(:exercise) { build(:exercise, assistance_rules: [{ when: 'content_empty', then: ['asd'] }]) }
-      it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid assistance_rules") }
+      it { expect { exercise.validate! }.to raise_error("Invalid assistance_rules") }
     end
 
     context 'invalid randomizations' do
       let(:exercise) { build(:exercise, randomizations: { type: :range, value: [1] }) }
-      it { expect { exercise.validate! }.to raise_error(Mumukit::Service::DocumentValidationError, "Invalid randomizations") }
+      it { expect { exercise.validate! }.to raise_error("Invalid randomizations") }
     end
   end
 end

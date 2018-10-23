@@ -5,14 +5,12 @@ describe 'routes' do
   let!(:guide_2) { create(:guide, slug: 'bar/baz2') }
 
   let(:topic) do
-    create(:topic).tap do |it|
-      it.import_from_resource_h!(
-        name: 'the topic',
-        description: 'this is important!',
-        locale: 'es',
-        slug: 'baz/foo',
-        lessons: %w(bar/baz1 bar/baz2))
-    end
+    import_from_api! :topic,
+                     name: 'the topic',
+                     description: 'this is important!',
+                     locale: 'es',
+                     slug: 'baz/foo',
+                     lessons: %w(bar/baz1 bar/baz2)
   end
   let!(:topic_id) { topic.id }
 
@@ -57,14 +55,12 @@ describe 'routes' do
 
     it { expect(last_response).to be_ok }
     it { expect(last_response.body).to json_eq(
-                                         id: topic_id,
                                          name: 'the topic',
                                          description: 'this is important!',
                                          locale: 'es',
                                          slug: 'baz/foo',
                                          lessons: %w(bar/baz1 bar/baz2)) }
   end
-
 
   describe 'post /topics' do
     let(:created_topic) { Topic.find_by!(slug: 'bar/a-topic') }

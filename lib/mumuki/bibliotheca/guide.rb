@@ -13,16 +13,7 @@ module Mumuki::Bibliotheca
       raise "inconsistent slug, must be #{slug}" if slug.present? && slug != a_slug
     end
 
-    def markdownified
-      self.dup.tap do |guide|
-        guide.description = Mumukit::ContentType::Markdown.to_html(guide.description)
-        guide.corollary = Mumukit::ContentType::Markdown.to_html(guide.corollary)
-        guide.teacher_info = Mumukit::ContentType::Markdown.to_html(guide.teacher_info)
-        guide.exercises.map! &:markdownified
-      end
-    end
-
-    def export!(author_email)
+     def export!(author_email)
       exercises.each { |e| e.expectations = e.expectations.as_json if e.expectations }
       Bibliotheca::IO::GuideExport.new(slug: slug,
                                        document: self,
