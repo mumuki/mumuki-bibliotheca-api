@@ -28,33 +28,6 @@ RSpec.configure do |config|
     config.infer_spec_type_from_file_location!
 end
 
-RSpec::Matchers.define :json_eq do |expected_json_hash|
-  match do |actual_json|
-    expected_json_hash.with_indifferent_access == ActiveSupport::JSON.decode(actual_json)
-  end
-end
-
-RSpec::Matchers.define :json_like do |expected, options={}|
-
-  match do |actual|
-    actual.as_json.with_indifferent_access.as_json(options) == expected.as_json.with_indifferent_access.as_json(options)
-  end
-
-  failure_message_for_should do |actual|
-    <<-EOS
-    expected: #{expected.as_json.with_indifferent_access.as_json(options)} (#{expected.class})
-         got: #{actual.as_json.with_indifferent_access.as_json(options)} (#{actual.class})
-    EOS
-  end
-
-  failure_message_for_should_not do |actual|
-    <<-EOS
-    expected: value != #{expected.as_json.with_indifferent_access.as_json(options)} (#{expected.class})
-         got:          #{actual.as_json.with_indifferent_access.as_json(options)} (#{actual.class})
-    EOS
-  end
-end
-
 ENV['MUMUKI_BOT_USERNAME'] = 'mumukibot'
 ENV['MUMUKI_BOT_EMAIL'] = 'bot@mumuki.org'
 ENV['MUMUKI_BOT_API_TOKEN'] = 'fake_token'

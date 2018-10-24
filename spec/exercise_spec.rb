@@ -1,116 +1,120 @@
 require 'spec_helper'
 
 describe Exercise do
-  before { create(:text) }
+  let!(:text) { create(:text) }
+  let!(:gobstones) { create(:gobstones) }
+  let(:guide_language) { 'gobstones' }
+  let(:guide_api_json) {
+    {
+      name: 'sample guide',
+      description: 'Baz',
+      slug: 'mumuki/sample-guide',
+      language: guide_language,
+      locale: 'en',
+      extra: 'bar',
+      teacher_info: 'an info',
+      authors: 'Foo Bar',
+      exercises: [ exercise_api_json ]
+    }
+  }
+  subject { import_from_api!(:guide, guide_api_json).exercises.first }
 
-  let(:guide) { build(:guide, language: 'text') }
+  describe 'choices import' do
+    describe 'process multiple choices' do
+      let(:exercise_api_json) { {
+        type: 'problem',
+        name: 'Multiple',
+        description: 'a description',
+        language: 'text',
+        editor: 'multiple_choice',
+        choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: true}],
+        tag_list: %w(baz bar),
+        layout: 'input_bottom',
+        id: 2} }
 
-  let(:multiple_json) { {
-    guide: guide,
-    type: 'problem',
-    name: 'Multiple',
-    language: 'text',
-    editor: 'multiple_choice',
-    choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: true}],
-    tag_list: %w(baz bar),
-    layout: 'input_bottom',
-    id: 2}.deep_stringify_keys }
-
-  let(:single_json) { {
-    guide: guide,
-    type: 'problem',
-    name: 'Single',
-    language: 'haskell',
-    test: 'foo',
-    editor: 'single_choice',
-    choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: false}],
-    tag_list: %w(baz bar),
-    layout: 'input_bottom',
-    id: 2}.deep_stringify_keys }
-
-  let(:single_json_text) { {
-    guide: guide,
-    type: 'problem',
-    name: 'Single',
-    language: 'text',
-    editor: 'single_choice',
-    choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: false}],
-    tag_list: %w(baz bar),
-    layout: 'input_bottom',
-    id: 2}.deep_stringify_keys }
-
-
-  let(:single_json_text_in_guide) { {
-    guide: guide,
-    type: 'problem',
-    name: 'Single',
-    editor: 'single_choice',
-    choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: false}],
-    tag_list: %w(baz bar),
-    layout: 'input_bottom',
-    id: 2}.deep_stringify_keys }
-
-
-  describe 'process multiple choices' do
-    subject { Exercise.new(multiple_json) }
-    it { expect(subject.type).to eq 'problem' }
-    it { expect(subject.name).to eq 'Multiple' }
-    it { expect(subject.editor).to eq 'multiple_choice' }
-    it { expect(subject.choices).to eq multiple_json['choices'] }
-    it { expect(subject.test).to eq "---\nequal: '0:2'\n" }
-  end
-
-  describe 'process single choices with non-text language' do
-    subject { Exercise.new(single_json) }
-    it { expect(subject.type).to eq 'problem' }
-    it { expect(subject.name).to eq 'Single' }
-    it { expect(subject.editor).to eq 'single_choice' }
-    it { expect(subject.choices).to eq single_json['choices'] }
-    it { expect(subject.test).to eq "foo" }
-  end
-
-  describe 'process single choices with text language' do
-    subject { Exercise.new(single_json_text) }
-    it { expect(subject.type).to eq 'problem' }
-    it { expect(subject.name).to eq 'Single' }
-    it { expect(subject.editor).to eq 'single_choice' }
-    it { expect(subject.choices).to eq single_json_text['choices'] }
-    it { expect(subject.test).to eq "---\nequal: foo\n" }
-  end
-
-  describe 'process single choices with text language in guide' do
-    subject { Exercise.new(single_json_text_in_guide) }
-    it { expect(subject.type).to eq 'problem' }
-    it { expect(subject.name).to eq 'Single' }
-    it { expect(subject.language).to be nil }
-    it { expect(subject.effective_language_name).to eq 'text' }
-    it { expect(subject.editor).to eq 'single_choice' }
-    it { expect(subject.choices).to eq single_json_text_in_guide['choices'] }
-    it { expect(subject.test).to eq "---\nequal: foo\n" }
-  end
-
-  describe 'to_markdownified_resource_h' do
-    context 'description' do
-      let(:exercise) { build(:exercise, description: '`foo = (+)`') }
-      it { expect(exercise.to_markdownified_resource_h[:description]).to eq("<p><code>foo = (+)</code></p>\n") }
+      it { expect(subject).to be_a Problem }
+      it { expect(subject.name).to eq 'Multiple' }
+      it { expect(subject.editor).to eq 'multiple_choice' }
+      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.test).to eq "---\nequal: '0:2'\n" }
     end
-    context 'corollary' do
-      let(:exercise) { build(:exercise, corollary: '[Google](https://google.com)') }
-      it { expect(exercise.to_markdownified_resource_h[:corollary]).to eq("<p><a title=\"\" href=\"https://google.com\" target=\"_blank\">Google</a></p>\n") }
+
+    describe 'process single choices with non-text language' do
+      let(:exercise_api_json) { {
+        type: 'problem',
+        name: 'Single',
+        description: 'a big problem',
+        language: 'gobstones',
+        test: 'foo',
+        editor: 'single_choice',
+        choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: false}],
+        tag_list: %w(baz bar),
+        layout: 'input_bottom',
+        id: 2} }
+
+      it { expect(subject).to be_a Problem }
+      it { expect(subject.name).to eq 'Single' }
+      it { expect(subject.editor).to eq 'single_choice' }
+      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.test).to eq "foo" }
     end
-    context 'teacher_info' do
-      let(:exercise) { build(:exercise, teacher_info: '**foo**') }
-      it { expect(exercise.to_markdownified_resource_h[:teacher_info]).to eq("<p><strong>foo</strong></p>\n") }
+
+    describe 'process single choices with text language' do
+      let(:exercise_api_json) { {
+        type: 'problem',
+        name: 'Single',
+        description: 'a big problem',
+        language: 'text',
+        editor: 'single_choice',
+        choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: false}],
+        tag_list: %w(baz bar),
+        layout: 'input_bottom',
+        id: 2} }
+
+      it { expect(subject).to be_a Problem }
+      it { expect(subject.name).to eq 'Single' }
+      it { expect(subject.editor).to eq 'single_choice' }
+      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.test).to eq "---\nequal: foo\n" }
     end
-    context 'hint' do
-      let(:exercise) { build(:exercise, hint: '***foo***') }
-      it { expect(exercise.to_markdownified_resource_h[:hint]).to eq("<p><strong><em>foo</em></strong></p>\n") }
+
+    describe 'process single choices with text language in guide' do
+      let(:guide_language) { 'text' }
+      let(:exercise_api_json) { {
+        type: 'problem',
+        name: 'Single',
+        description: 'a big problem',
+        editor: 'single_choice',
+        choices: [{value: 'foo', checked: true}, {value: 'bar', checked: false}, {value: 'baz', checked: false}],
+        tag_list: %w(baz bar),
+        layout: 'input_bottom',
+        id: 2} }
+
+      it { expect(subject).to be_a Problem }
+      it { expect(subject.name).to eq 'Single' }
+      it { expect(subject.language.name).to eq 'text' }
+      it { expect(subject.editor).to eq 'single_choice' }
+      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.test).to eq "---\nequal: foo\n" }
     end
+
   end
 
-  describe 'set_states' do
+
+  describe 'states import' do
+    let(:exercise_api_json) {
+      {
+        name: 'an exercise',
+        id: 1,
+        description: 'a description',
+        expectations: [{binding: 'program', inspection: 'Uses:foo'}],
+        layout: 'input_kids',
+        language: 'gobstones',
+        test: test
+      }
+    }
     context 'with examples' do
-      let(:exercise) { build(:exercise, layout: 'input_kids', language: 'gobstones', test: "
+      let(:test) { "
         check_head_position: #{check_head_position}
 
         examples:
@@ -131,60 +135,37 @@ describe Exercise do
            final_board: |
              GBB/1.0
              size 2 2
-             head 1 0") }
+             head 1 0" }
       let(:check_head_position) { true }
 
-      it { expect(exercise.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
-      it { expect(exercise.final_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
+      it { expect(subject.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
+      it { expect(subject.final_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
 
       context 'with check_head_position: false' do
         let(:check_head_position) { false }
 
-        it { expect(exercise.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
-        it { expect(exercise.final_state).to eq "<gs-board without-header> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
+        it { expect(subject.initial_state).to eq "<gs-board> GBB/1.0\nsize 2 2\nhead 0 0\n </gs-board>" }
+        it { expect(subject.final_state).to eq "<gs-board without-header> GBB/1.0\nsize 2 2\nhead 1 0\n </gs-board>" }
       end
     end
     context 'without test' do
-      let(:exercise) { build(:exercise, layout: 'input_kids', language: 'gobstones', test: nil) }
-      it { expect(exercise.initial_state).to be_nil }
-      it { expect(exercise.final_state).to be_nil }
+      let(:test) { nil }
+      it { expect(subject.initial_state).to be_nil }
+      it { expect(subject.final_state).to be_nil }
     end
     context 'without examples' do
-      let(:exercise) { build(:exercise, layout: 'input_kids', language: 'gobstones', test: "
-        check_head_position: true") }
-      it { expect(exercise.initial_state).to be_nil }
-      it { expect(exercise.final_state).to be_nil }
+      let(:test) { "check_head_position: true" }
+      it { expect(subject.initial_state).to be_nil }
+      it { expect(subject.final_state).to be_nil }
     end
     context 'without boards' do
-      let(:exercise) { build(:exercise, layout: 'input_kids', language: 'gobstones', test: "
+      let(:test) { "
         check_head_position: true
 
         examples:
-         - title: 'Si hay celdas al Este, se mueve'") }
-      it { expect(exercise.initial_state).to be_nil }
-      it { expect(exercise.final_state).to eq exercise.boom_board }
-    end
-  end
-
-  context 'valid randomizations' do
-    let(:exercise) { build(:exercise, randomizations: { some_word: { type: :one_of, value: %w('some' 'word') }, some_number: { type: :range, value: [1, 10] } }) }
-    it { expect { exercise.validate! }.not_to raise_error }
-  end
-
-  context 'errors' do
-    context 'empty inspections' do
-      let(:exercise) { build(:exercise, expectations: [{ "binding" => "program", "inspection" => "" }]) }
-      it { expect { exercise.validate! }.to raise_error("Invalid expectations") }
-    end
-
-    context 'invalid assistance_rules' do
-      let(:exercise) { build(:exercise, assistance_rules: [{ when: 'content_empty', then: ['asd'] }]) }
-      it { expect { exercise.validate! }.to raise_error("Invalid assistance_rules") }
-    end
-
-    context 'invalid randomizations' do
-      let(:exercise) { build(:exercise, randomizations: { type: :range, value: [1] }) }
-      it { expect { exercise.validate! }.to raise_error("Invalid randomizations") }
+         - title: 'Si hay celdas al Este, se mueve'" }
+      it { expect(subject.initial_state).to be_nil }
+      it { expect(subject.final_state).to eq Mumukit::Sync::Inflator::GobstonesKidsBoards.boom_board }
     end
   end
 end

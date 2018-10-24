@@ -76,6 +76,10 @@ error Mumukit::Auth::UnauthorizedAccessError do
   halt 403
 end
 
+error ActiveRecord::RecordInvalid do
+  halt 400
+end
+
 error Mumukit::Auth::InvalidSlugFormatError do
   halt 400
 end
@@ -118,23 +122,28 @@ helpers do
   end
 
   def subject
-    Guide.find(params[:id])
+    Guide.find_by_id(params[:id])
   end
 
   def route_slug_parts
     [params[:organization], params[:repository]].compact
   end
 
+  def history_syncer
+    Mumuki::Bibliotheca.history_syncer(bot, current_user&.email)
+  end
+
   def upsert!(content_kind)
     authorize! :writer
-    Mumuki::Bibliotheca.api_syncer(json_body).locate_and_import! content_kind, slug.to_s
-    Mumuki::Bibliotheca.history_syncer(bot, current_user.email).locate_and_export! content_kind, slug.to_s
+    content = Mumuki::Bibliotheca.api_syncer(json_body).locate_and_import! content_kind, slug.to_s
+    history_syncer.export! content
+    content.to_resource_h
   end
 
   def fork!(collection_class)
     authorize! :writer
     destination = json_body['organization']
-    collection_class.find_by_slug!(slug.to_s).fork_to!(destination, bot).as_json
+    collection_class.find_by_slug!(slug.to_s).fork_to!(destination, history_syncer).as_json
   end
 
   def delete!(collection_class)

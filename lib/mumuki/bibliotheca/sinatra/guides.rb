@@ -1,6 +1,6 @@
 helpers do
   def list_guides(guides)
-    { guides: guides.as_json(only: [:name, :slug, :type, :language]) }
+    { guides: guides.map { |it| it.as_json(only: [:name, :slug, :type]).merge(language: it.language.name) } }
   end
 end
 
@@ -10,6 +10,10 @@ end
 
 get '/guides/writable' do
   list_guides Guide.allowed(current_user&.permissions)
+end
+
+delete '/guides/:organization/:repository' do
+  delete! Guide
 end
 
 get '/guides/:organization/:repository/markdown' do
@@ -25,7 +29,7 @@ post '/guides' do
 end
 
 post '/guides/import/:organization/:repository' do
-  Mumuki::Bibliotheca.history_syncer(bot).import! Guide.find_by_slug!(slug.to_s)
+  history_syncer.locate_and_import! :guide, slug.to_s
 end
 
 post '/guides/:organization/:repository/assets' do

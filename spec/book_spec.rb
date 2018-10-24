@@ -60,8 +60,11 @@ describe Book do
     let(:forked_book_id) { Book.find_by!(slug: 'another/book').id }
 
     before do
-      expect(syncer).to receive(:export!).with(instance_of(Book))
-      expect(syncer).to receive(:export!).with(instance_of(Book))
+      expect(syncer).to receive(:export!).with(instance_of(Guide))
+      expect(syncer).to receive(:export!).with(instance_of(Guide))
+      expect(syncer).to receive(:export!).with(instance_of(Topic))
+      expect(syncer).to receive(:export!).with(instance_of(Guide))
+      expect(syncer).to receive(:export!).with(instance_of(Topic))
       expect(syncer).to receive(:export!).with(instance_of(Book))
     end
 

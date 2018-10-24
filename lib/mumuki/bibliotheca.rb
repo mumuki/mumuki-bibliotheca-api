@@ -50,7 +50,9 @@ module Mumuki::Bibliotheca
   def self.api_syncer(json)
     Mumukit::Sync::Syncer.new(
       ApiSource.new(json),
-      [Mumukit::Sync::Inflator::SingleChoice.new, Mumukit::Sync::Inflator::MultipleChoice.new])
+      [Mumukit::Sync::Inflator::SingleChoice.new,
+       Mumukit::Sync::Inflator::MultipleChoice.new,
+       Mumukit::Sync::Inflator::GobstonesKidsBoards.new])
   end
 
   class ApiSource < Mumukit::Sync::Store::Json
@@ -59,7 +61,18 @@ module Mumuki::Bibliotheca
     end
 
     def post_transform(key, json)
-      key == :guide ? json.merge(language: {name: json[:language]}) : json
+      if key == :guide
+        guide = json.dup
+        wrap_language! guide
+        guide[:exercises].each { |exercise| wrap_language! exercise }
+        guide
+      else
+        json
+      end
+    end
+
+    def wrap_language!(hash)
+      hash[:language] = { name: hash[:language] } if hash[:language]
     end
   end
 end

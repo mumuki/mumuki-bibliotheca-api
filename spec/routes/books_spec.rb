@@ -7,7 +7,7 @@ describe 'routes' do
   let(:book) do
     import_from_api! :book,
                       name: 'the book',
-                      description: 'the description',
+                      description: 'this book is for everyone and nobody',
                       locale: 'es',
                       slug: 'baz/foo',
                       chapters: %w(bar/baz1 bar/baz2)

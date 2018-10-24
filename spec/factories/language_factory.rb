@@ -6,6 +6,14 @@ FactoryBot.define do
     runner_url { Faker::Internet.url }
   end
 
+  factory :gobstones, parent: :language do
+    name { 'gobstones' }
+    extension { 'gbs' }
+    test_extension { 'yaml' }
+    queriable { false }
+  end
+
+
   factory :haskell, parent: :language do
     name { 'haskell' }
     extension { 'hs' }

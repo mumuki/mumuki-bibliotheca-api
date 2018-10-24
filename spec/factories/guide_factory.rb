@@ -6,5 +6,6 @@ FactoryBot.define do
     type { 'practice' }
     language
     description { 'foo' }
+    locale { 'es' }
   end
 end

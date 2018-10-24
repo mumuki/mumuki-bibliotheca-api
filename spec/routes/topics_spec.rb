@@ -64,7 +64,8 @@ describe 'routes' do
 
   describe 'post /topics' do
     let(:created_topic) { Topic.find_by!(slug: 'bar/a-topic') }
-    it 'accepts valid requests' do
+    before { create(:guide, slug: 'foo/bar' )}
+    before do
       header 'Authorization', build_auth_header(writer: '*')
       post '/topics', {slug: 'bar/a-topic',
                        name: 'Baz Topic',
@@ -72,13 +73,15 @@ describe 'routes' do
                        description: 'foo',
                        invalid_field: 'zafaza',
                        lessons: ['foo/bar']}.to_json
-
-      expect(last_response).to be_ok
-      expect(created_topic).to json_like({slug: 'bar/a-topic',
-                                          name: 'Baz Topic',
-                                          locale: 'en',
-                                          description: 'foo',
-                                          lessons: ['foo/bar']}, except: :id)
+    end
+    it { expect(last_response).to be_ok }
+    it { expect(last_response.body).to json_like created_topic.to_resource_h }
+    it do
+      expect(created_topic.to_resource_h).to json_like({slug: 'bar/a-topic',
+                                                        name: 'Baz Topic',
+                                                        locale: 'en',
+                                                        description: 'foo',
+                                                        lessons: ['foo/bar']}, except: :id)
     end
   end
 
