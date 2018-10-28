@@ -23,6 +23,10 @@ module Bibliotheca
       effective_language_name === 'gobstones'
     end
 
+    def prolog_blockly?
+      effective_language_name === 'prologBlockly'
+    end
+
     def process_choices!
       if text?
         multiple_choices_to_test! if multiple_choice?
@@ -62,6 +66,7 @@ module Bibliotheca
 
     def process_kids_states!
       return unless self.kids?
+      return if prolog_blockly?
       raise 'Only Gobstones language is currently supported' unless gobstones?
       examples = kids_test&.dig('examples')
       with_head = kids_test&.dig('check_head_position')
