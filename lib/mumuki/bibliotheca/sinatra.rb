@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'mumukit/content_type'
 
-require 'sinatra'
 require 'sinatra/cross_origin'
 require 'logger'
 require 'mumukit/auth'
@@ -13,6 +12,10 @@ configure do
   enable :cross_origin
   set :allow_methods, [:get, :put, :post, :options, :delete]
   set :show_exceptions, false
+
+  set :app_name, 'bibliotheca'
+  set :static, true
+  set :public_folder, 'public'
 
   use ::Rack::CommonLogger, Rails.logger
 end
@@ -92,12 +95,6 @@ options '*' do
   response.headers['Allow'] = settings.allow_methods.map { |it| it.to_s.upcase }.join(',')
   response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization'
   200
-end
-
-configure do
-  set :app_name, 'bibliotheca'
-  set :static, true
-  set :public_folder, 'public'
 end
 
 helpers do
