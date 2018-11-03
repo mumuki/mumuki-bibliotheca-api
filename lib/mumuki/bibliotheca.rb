@@ -5,25 +5,13 @@ module Mumuki
   end
 end
 
-require 'mumukit/core'
-require 'mumukit/auth'
-require 'mumukit/bridge'
-require 'mumukit/nuntius'
-require 'mumukit/login'
-require 'mumukit/platform'
-require 'mumukit/inspection'
-require 'mumukit/assistant'
-require 'mumukit/randomizer'
-require 'mumukit/sync'
-
 require 'mumuki/domain'
+require 'mumukit/login'
+require 'mumukit/nuntius'
+require 'mumukit/platform'
 
 Mumukit::Nuntius.configure do |c|
   c.app_name = 'bibliotheca'
-end
-
-Mumukit::Auth.configure do |c|
-
 end
 
 Mumukit::Platform.configure do |config|
@@ -31,10 +19,8 @@ Mumukit::Platform.configure do |config|
   config.web_framework = Mumukit::Platform::WebFramework::Sinatra
 end
 
-Mumukit::Login.configure do |config|
-end
-
 class Mumukit::Auth::Slug
+  ## FIXME remove this from here
   def bibliotheca_guide_web_hook_url
     "http://bibliotheca-api.mumuki.io/guides/import/#{to_s}"
   end
@@ -43,16 +29,15 @@ end
 require_relative './bibliotheca/sinatra'
 
 module Mumuki::Bibliotheca
+  API_SYNC_INFLATORS = [Mumukit::Sync::Inflator::SingleChoice.new, Mumukit::Sync::Inflator::MultipleChoice.new]
+  HISTORY_SYNC_INFLATORS = []
+
   def self.history_syncer(bot, username = nil)
-    Mumukit::Sync::Syncer.new(Mumukit::Sync::Store::Github.new(bot, username))
+    Mumukit::Sync::Syncer.new(Mumukit::Sync::Store::Github.new(bot, username), HISTORY_SYNC_INFLATORS)
   end
 
   def self.api_syncer(json)
-    Mumukit::Sync::Syncer.new(
-      ApiSource.new(json),
-      [Mumukit::Sync::Inflator::SingleChoice.new,
-       Mumukit::Sync::Inflator::MultipleChoice.new,
-       Mumukit::Sync::Inflator::GobstonesKidsBoards.new])
+    Mumukit::Sync::Syncer.new(ApiSource.new(json), API_SYNC_INFLATORS)
   end
 
   class ApiSource < Mumukit::Sync::Store::Json

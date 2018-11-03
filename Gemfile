@@ -25,4 +25,3 @@ end
 gem 'mumuki-domain', path: '../laboratory/domain'
 gem 'mumukit-platform', path: '../mumukit-platform'
 gem 'mumukit-sync', path: '../mumukit-sync'
-gem 'mumukit-auth', path: '../mumukit-auth'
