@@ -2,6 +2,10 @@ helpers do
   def list_guides(guides)
     { guides: guides.map { |it| it.as_json(only: [:name, :slug, :type]).merge(language: it.language.name) } }
   end
+
+  def slice_guide_resource_h_for_api(guide)
+    guide.merge(language: guide.dig(:language, :name))
+  end
 end
 
 get '/guides' do
@@ -17,11 +21,11 @@ delete '/guides/:organization/:repository' do
 end
 
 get '/guides/:organization/:repository/markdown' do
-  Guide.find_by_slug!(slug.to_s).to_markdownified_resource_h
+  slice_guide_resource_h_for_api Guide.find_by_slug!(slug.to_s).to_markdownified_resource_h
 end
 
 get '/guides/:organization/:repository' do
-  Guide.find_by_slug!(slug.to_s).to_resource_h
+  slice_guide_resource_h_for_api Guide.find_by_slug!(slug.to_s).to_resource_h
 end
 
 post '/guides' do

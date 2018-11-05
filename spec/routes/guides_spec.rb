@@ -3,19 +3,9 @@ require_relative '../spec_helper'
 describe 'routes' do
   let!(:haskell) { create(:haskell, visible_success_output: false, output_content_type: 'plain') }
 
-  let(:request) {
-    {
-      language: 'haskell',
-      solution: {
-        test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
-        content: 'foo = True'
-      }
-    }
-  }
-
   let(:exercise) {
     {id: 1, name: 'foo', type: 'problem', layout: 'input_right', editor: 'code', description: 'foo',
-     test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True}, solution: 'foo = True',
+     test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
      manual_evaluation: false,
      locale: 'en',
      choices: [],
