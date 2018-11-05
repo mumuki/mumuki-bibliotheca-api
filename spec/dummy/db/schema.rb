@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181022220518) do
+ActiveRecord::Schema.define(version: 20181105152420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 20181022220518) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "locale", default: "en"
-    t.string "contact_email", default: "info@mumuki.org", null: false
     t.text "description"
     t.string "slug"
     t.index ["slug"], name: "index_books_on_slug", unique: true
@@ -255,6 +254,7 @@ ActiveRecord::Schema.define(version: 20181022220518) do
     t.text "theme", default: "{}", null: false
     t.text "profile", default: "{}", null: false
     t.index ["book_id"], name: "index_organizations_on_book_id"
+    t.index ["name"], name: "index_organizations_on_name", unique: true
   end
 
   create_table "paths", id: :serial, force: :cascade do |t|
