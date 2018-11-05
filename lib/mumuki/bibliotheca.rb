@@ -19,13 +19,6 @@ Mumukit::Platform.configure do |config|
   config.web_framework = Mumukit::Platform::WebFramework::Sinatra
 end
 
-class Mumukit::Auth::Slug
-  ## FIXME remove this from here
-  def bibliotheca_guide_web_hook_url
-    "http://bibliotheca-api.mumuki.io/guides/import/#{to_s}"
-  end
-end
-
 require_relative './bibliotheca/sinatra'
 
 module Mumuki::Bibliotheca
@@ -33,7 +26,10 @@ module Mumuki::Bibliotheca
   HISTORY_SYNC_INFLATORS = []
 
   def self.history_syncer(bot, username = nil)
-    Mumukit::Sync::Syncer.new(Mumukit::Sync::Store::Github.new(bot, username), HISTORY_SYNC_INFLATORS)
+    Mumukit::Sync::Syncer.new(
+      ## FIXME remove this hardcoded URL. Get it from Mumukit::Platform.application
+      Mumukit::Sync::Store::Github.new(bot, username, "http://bibliotheca-api.mumuki.io/guides/import/"),
+      HISTORY_SYNC_INFLATORS)
   end
 
   def self.api_syncer(json)
