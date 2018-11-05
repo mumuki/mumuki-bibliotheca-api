@@ -23,4 +23,3 @@ group :development do
 end
 
 gem 'mumuki-domain', path: '../laboratory/domain'
-gem 'mumukit-sync', path: '../mumukit-sync'
