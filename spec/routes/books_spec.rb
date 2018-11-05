@@ -3,6 +3,9 @@ require 'spec_helper'
 describe 'routes' do
   before { create(:topic, slug: 'bar/baz1') }
   before { create(:topic, slug: 'bar/baz2') }
+  before { create(:topic, slug: 'foo/bar') }
+
+  before { create(:guide, slug: 'foo/complement') }
 
   let(:book) do
     import_from_api! :book,
@@ -65,11 +68,11 @@ describe 'routes' do
   end
 
   describe 'post /books' do
-    let(:created_book) { Bibliotheca::Collection::Books.find_by!(slug: 'bar/a-book') }
+    let(:created_book) { Book.find_by(slug: 'borges/the-book-of-sand') }
     it 'accepts valid requests' do
       header 'Authorization', build_auth_header(writer: '*')
-      post '/books', {slug: 'bar/a-book',
-                      name: 'Baz Topic',
+      post '/books', {slug: 'borges/the-book-of-sand',
+                      name: 'The Book of Sand',
                       locale: 'en',
                       description: 'foo',
                       invalid_field: 'zafaza',
@@ -77,12 +80,13 @@ describe 'routes' do
                       chapters: ['foo/bar']}.to_json
 
       expect(last_response).to be_ok
-      expect(created_book).to json_like({slug: 'bar/a-book',
-                                         name: 'Baz Topic',
-                                         locale: 'en',
-                                         description: 'foo',
-                                         complements: ['foo/complement'],
-                                         chapters: ['foo/bar']}, except: :id)
+      expect(created_book).to_not be nil
+      expect(last_response.body).to json_like({slug: 'borges/the-book-of-sand',
+                                              name: 'The Book of Sand',
+                                              locale: 'en',
+                                              description: 'foo',
+                                              complements: ['foo/complement'],
+                                              chapters: ['foo/bar']}, except: :id)
     end
   end
 
