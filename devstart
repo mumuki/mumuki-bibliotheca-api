@@ -16,8 +16,8 @@ bundle install --quiet
 
 echo "[MumukiDevstart::Bibliotheca] Starting server...."
 MUMUKI_DEV_IP=${1:-localhost}
-MUMUKI_PLATFORM_DOMAIN=$MUMUKI_DEV_IP:3000 \
+MUMUKI_PLATFORM_DOMAIN=$MUMUKI_DEV_IP:3004 \
 MUMUKI_ORGANIZATION_MAPPING=path \
 MUMUKI_COOKIES_DOMAIN=$MUMUKI_DEV_IP \
 SECRET_KEY_BASE=aReallyStrongKeyForDevelopment \
-  bundle exec rails s -p 3000 -b $MUMUKI_DEV_IP
+  bundle exec rails s -p 3004 -b $MUMUKI_DEV_IP
