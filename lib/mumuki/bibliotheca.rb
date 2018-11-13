@@ -37,23 +37,6 @@ module Mumuki::Bibliotheca
   end
 
   class ApiSource < Mumukit::Sync::Store::Json
-    def pre_transform(key, json)
-      Mumukit::Sync.constantize(key).whitelist_attributes(json, relations: true)
-    end
-
-    def post_transform(key, json)
-      if key == :guide
-        guide = json.dup
-        wrap_language! guide
-        guide[:exercises].each { |exercise| wrap_language! exercise }
-        guide
-      else
-        json
-      end
-    end
-
-    def wrap_language!(hash)
-      hash[:language] = { name: hash[:language] } if hash[:language]
-    end
+    include Mumukit::Sync::Store::WithWrappedLanguage
   end
 end
