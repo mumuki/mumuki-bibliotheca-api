@@ -127,7 +127,7 @@ helpers do
   end
 
   def history_syncer
-    Mumuki::Bibliotheca.history_syncer(bot, current_user&.email)
+    Mumuki::Bibliotheca.history_syncer(current_user&.email)
   end
 
   def upsert!(content_kind)
