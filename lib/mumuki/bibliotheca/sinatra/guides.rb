@@ -45,8 +45,3 @@ end
 post '/guides/:organization/:repository/fork' do
   fork! Guide
 end
-
-# <b>DEPRECATED:</b> Please use <tt>/assets</tt> instead of /images.
-post '/guides/:organization/:repository/images' do
-  bot.upload_asset!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
-end
