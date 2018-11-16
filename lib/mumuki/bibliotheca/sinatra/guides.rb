@@ -4,7 +4,7 @@ helpers do
   end
 
   def slice_guide_resource_h_for_api(guide)
-    guide.merge(language: guide.dig(:language, :name))
+    guide.merge(language: guide.dig(:language, :name)).merge(exercises: guide[:exercises].map { |it| it.tap { |it| it[:language] = it.dig(:language, :name) if it[:language]}})
   end
 end
 

@@ -23,9 +23,9 @@ require_relative './factories/exercise_factory'
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
-    config.include Rack::Test::Methods
-    config.include FactoryBot::Syntax::Methods
-    config.infer_spec_type_from_file_location!
+  config.include Rack::Test::Methods
+  config.include FactoryBot::Syntax::Methods
+  config.infer_spec_type_from_file_location!
 end
 
 ENV['MUMUKI_BOT_USERNAME'] = 'mumukibot'

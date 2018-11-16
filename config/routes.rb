@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount Sinatra::Application.new => '/'
+  mount Sinatra::Application.new => 'bibliotheca/api/'
 end
