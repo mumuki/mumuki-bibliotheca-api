@@ -12,6 +12,8 @@ describe 'routes' do
      expectations: [{"binding" => 'foo', "inspection" => 'HasBinding'}],
      assistance_rules: [{"when" => 'content_empty', "then" => 'a message'}],
      randomizations: {},
+     extra: 'the extra code',
+     default_content: 'the default content',
      tag_list: [],
      extra_visible: false} }
 
@@ -77,7 +79,7 @@ describe 'routes' do
                                                     language: 'haskell',
                                                     slug: 'foo/bar',
                                                     description: 'desc',
-                                                    exercises: [exercise],
+                                                    exercises: [exercise.merge(extra: "the extra code\n")],
                                                     private: false,
                                                     expectations: []}) }
       end
