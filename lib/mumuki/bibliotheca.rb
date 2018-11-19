@@ -1,5 +1,3 @@
-require "mumuki/bibliotheca/engine"
-
 module Mumuki
   module Bibliotheca
   end
@@ -21,3 +19,4 @@ end
 
 require_relative './bibliotheca/syncer'
 require_relative './bibliotheca/sinatra'
+require_relative './bibliotheca/engine'
