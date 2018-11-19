@@ -8,7 +8,4 @@ end
 ## Start server
 require_relative 'config/environment'
 
-## Start Nuntius
-Mumukit::Nuntius.establish_connection
-
 run Rails.application

@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gemspec
 
+ruby '~> 2.3'
+
+gem 'puma', '~> 3.7'
+
 group :test do
   gem 'rspec-rails', '~> 3.6'
   gem 'factory_bot_rails'
