@@ -4,21 +4,25 @@ module Mumuki
       include Mumukit::Sync::Store::WithWrappedLanguage
     end
 
-    API_SYNC_INFLATORS = [Mumukit::Sync::Inflator::SingleChoice.new, Mumukit::Sync::Inflator::MultipleChoice.new]
-    HISTORY_SYNC_INFLATORS = []
-    HISTORY_SYNC_STORE = proc { |_user| Mumukit::Sync::Store::NullStore.new }
-    ASSETS_UPLOADER = proc { |_slug, _name, _content| raise 'Can not upload file' }
+    class << self
+      class_attribute :api_inflators, :history_inflators, :history_store, :assets_uploader
 
-    def self.upload_asset!(slug, name, content)
-      ASSETS_UPLOADER[slug, name, content]
-    end
+      self.api_inflators = [Mumukit::Sync::Inflator::SingleChoice.new, Mumukit::Sync::Inflator::MultipleChoice.new]
+      self.history_inflators = []
+      self.history_store = proc { |_user| Mumukit::Sync::Store::NullStore.new }
+      self.assets_uploader = proc { |_slug, _name, _content| raise 'Can not upload file' }
 
-    def self.history_syncer(user)
-      Mumukit::Sync::Syncer.new(HISTORY_SYNC_STORE[user], HISTORY_SYNC_INFLATORS)
-    end
+      def upload_asset!(slug, name, content)
+        assets_uploader[slug, name, content]
+      end
 
-    def self.api_syncer(json)
-      Mumukit::Sync::Syncer.new(ApiSource.new(json), API_SYNC_INFLATORS)
+      def history_syncer(user)
+        Mumukit::Sync::Syncer.new(history_store[user], history_inflators)
+      end
+
+      def api_syncer(json)
+        Mumukit::Sync::Syncer.new(ApiSource.new(json), api_inflators)
+      end
     end
   end
 end
