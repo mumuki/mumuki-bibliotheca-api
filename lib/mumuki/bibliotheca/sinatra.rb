@@ -114,10 +114,6 @@ helpers do
     slug
   end
 
-  def bot
-    Mumukit::Sync::Store::Github::Bot.from_env
-  end
-
   def subject
     Guide.find_by_id(params[:id])
   end
@@ -127,12 +123,16 @@ helpers do
   end
 
   def history_syncer
-    Mumuki::Bibliotheca.history_syncer(current_user&.email)
+    Mumuki::Bibliotheca.history_syncer(current_user)
+  end
+
+  def api_syncer
+    Mumuki::Bibliotheca.api_syncer(json_body)
   end
 
   def upsert!(content_kind)
     authorize! :writer
-    content = Mumuki::Bibliotheca.api_syncer(json_body).locate_and_import! content_kind, slug.to_s
+    content = api_syncer.locate_and_import! content_kind, slug.to_s
     history_syncer.export! content
     content.to_resource_h
   end

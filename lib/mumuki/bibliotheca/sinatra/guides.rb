@@ -37,9 +37,7 @@ post '/guides/import/:organization/:repository' do
 end
 
 post '/guides/:organization/:repository/assets' do
-  # FIXME this is assuming a github bot
-  # FIXME this route is not working and is not tested
-  bot.upload_asset!(slug, json_body['filename'], Base64.decode64(json_body['content'])).as_json
+  Mumuki::Bibliotheca.upload_asset! slug, json_body['filename'], json_body['content']
 end
 
 post '/guides/:organization/:repository/fork' do
