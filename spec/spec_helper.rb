@@ -28,10 +28,6 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 end
 
-ENV['MUMUKI_BOT_USERNAME'] = 'mumukibot'
-ENV['MUMUKI_BOT_EMAIL'] = 'bot@mumuki.org'
-ENV['MUMUKI_BOT_API_TOKEN'] = 'fake_token'
-
 require 'base64'
 Mumukit::Auth.configure do |c|
   c.clients.default = {id: 'test-client', secret: 'thisIsATestSecret'}
