@@ -35,7 +35,7 @@ describe Exercise do
       it { expect(subject).to be_a Problem }
       it { expect(subject.name).to eq 'Multiple' }
       it { expect(subject.editor).to eq 'multiple_choice' }
-      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.choice_values).to eq %w(foo bar baz) }
       it { expect(subject.test).to eq "---\nequal: '0:2'\n" }
     end
 
@@ -54,7 +54,7 @@ describe Exercise do
       it { expect(subject).to be_a Problem }
       it { expect(subject.name).to eq 'Single' }
       it { expect(subject.editor).to eq 'single_choice' }
-      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.choice_values).to eq %w(foo bar baz) }
       it { expect(subject.test).to eq "---\nequal: foo\n" }
     end
 
@@ -74,7 +74,7 @@ describe Exercise do
       it { expect(subject.name).to eq 'Single' }
       it { expect(subject.language.name).to eq 'text' }
       it { expect(subject.editor).to eq 'single_choice' }
-      it { expect(subject.choices).to eq %w(foo bar baz) }
+      it { expect(subject.choice_values).to eq %w(foo bar baz) }
       it { expect(subject.test).to eq "---\nequal: foo\n" }
     end
 
