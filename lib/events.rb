@@ -5,11 +5,11 @@ Mumukit::Nuntius::EventConsumer.handle do
   #    * user creation and modification in laboratory
   #    * user creation and modification in classroom
   event :UserChanged do |data|
-    Bibliotheca::Collection::Users.import_from_json! data[:user].except(:created_at, :updated_at)
+    User.import_from_resource_h! payload.deep_symbolize_keys[:user]
   end
 
   # Emitted by organization creation and modification in laboratory
   event :OrganizationChanged do |payload|
-    Bibliotheca::Collection::Organizations.import_from_json! payload[:organization].except(:created_at, :updated_at)
+    Organization.import_from_resource_h! payload.deep_symbolize_keys[:organization]
   end
 end

@@ -2,17 +2,22 @@
 set -e
 
 echo ''
-echo '__________._____.   .__  .__        __  .__                             _____         .__ '
-echo '\______   \__\_ |__ |  | |__| _____/  |_|  |__   ____   ____ _____     /  _  \ ______ |__|'
-echo ' |    |  _/  || __ \|  | |  |/  _ \   __\  |  \_/ __ \_/ ___\\__  \   /  /_\  \\____ \|  |'
-echo ' |    |   \  || \_\ \  |_|  (  <_> )  | |   Y  \  ___/\  \___ / __ \_/    |    \  |_> >  |'
-echo ' |______  /__||___  /____/__|\____/|__| |___|  /\___  >\___  >____  /\____|__  /   __/|__|'
-echo '        \/        \/                         \/     \/     \/     \/         \/|__|       '
+echo '__________._____.   .__  .__        __  .__                          '
+echo '\______   \__\_ |__ |  | |__| _____/  |_|  |__   ____   ____ _____   '
+echo ' |    |  _/  || __ \|  | |  |/  _ \   __\  |  \_/ __ \_/ ___\\__  \  '
+echo ' |    |   \  || \_\ \  |_|  (  <_> )  | |   Y  \  ___/\  \___ / __ \_'
+echo ' |______  /__||___  /____/__|\____/|__| |___|  /\___  >\___  >____  /'
+echo '        \/        \/                         \/     \/     \/     \/ '
 echo ''
 
 
-echo "[MumukiDevstart::BibliothecaApi] Installing dependencies...."
+echo "[MumukiDevstart::Bibliotheca] Installing dependencies...."
 bundle install --quiet
 
-echo "[MumukiDevstart::BibliothecaApi] Starting server...."
-bundle exec puma
+echo "[MumukiDevstart::Bibliotheca] Starting server...."
+MUMUKI_DEV_IP=${1:-localhost}
+MUMUKI_PLATFORM_DOMAIN=$MUMUKI_DEV_IP:3004 \
+MUMUKI_ORGANIZATION_MAPPING=path \
+MUMUKI_COOKIES_DOMAIN=$MUMUKI_DEV_IP \
+SECRET_KEY_BASE=aReallyStrongKeyForDevelopment \
+  bundle exec rails s -p 3004 -b $MUMUKI_DEV_IP
