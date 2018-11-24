@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe Guide do
+  describe 'topics import' do
+    let!(:topic) { import_from_api! :topic, {
+      locale: 'en',
+      name: 'A topic',
+      slug: 'topic/slug',
+      description: 'foo',
+      id: 'abcedegh12'
+    }.stringify_keys }
+
+    it { expect(topic.name).to eq 'A topic' }
+    it { expect(topic.slug).to eq 'topic/slug' }
+    it { expect(topic.description).to eq 'foo' }
+    it { expect(topic.id).to_not eq 0 }
+  end
+
   let!(:haskell) { create(:haskell) }
 
   let(:json) {

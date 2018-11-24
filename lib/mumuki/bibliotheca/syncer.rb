@@ -2,6 +2,7 @@ module Mumuki
   module Bibliotheca
     class ApiSource < Mumukit::Sync::Store::Json
       include Mumukit::Sync::Store::WithWrappedLanguage
+      include Mumukit::Sync::Store::WithFilteredId
     end
 
     class << self
