@@ -42,7 +42,7 @@ describe 'routes' do
                                                   output_content_type: "html",
                                                   prompt: "ム ",
                                                   extension: "gbs",
-                                                  ace_mode: "gobstones",
+                                                  highlight_mode: "gobstones",
                                                   visible_success_output: true,
                                                   devicon: 'gobstones',
                                                   triable: false,

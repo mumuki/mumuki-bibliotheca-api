@@ -5,6 +5,5 @@ end
 def transform(language)
   language
     .to_resource_h
-    .replace_key!(:highlight_mode, :ace_mode)
     .replace_key!(:runner_url, :test_runner_url)
 end
