@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.1.6"
 
-  s.add_dependency 'sinatra-contrib'
+  s.add_dependency 'sinatra', '~> 2.0'
+  s.add_dependency 'sinatra-contrib', '~> 2.0'
   s.add_dependency 'sinatra-cross_origin', '~> 0.3.1'
 
   s.add_dependency 'mumuki-domain', '~> 6.1.0'
