@@ -14,23 +14,7 @@ echo ''
 echo "[MumukiDevstart::Bibliotheca] Installing dependencies...."
 bundle install --quiet
 
-echo "[MumukiDevstart::Bibliotheca] Seeding languages...."
-MUMUKI_THESAURUS_URL=http://thesaurus.mumuki.io bundle exec rake languages:import
-
-echo "[MumukiDevstart::Bibliotheca] Seeding guides...."
-MUMUKI_BIBLIOTHECA_API_URL=https://bibliotheca-api.mumuki.io bundle exec rake content:import
-
-echo "[MumukiDevstart::Bibliotheca] Seeding sample users...."
-mongo bibliotheca <<EOF
-  function updateStudent(uid, permissions) {
-    print('Creating ' + uid + ' with permissions: ' + JSON.stringify(permissions));
-    db.users.update(
-      {uid: uid},
-      {uid: uid, email: uid, first_name: 'Foo', last_name: 'Bar', name: 'Foo Bar', permissions: permissions},
-      {upsert: true}
-    );
-  }
-  updateStudent('student@mumuki.org', {});
-  updateStudent('editor@mumuki.org', {editor: '*/*'});
-  updateStudent('admin@mumuki.org', {owner: '*/*'});
-EOF
+echo "[MumukiDevstart::Bibliotheca] Preparing database...."
+MUMUKI_BIBLIOTHECA_API_URL=http://bibliotheca-api.mumuki.io \
+MUMUKI_THESAURUS_URL=http://thesaurus.mumuki.io bundle \
+  exec rake db:drop db:create db:schema:load db:seed
