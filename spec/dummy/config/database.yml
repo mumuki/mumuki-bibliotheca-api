@@ -8,7 +8,7 @@ common: &common
 
 development:
   <<: *common
-  database: mmumuki_bibliotheca_development
+  database: mumuki_bibliotheca_development
   pool: 5
   timeout: 5000
 
