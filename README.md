@@ -19,22 +19,17 @@ Bibliotheca is a service for storing Mumuki content - Books, Topics and Guides. 
 ## Preparing environment
 
 ### 1. Install essentials and base libraries
-
-> First, we need to install some software: MongoDB and some common Ruby on Rails native dependencies
-
-1. Follow [MongoDB installation guide](https://docs.mongodb.com/v3.2/tutorial/install-mongodb-on-ubuntu/)
-2. Run:
+> First, we need to install some software: [PostgreSQL](https://www.postgresql.org) database, [RabbitMQ](https://www.rabbitmq.com/) queue, and some common Ruby on Rails native dependencies
 
 ```bash
-sudo apt-get install autoconf curl git build-essential libssl-dev autoconf bison libreadline6 libreadline6-dev zlib1g zlib1g-dev
+sudo apt-get install autoconf curl git build-essential libssl-dev autoconf bison libreadline6 libreadline6-dev zlib1g zlib1g-dev postgresql libpq-dev rabbitmq-server
 ```
 
 ### 2. Install rbenv
-
 > [rbenv](https://github.com/rbenv/rbenv) is a ruby versions manager, similar to rvm, nvm, and so on.
 
 ```bash
-curl https://raw.githubusercontent.com/rbenv/rbenv-installer/master/bin/rbenv-installer | bash
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc # or .bash_profile
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc # or .bash_profile
 ```
@@ -48,7 +43,6 @@ rbenv install 2.3.1
 rbenv global 2.3.1
 rbenv rehash
 gem install bundler
-gem install escualo
 ```
 
 ### 4. Clone this repository
@@ -56,8 +50,27 @@ gem install escualo
 > Because, err... we need to clone this repostory before developing it :stuck_out_tongue:
 
 ```bash
-git clone https://github.com/mumuki/mumuki-bibliotheca-api bibliotheca-api
-cd bibliotheca-api
+git clone https://github.com/mumuki/mumuki-bibliotheca-api
+cd mumuki-bibliotheca-api
+```
+
+### 5. Install and setup database
+
+> We need to create a PostgreSQL role - AKA a user - who will be used by Laboratory to create and access the database
+
+```bash
+# create db user for linux users
+sudo -u postgres psql <<EOF
+  create role mumuki with createdb login password 'mumuki';
+EOF
+
+# create db user for mac users
+psql postgres
+#once inside postgres server
+create role mumuki with createdb login password 'mumuki';
+
+# create schema and initial development data
+./devinit
 ```
 
 ## Installing and Running
