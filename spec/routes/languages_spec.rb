@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'routes' do
   def app
-    BibliothecaApi.new
+    BibliothecaApi
   end
 
   describe('get /languages') do

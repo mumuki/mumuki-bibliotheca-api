@@ -16,7 +16,7 @@ describe 'routes' do
 
 
   def app
-    BibliothecaApi.new
+    BibliothecaApi
   end
 
   describe('get /topics/writable') do

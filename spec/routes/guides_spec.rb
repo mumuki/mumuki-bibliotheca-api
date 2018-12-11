@@ -34,7 +34,7 @@ describe 'routes' do
   end
 
   def app
-    BibliothecaApi.new
+    BibliothecaApi
   end
 
   describe('get /guides/writable') do

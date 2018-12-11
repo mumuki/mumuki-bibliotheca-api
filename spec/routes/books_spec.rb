@@ -18,7 +18,7 @@ describe 'routes' do
   let!(:book_id) { book.id }
 
   def app
-    BibliothecaApi.new
+    BibliothecaApi
   end
 
   describe('get /books/writable') do
