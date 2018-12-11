@@ -16,7 +16,7 @@ describe 'routes' do
 
 
   def app
-    Sinatra::Application
+    BibliothecaApi.new
   end
 
   describe('get /topics/writable') do

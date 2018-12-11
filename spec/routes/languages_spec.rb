@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'routes' do
   def app
-    Sinatra::Application
+    BibliothecaApi.new
   end
 
   describe('get /languages') do
