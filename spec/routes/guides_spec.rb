@@ -34,7 +34,7 @@ describe 'routes' do
   end
 
   def app
-    BibliothecaApi
+    Mumuki::Bibliotheca::App
   end
 
   describe('get /guides/writable') do

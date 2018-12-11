@@ -8,7 +8,7 @@ require 'mumukit/auth'
 require 'json'
 require 'yaml'
 
-class BibliothecaApi < Sinatra::Application
+class Mumuki::Bibliotheca::App < Sinatra::Application
   configure do
     enable :cross_origin
     set :allow_methods, [:get, :put, :post, :options, :delete]

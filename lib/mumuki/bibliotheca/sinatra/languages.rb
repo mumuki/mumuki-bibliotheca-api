@@ -1,4 +1,4 @@
-class BibliothecaApi < Sinatra::Application
+class Mumuki::Bibliotheca::App < Sinatra::Application
   get '/languages' do
     { languages: Language.all.map { |it| transform(it) } }
   end

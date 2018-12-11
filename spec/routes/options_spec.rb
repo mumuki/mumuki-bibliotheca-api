@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'routes' do
   def app
-    BibliothecaApi
+    Mumuki::Bibliotheca::App
   end
 
   describe 'options /' do

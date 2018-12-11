@@ -1,4 +1,4 @@
-class BibliothecaApi < Sinatra::Application
+class Mumuki::Bibliotheca::App < Sinatra::Application
   helpers do
     def list_topics(topics)
       { topics: topics.as_json(only: [:name, :slug]) }
