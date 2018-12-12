@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'routes' do
   def app
-    Sinatra::Application
+    Mumuki::Bibliotheca::App
   end
 
   describe('get /languages') do

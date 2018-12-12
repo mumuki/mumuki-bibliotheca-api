@@ -1,7 +1,7 @@
 module Mumuki
   module Bibliotheca
     class Engine < ::Rails::Engine
-      endpoint Sinatra::Application.new
+      endpoint Mumuki::Bibliotheca::App
       config.generators.api_only = true
     end
   end

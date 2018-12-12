@@ -34,7 +34,7 @@ describe 'routes' do
   end
 
   def app
-    Sinatra::Application
+    Mumuki::Bibliotheca::App
   end
 
   describe('get /guides/writable') do
