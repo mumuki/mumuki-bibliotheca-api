@@ -132,9 +132,10 @@ HTML
     end
 
     def upsert_and_notify!(content_kind)
-      upsert! content_kind
+      resource_h = upsert! content_kind
 
       Mumukit::Nuntius.notify_content_change_event! content_kind, slug.to_s
+      resource_h
     end
 
     def upsert!(content_kind)
