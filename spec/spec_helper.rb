@@ -26,6 +26,7 @@ RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.include FactoryBot::Syntax::Methods
   config.infer_spec_type_from_file_location!
+  config.full_backtrace = true if ENV['RSPEC_FULL_BACKTRACE']
 end
 
 require 'base64'
