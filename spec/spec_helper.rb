@@ -43,4 +43,8 @@ def import_from_api!(kind, json)
   Mumuki::Bibliotheca.api_syncer(json).locate_and_import! kind, json.with_indifferent_access[:slug]
 end
 
+def post_json(path, hash)
+  post path, hash.to_json, { 'CONTENT_TYPE' => 'application/json' }
+end
+
 SimpleCov.start

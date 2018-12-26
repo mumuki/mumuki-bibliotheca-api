@@ -67,12 +67,12 @@ describe 'routes' do
     before { create(:guide, slug: 'foo/bar' )}
     before do
       header 'Authorization', build_auth_header(writer: '*')
-      post '/topics', {slug: 'bar/a-topic',
-                       name: 'Baz Topic',
-                       locale: 'en',
-                       description: 'foo',
-                       invalid_field: 'zafaza',
-                       lessons: ['foo/bar']}.to_json
+      post_json '/topics', slug: 'bar/a-topic',
+                           name: 'Baz Topic',
+                           locale: 'en',
+                           description: 'foo',
+                           invalid_field: 'zafaza',
+                           lessons: ['foo/bar']
     end
     it { expect(last_response).to be_ok }
     it { expect(last_response.body).to json_like created_topic.to_resource_h }

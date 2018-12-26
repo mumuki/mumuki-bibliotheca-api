@@ -97,13 +97,13 @@ describe 'routes' do
       it 'accepts valid requests' do
         header 'Authorization', build_auth_header(writer: '*')
 
-        post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
-                         name: 'Baz Guide',
-                         description: 'foo',
-                         exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             language: 'haskell',
+                             name: 'Baz Guide',
+                             description: 'foo',
+                             exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
 
-        post '/guides/bar/baz/fork', { organization: 'foo' }.to_json
+        post_json '/guides/bar/baz/fork', organization: 'foo'
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['slug']).to eq 'foo/baz'
@@ -117,11 +117,11 @@ describe 'routes' do
       it 'accepts valid requests' do
         header 'Authorization', build_auth_header(writer: '*')
 
-        post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
-                         name: 'Baz Guide',
-                         description: 'foo',
-                         exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             language: 'haskell',
+                             name: 'Baz Guide',
+                             description: 'foo',
+                             exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['slug']).to_not be nil
@@ -130,11 +130,11 @@ describe 'routes' do
       it 'accepts valid requests with narrower permissions' do
         header 'Authorization', build_auth_header(editor: '*')
 
-        post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
-                         name: 'Baz Guide',
-                         description: 'foo',
-                         exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             language: 'haskell',
+                             name: 'Baz Guide',
+                             description: 'foo',
+                             exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['slug']).to_not be nil
@@ -144,18 +144,18 @@ describe 'routes' do
 
         header 'Authorization', build_auth_header(writer: '*')
 
-        post '/guides', {slug: 'bar/baz',
-                         name: 'Baz Guide',
-                         language: 'haskell',
-                         description: 'foo',
-                         exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             name: 'Baz Guide',
+                             language: 'haskell',
+                             description: 'foo',
+                             exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
         id = JSON.parse(last_response.body)['id']
 
-        post '/guides', {slug: 'bar/baz',
-                         name: 'Bar Baz Guide',
-                         language: 'haskell',
-                         description: 'foo',
-                         exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             name: 'Bar Baz Guide',
+                             language: 'haskell',
+                             description: 'foo',
+                             exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['id']).to eq id
@@ -164,11 +164,11 @@ describe 'routes' do
       it 'does not export if bot is not authenticated' do
         header 'Authorization', build_auth_header(writer: '*')
 
-        post '/guides', {slug: 'bar/baz',
-                         language: 'haskell',
-                         name: 'Baz Guide',
-                         description: 'foo',
-                         exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             language: 'haskell',
+                             name: 'Baz Guide',
+                             description: 'foo',
+                             exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
 
         expect(last_response).to be_ok
         expect(JSON.parse(last_response.body)['slug']).to_not be nil
@@ -179,11 +179,11 @@ describe 'routes' do
       it 'rejects invalid exercises' do
         header 'Authorization', build_auth_header(writer: '*')
 
-        post '/guides', {slug: 'bar/baz',
+        post_json '/guides', slug: 'bar/baz',
                          language: 'haskell',
                          name: 'Baz Guide',
                          description: 'foo',
-                         exercises: [{name: 'Exercise 1/fdf', description: 'foo', manual_evaluation: true, id: 1}]}.to_json
+                         exercises: [{name: 'Exercise 1/fdf', description: 'foo', manual_evaluation: true, id: 1}]
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to be 400
@@ -193,7 +193,7 @@ describe 'routes' do
       it 'reject unauthorized requests' do
         header 'Authorization', build_auth_header(writer: 'goo/foo')
 
-        post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+        post_json '/guides', slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 403
@@ -203,7 +203,7 @@ describe 'routes' do
       it 'reject unauthorized requests' do
         header 'Authorization', build_auth_header(editor: 'goo/foo')
 
-        post '/guides', {slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]}.to_json
+        post_json '/guides', slug: 'bar/baz', name: 'Baz Guide', exercises: [{name: 'Exercise 1'}]
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 403
@@ -211,9 +211,9 @@ describe 'routes' do
       end
 
       it 'reject unauthenticated requests' do
-        post '/guides', {slug: 'bar/baz',
-                         name: 'Baz Guide',
-                         exercises: [{name: 'Exercise 1'}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             name: 'Baz Guide',
+                             exercises: [{name: 'Exercise 1'}]
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 401
@@ -222,9 +222,9 @@ describe 'routes' do
       it 'reject invalid tokens' do
         header 'Authorization', 'fooo'
 
-        post '/guides', {slug: 'bar/baz',
-                         name: 'Baz Guide',
-                         exercises: [{name: 'Exercise 1'}]}.to_json
+        post_json '/guides', slug: 'bar/baz',
+                             name: 'Baz Guide',
+                             exercises: [{name: 'Exercise 1'}]
 
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq 401

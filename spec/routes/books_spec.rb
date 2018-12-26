@@ -71,13 +71,13 @@ describe 'routes' do
     let(:created_book) { Book.find_by(slug: 'borges/the-book-of-sand') }
     it 'accepts valid requests' do
       header 'Authorization', build_auth_header(writer: '*')
-      post '/books', {slug: 'borges/the-book-of-sand',
-                      name: 'The Book of Sand',
-                      locale: 'en',
-                      description: 'foo',
-                      invalid_field: 'zafaza',
-                      complements: ['foo/complement'],
-                      chapters: ['foo/bar']}.to_json
+      post_json '/books', slug: 'borges/the-book-of-sand',
+                          name: 'The Book of Sand',
+                          locale: 'en',
+                          description: 'foo',
+                          invalid_field: 'zafaza',
+                          complements: ['foo/complement'],
+                          chapters: ['foo/bar']
 
       expect(last_response).to be_ok
       expect(created_book).to_not be nil
