@@ -131,6 +131,12 @@ HTML
       Mumuki::Bibliotheca.api_syncer(json_body)
     end
 
+    def upsert_and_notify!(content_kind)
+      upsert! content_kind
+
+      Mumukit::Nuntius.notify_content_change_event! content_kind, slug.to_s
+    end
+
     def upsert!(content_kind)
       authorize! :writer
       content = api_syncer.locate_and_import! content_kind, slug.to_s
