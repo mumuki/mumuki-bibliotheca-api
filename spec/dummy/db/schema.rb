@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181121165956) do
+ActiveRecord::Schema.define(version: 20181210131824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -195,9 +195,10 @@ ActiveRecord::Schema.define(version: 20181121165956) do
 
   create_table "invitations", id: :serial, force: :cascade do |t|
     t.string "code"
-    t.string "course"
     t.datetime "expiration_date"
+    t.bigint "course_id"
     t.index ["code"], name: "index_invitations_on_code", unique: true
+    t.index ["course_id"], name: "index_invitations_on_course_id"
   end
 
   create_table "languages", id: :serial, force: :cascade do |t|

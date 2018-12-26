@@ -79,7 +79,7 @@ describe 'routes' do
                                                     language: 'haskell',
                                                     slug: 'foo/bar',
                                                     description: 'desc',
-                                                    exercises: [exercise.merge(extra: "the extra code\n")],
+                                                    exercises: [exercise.merge(extra: 'the extra code')],
                                                     private: false,
                                                     expectations: []}) }
       end
