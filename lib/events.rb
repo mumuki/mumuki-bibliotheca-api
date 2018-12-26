@@ -4,7 +4,7 @@ Mumukit::Nuntius::EventConsumer.handle do
   #    * new logins in classroom
   #    * user creation and modification in laboratory
   #    * user creation and modification in classroom
-  event :UserChanged do |data|
+  event :UserChanged do |payload|
     User.import_from_resource_h! payload.deep_symbolize_keys[:user]
   end
 

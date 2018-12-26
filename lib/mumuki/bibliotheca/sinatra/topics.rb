@@ -18,7 +18,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/topics' do
-    upsert! :topic
+    upsert_and_notify! :topic
   end
 
   post '/book/:organization/:repository/fork' do

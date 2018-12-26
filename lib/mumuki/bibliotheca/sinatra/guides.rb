@@ -30,7 +30,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/guides' do
-    upsert! :guide
+    upsert_and_notify! :guide
   end
 
   post '/guides/import/:organization/:repository' do
