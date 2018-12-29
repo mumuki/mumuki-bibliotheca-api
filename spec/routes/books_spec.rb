@@ -72,8 +72,9 @@ describe 'routes' do
       book_id = Book.find_by_slug!('baz/foo').id
       create :organization, book_id: book_id, name: 'one'
       create :organization, book_id: book_id, name: 'two'
+      create :organization, book_id: book_id, name: 'three'
       create :organization, book_id: book_id, name: 'hidden'
-      header 'Authorization', build_auth_header(student: 'one/*', editor: 'two/*')
+      header 'Authorization', build_auth_header(student: 'one/*', teacher: 'two/*', writer: 'three/*')
       get '/books/baz/foo/organizations'
     }
 

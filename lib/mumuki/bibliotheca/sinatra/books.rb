@@ -31,7 +31,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
       .map { |it| it.as_json(only: [:name]) }
       .select { |it|
         slug = "#{it['name']}/_"
-        permissions.student?(slug) || permissions.writer?(slug)
+        permissions.student?(slug) || permissions.teacher?(slug)
       }
   end
 
