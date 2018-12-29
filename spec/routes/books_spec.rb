@@ -67,6 +67,25 @@ describe 'routes' do
                                          complements: []) }
   end
 
+  describe('get /books/baz/foo/organizations') do
+    before {
+      book_id = Book.find_by_slug!('baz/foo').id
+      create :organization, book_id: book_id, name: 'one'
+      create :organization, book_id: book_id, name: 'two'
+      create :organization, book_id: book_id, name: 'hidden'
+      header 'Authorization', build_auth_header(student: 'one/*', editor: 'two/*')
+      get '/books/baz/foo/organizations'
+    }
+
+    it { expect(last_response).to be_ok }
+    it { expect(JSON.parse(last_response.body)).to match_array(
+                                                    [
+                                                      { 'name' => 'one' },
+                                                      { 'name' => 'two' }
+                                                    ]
+                                                   )}
+  end
+
   describe 'post /books' do
     let(:created_book) { Book.find_by(slug: 'borges/the-book-of-sand') }
     it 'accepts valid requests' do
