@@ -28,11 +28,11 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   get '/books/:organization/:repository/organizations' do
     Organization
       .where(book_id: book.id)
-      .map { |it| it.as_json(only: [:name]) }
       .select { |it|
-        slug = "#{it['name']}/_"
+        slug = "#{it.name}/_"
         permissions.student?(slug) || permissions.teacher?(slug)
       }
+      .map { |it| it.as_json(only: [:name]) }
   end
 
   post '/books' do
