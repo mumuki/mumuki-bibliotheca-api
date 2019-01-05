@@ -164,10 +164,7 @@ HTML
     def organizations_for(item, entity = Organization)
       entity
         .in_path(item)
-        .select { |it|
-          slug = "#{it.name}/_"
-          permissions.student?(slug) || permissions.teacher?(slug)
-        }
+        .accessible_as(current_user, :student)
         .map { |it| it.as_json(only: [:name]) }
     end
   end
