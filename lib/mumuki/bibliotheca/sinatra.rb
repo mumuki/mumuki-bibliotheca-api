@@ -163,7 +163,7 @@ HTML
 
     def organizations_for(item, entity = Organization)
       entity
-        .with_usage(item.id)
+        .in_path(item)
         .select { |it|
           slug = "#{it.name}/_"
           permissions.student?(slug) || permissions.teacher?(slug)
