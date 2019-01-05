@@ -62,6 +62,26 @@ describe 'routes' do
                                          lessons: %w(bar/baz1 bar/baz2)) }
   end
 
+  describe('get /topics/baz/foo/organizations') do
+    before {
+      ['one', 'two', 'three', 'hidden'].each { |name|
+        topic = Topic.find_by_slug! 'baz/foo'
+        organization = create :organization, book: create(:book), name: name
+        create :usage, organization: organization, item: topic
+      }
+      header 'Authorization', build_auth_header(student: 'one/*', teacher: 'two/*', writer: 'three/*')
+      get '/topics/baz/foo/organizations'
+    }
+
+    it { expect(last_response).to be_ok }
+    it { expect(JSON.parse(last_response.body)).to match_array(
+                                                     [
+                                                       { 'name' => 'one' },
+                                                       { 'name' => 'two' }
+                                                     ]
+                                                   )}
+  end
+
   describe 'post /topics' do
     let(:created_topic) { Topic.find_by!(slug: 'bar/a-topic') }
     before { create(:guide, slug: 'foo/bar' )}

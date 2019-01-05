@@ -69,7 +69,7 @@ describe 'routes' do
 
   describe('get /books/baz/foo/organizations') do
     before {
-      book = Book.find_by_slug!('baz/foo')
+      book = Book.find_by_slug! 'baz/foo'
       ['one', 'two', 'three', 'hidden'].each { |name|
         organization = create :organization, book: book, name: name
         create :usage, organization: organization, item: book
