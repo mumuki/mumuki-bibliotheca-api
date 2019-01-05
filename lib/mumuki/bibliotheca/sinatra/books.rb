@@ -7,10 +7,6 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
     def list_books(books)
       { books: books.as_json(only: [:name, :slug, :chapters]) }
     end
-
-    def permissions
-      current_user.permissions
-    end
   end
 
   get '/books' do
@@ -26,13 +22,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/books/:organization/:repository/organizations' do
-    Organization
-      .with_usage(book.id)
-      .select { |it|
-        slug = "#{it.name}/_"
-        permissions.student?(slug) || permissions.teacher?(slug)
-      }
-      .map { |it| it.as_json(only: [:name]) }
+    organizations_for book
   end
 
   post '/books' do

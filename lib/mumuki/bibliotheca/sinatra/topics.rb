@@ -10,7 +10,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/topics/writable' do
-    list_topics Topic.allowed(current_user.permissions)
+    list_topics Topic.allowed(permissions)
   end
 
   get '/topics/:organization/:repository' do

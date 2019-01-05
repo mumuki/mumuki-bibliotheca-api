@@ -156,6 +156,20 @@ HTML
       collection_class.find_by_slug!(slug.to_s).destroy!
       {}
     end
+
+    def permissions
+      current_user.permissions
+    end
+
+    def organizations_for(item)
+      Organization
+        .with_usage(item.id)
+        .select { |it|
+          slug = "#{it.name}/_"
+          permissions.student?(slug) || permissions.teacher?(slug)
+        }
+        .map { |it| it.as_json(only: [:name]) }
+    end
   end
 
   post '/markdown' do
@@ -173,7 +187,7 @@ HTML
   get '/permissions' do
     authenticate!
 
-    {permissions: current_user.permissions}
+    {permissions: permissions}
   end
 end
 
