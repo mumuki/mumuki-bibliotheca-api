@@ -1,5 +1,9 @@
 class Mumuki::Bibliotheca::App < Sinatra::Application
   helpers do
+    def topic
+      Topic.find_by_slug!(slug.to_s)
+    end
+
     def list_topics(topics)
       { topics: topics.as_json(only: [:name, :slug]) }
     end
@@ -14,7 +18,11 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/topics/:organization/:repository' do
-    Topic.find_by_slug!(slug.to_s).to_resource_h
+    topic.to_resource_h
+  end
+
+  get '/topics/:organization/:repository/organizations' do
+    organizations_for topic
   end
 
   post '/topics' do
