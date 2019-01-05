@@ -161,8 +161,8 @@ HTML
       current_user.permissions
     end
 
-    def organizations_for(item)
-      Organization
+    def organizations_for(item, entity = Organization)
+      entity
         .with_usage(item.id)
         .select { |it|
           slug = "#{it.name}/_"

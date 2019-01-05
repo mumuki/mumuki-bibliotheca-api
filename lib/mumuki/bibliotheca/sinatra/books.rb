@@ -22,7 +22,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/books/:organization/:repository/organizations' do
-    organizations_for book
+    organizations_for book, Organization.where(book_id: book.id)
   end
 
   post '/books' do

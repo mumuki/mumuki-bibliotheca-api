@@ -70,11 +70,15 @@ describe 'routes' do
   describe('get /books/baz/foo/organizations') do
     before {
       book = Book.find_by_slug! 'baz/foo'
+
       ['one', 'two', 'three', 'hidden'].each { |name|
         organization = create :organization, book: book, name: name
         create :usage, organization: organization, item: book
       }
-      header 'Authorization', build_auth_header(student: 'one/*', teacher: 'two/*', writer: 'three/*')
+      otherbook = create :organization, book: create(:book), name: 'otherbook'
+      create :usage, organization: otherbook, item: book
+
+      header 'Authorization', build_auth_header(student: 'one/*', teacher: 'two/*', writer: 'three/*', owner: 'otherbook/*')
       get '/books/baz/foo/organizations'
     }
 
