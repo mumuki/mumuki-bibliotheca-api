@@ -20,6 +20,7 @@ require_relative './factories/book_factory'
 require_relative './factories/guide_factory'
 require_relative './factories/exercise_factory'
 require_relative './factories/organization_factory'
+require_relative './factories/usage_factory'
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true

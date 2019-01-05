@@ -27,7 +27,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
 
   get '/books/:organization/:repository/organizations' do
     Organization
-      .where(book_id: book.id)
+      .with_usage(book.id)
       .select { |it|
         slug = "#{it.name}/_"
         permissions.student?(slug) || permissions.teacher?(slug)
