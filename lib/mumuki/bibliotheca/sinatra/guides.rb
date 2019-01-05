@@ -1,5 +1,9 @@
 class Mumuki::Bibliotheca::App < Sinatra::Application
   helpers do
+    def guide
+      Guide.find_by_slug!(slug.to_s)
+    end
+
     def list_guides(guides)
       { guides: guides.map { |it| it.as_json(only: [:name, :slug, :type]).merge(language: it.language.name) } }
     end
@@ -22,11 +26,15 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/guides/:organization/:repository/markdown' do
-    slice_guide_resource_h_for_api Guide.find_by_slug!(slug.to_s).to_markdownified_resource_h
+    slice_guide_resource_h_for_api guide.to_markdownified_resource_h
   end
 
   get '/guides/:organization/:repository' do
-    slice_guide_resource_h_for_api Guide.find_by_slug!(slug.to_s).to_resource_h
+    slice_guide_resource_h_for_api guide.to_resource_h
+  end
+
+  get '/guides/:organization/:repository/organizations' do
+    organizations_for guide
   end
 
   post '/guides' do

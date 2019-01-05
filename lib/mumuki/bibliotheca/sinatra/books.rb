@@ -1,5 +1,9 @@
 class Mumuki::Bibliotheca::App < Sinatra::Application
   helpers do
+    def book
+      Book.find_by_slug! slug.to_s
+    end
+
     def list_books(books)
       { books: books.as_json(only: [:name, :slug, :chapters]) }
     end
@@ -10,11 +14,15 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/books/writable' do
-    list_books Book.allowed(current_user.permissions)
+    list_books Book.allowed(permissions)
   end
 
   get '/books/:organization/:repository' do
-    Book.find_by_slug!(slug.to_s).to_resource_h
+    book.to_resource_h
+  end
+
+  get '/books/:organization/:repository/organizations' do
+    organizations_for book, Organization.where(book_id: book.id)
   end
 
   post '/books' do

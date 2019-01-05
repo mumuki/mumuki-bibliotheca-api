@@ -92,6 +92,26 @@ describe 'routes' do
     end
   end
 
+  describe('get /guides/foo/bar/organizations') do
+    before {
+      ['one', 'two', 'three', 'hidden'].each { |name|
+        guide = Guide.find_by_slug! 'foo/bar'
+        organization = create :organization, book: create(:book), name: name
+        create :usage, organization: organization, item: guide
+      }
+      header 'Authorization', build_auth_header(student: 'one/*', teacher: 'two/*', writer: 'three/*')
+      get '/guides/foo/bar/organizations'
+    }
+
+    it { expect(last_response).to be_ok }
+    it { expect(JSON.parse(last_response.body)).to match_array(
+                                                     [
+                                                       { 'name' => 'one' },
+                                                       { 'name' => 'two' }
+                                                     ]
+                                                   )}
+  end
+
   describe 'post /guides/fork' do
     context 'when request is valid' do
       it 'accepts valid requests' do
