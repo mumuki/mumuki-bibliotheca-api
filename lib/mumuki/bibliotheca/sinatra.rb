@@ -161,8 +161,8 @@ HTML
       current_user.permissions
     end
 
-    def organizations_for(item, entity = Organization)
-      entity
+    def organizations_for(item)
+      Organization
         .in_path(item)
         .accessible_as(current_user, :student)
         .map { |it| it.as_json(only: [:name]) }
