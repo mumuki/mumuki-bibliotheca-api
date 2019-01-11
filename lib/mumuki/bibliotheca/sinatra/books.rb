@@ -26,6 +26,10 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/books' do
+    insert_and_notify! :book
+  end
+
+  put'/books' do
     upsert_and_notify! :book
   end
 

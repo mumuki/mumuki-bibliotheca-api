@@ -160,7 +160,7 @@ describe 'routes' do
         expect(JSON.parse(last_response.body)['slug']).to_not be nil
       end
 
-      it 'accepts re posts' do
+      it 'fails when guide already exists' do
 
         header 'Authorization', build_auth_header(writer: '*')
 
@@ -169,7 +169,6 @@ describe 'routes' do
                              language: 'haskell',
                              description: 'foo',
                              exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
-        id = JSON.parse(last_response.body)['id']
 
         post_json '/guides', slug: 'bar/baz',
                              name: 'Bar Baz Guide',
@@ -177,8 +176,9 @@ describe 'routes' do
                              description: 'foo',
                              exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
 
-        expect(last_response).to be_ok
-        expect(JSON.parse(last_response.body)['id']).to eq id
+        expect(last_response).to_not be_ok
+        expect(last_response.status).to eq 400
+        expect(last_response.body).to json_eq message: 'Guide with slug bar/baz already exists!'
       end
 
       it 'does not export if bot is not authenticated' do
@@ -250,6 +250,30 @@ describe 'routes' do
         expect(last_response.status).to eq 401
         expect(last_response.body).to json_eq message: 'Not enough or too many segments'
       end
+    end
+  end
+
+  describe 'put /guides' do
+    it 'updates an already existing guide' do
+
+      header 'Authorization', build_auth_header(writer: '*')
+
+      put_json '/guides', slug: 'bar/baz',
+                          name: 'Baz Guide',
+                          language: 'haskell',
+                          description: 'foo',
+                          exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
+      id = JSON.parse(last_response.body)['id']
+
+      put_json '/guides', slug: 'bar/baz',
+                          name: 'Bar Baz Guide',
+                          language: 'haskell',
+                          description: 'foo',
+                          exercises: [{name: 'Exercise 1', description: 'foo', manual_evaluation: true, id: 1}]
+
+      expect(last_response).to be_ok
+      expect(JSON.parse(last_response.body)['id']).to eq id
+      expect(JSON.parse(last_response.body)['name']).to eq 'Bar Baz Guide'
     end
   end
 

@@ -26,6 +26,10 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/topics' do
+    insert_and_notify! :topic
+  end
+
+  put '/topics' do
     upsert_and_notify! :topic
   end
 
