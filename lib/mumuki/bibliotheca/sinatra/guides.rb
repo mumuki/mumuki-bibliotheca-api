@@ -38,6 +38,10 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/guides' do
+    insert_and_notify! :guide
+  end
+
+  put '/guides' do
     upsert_and_notify! :guide
   end
 

@@ -131,6 +131,11 @@ HTML
       Mumuki::Bibliotheca.api_syncer(json_body)
     end
 
+    def insert_and_notify!(content_kind)
+      raise Mumukit::Auth::InvalidSlugFormatError, "#{content_kind.as_module_name} with slug #{slug} already exists!" if content_kind.as_module.find_by_slug(slug.to_s)
+      upsert_and_notify!(content_kind)
+    end
+
     def upsert_and_notify!(content_kind)
       resource_h = upsert! content_kind
 
