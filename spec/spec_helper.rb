@@ -49,4 +49,8 @@ def post_json(path, hash)
   post path, hash.to_json, { 'CONTENT_TYPE' => 'application/json' }
 end
 
+def put_json(path, hash)
+  put path, hash.to_json, { 'CONTENT_TYPE' => 'application/json' }
+end
+
 SimpleCov.start
