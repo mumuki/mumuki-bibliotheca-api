@@ -92,6 +92,10 @@ HTML
     halt 404
   end
 
+  error Mumukit::Sync::SyncError do
+    halt 400
+  end
+
   options '*' do
     response.headers['Allow'] = settings.allow_methods.map { |it| it.to_s.upcase }.join(',')
     response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization'
