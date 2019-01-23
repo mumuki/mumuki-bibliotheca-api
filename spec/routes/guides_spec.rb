@@ -131,6 +131,17 @@ describe 'routes' do
     end
   end
 
+  describe 'post /guides/import' do
+    it 'returns mumukit-sync errors' do
+      header 'Authorization', build_auth_header(writer: '*')
+
+      post '/guides/import/foo/bar'
+
+      expect(last_response.status).to eq 400
+      expect(last_response.body).to eq '{"message":"Non-readable store"}'
+    end
+  end
+
   describe 'post /guides' do
     context 'when request is valid' do
 
