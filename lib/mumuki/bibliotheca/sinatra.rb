@@ -157,7 +157,7 @@ HTML
     def fork!(collection_class)
       authorize! :writer
       destination = json_body['organization']
-      collection_class.find_by_slug!(slug.to_s).fork_to!(destination, history_syncer).as_json
+      collection_class.locate!(slug.to_s).fork_to!(destination, history_syncer).as_json
     end
 
     def delete!(collection_class)
