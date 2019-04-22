@@ -8,3 +8,5 @@ spec/dummy/tmp/
 **/*.log
 coverage/**
 Gemfile.lock
+
+*.gem
