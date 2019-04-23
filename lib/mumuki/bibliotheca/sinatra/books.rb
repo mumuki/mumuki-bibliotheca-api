@@ -33,7 +33,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
     upsert_and_notify! :book
   end
 
-  post '/book/:organization/:repository/fork' do
+  post '/books/:organization/:repository/fork' do
     fork! Book
   end
 
