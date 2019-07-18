@@ -10,6 +10,8 @@ before_script:
 script:
 - bundle exec rake db:schema:load
 - bundle exec rake
+services: 
+- postgresql
 env: RACK_ENV=test
 deploy:
   provider: rubygems
