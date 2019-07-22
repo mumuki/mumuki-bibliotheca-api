@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181210131824) do
+ActiveRecord::Schema.define(version: 20190702003600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,7 +41,9 @@ ActiveRecord::Schema.define(version: 20181210131824) do
     t.text "query_results"
     t.text "manual_evaluation_comment"
     t.integer "attemps_count", default: 0
+    t.bigint "organization_id"
     t.index ["exercise_id"], name: "index_assignments_on_exercise_id"
+    t.index ["organization_id"], name: "index_assignments_on_organization_id"
     t.index ["submission_id"], name: "index_assignments_on_submission_id"
     t.index ["submitter_id"], name: "index_assignments_on_submitter_id"
   end
@@ -105,8 +107,10 @@ ActiveRecord::Schema.define(version: 20181210131824) do
     t.text "query_results"
     t.text "manual_evaluation_comment"
     t.integer "upvotes_count", default: 0
+    t.bigint "organization_id"
     t.index ["initiator_id"], name: "index_discussions_on_initiator_id"
     t.index ["item_type", "item_id"], name: "index_discussions_on_item_type_and_item_id"
+    t.index ["organization_id"], name: "index_discussions_on_organization_id"
   end
 
   create_table "exam_authorizations", force: :cascade do |t|
@@ -167,6 +171,7 @@ ActiveRecord::Schema.define(version: 20181210131824) do
     t.text "free_form_editor_source"
     t.text "teacher_info"
     t.text "choices"
+    t.text "settings"
     t.index ["guide_id"], name: "index_exercises_on_guide_id"
     t.index ["language_id"], name: "index_exercises_on_language_id"
   end
@@ -189,6 +194,9 @@ ActiveRecord::Schema.define(version: 20181210131824) do
     t.string "id_format", default: "%05d"
     t.boolean "private", default: false
     t.text "teacher_info"
+    t.text "sources"
+    t.text "learn_more"
+    t.text "settings"
     t.index ["name"], name: "index_guides_on_name"
     t.index ["slug"], name: "index_guides_on_slug", unique: true
   end
@@ -226,6 +234,9 @@ ActiveRecord::Schema.define(version: 20181210131824) do
     t.string "test_extension"
     t.text "test_template"
     t.boolean "feedback"
+    t.boolean "multifile", default: false
+    t.boolean "layout_shows_loading_content"
+    t.boolean "editor_shows_loading_content"
     t.index ["name"], name: "index_languages_on_name", unique: true
   end
 
@@ -330,4 +341,9 @@ ActiveRecord::Schema.define(version: 20181210131824) do
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
+  add_foreign_key "chapters", "topics"
+  add_foreign_key "complements", "guides"
+  add_foreign_key "exams", "guides"
+  add_foreign_key "lessons", "guides"
+  add_foreign_key "organizations", "books"
 end
