@@ -25,3 +25,5 @@ group :development do
   gem 'binding_of_caller'
   gem 'web-console'
 end
+
+gem 'mumuki-domain', github: 'mumuki/mumuki-domain', ref: 'dbe159e37afe40cc408bc728b271ab6a4973003e'
