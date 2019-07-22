@@ -4,18 +4,27 @@ describe 'routes' do
   let!(:haskell) { create(:haskell, visible_success_output: false, output_content_type: 'plain') }
 
   let(:exercise) {
-    {id: 1, name: 'foo', type: 'problem', layout: 'input_right', editor: 'code', description: 'foo',
-     test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
-     manual_evaluation: false,
-     locale: 'en',
-     choices: [],
-     expectations: [{"binding" => 'foo', "inspection" => 'HasBinding'}],
-     assistance_rules: [{"when" => 'content_empty', "then" => 'a message'}],
-     randomizations: {},
-     extra: 'the extra code',
-     default_content: 'the default content',
-     tag_list: [],
-     extra_visible: false} }
+    {
+      id: 1,
+      name: 'foo',
+      type: 'problem',
+      layout: 'input_right',
+      editor: 'code',
+      description: 'foo',
+      test: %Q{describe "foo" $ do\n it "bar" $ do\n  foo = True},
+      manual_evaluation: false,
+      locale: 'en',
+      choices: [],
+      expectations: [{"binding" => 'foo', "inspection" => 'HasBinding'}],
+      assistance_rules: [{"when" => 'content_empty', "then" => 'a message'}],
+      randomizations: {},
+      extra: 'the extra code',
+      default_content: 'the default content',
+      tag_list: [],
+      extra_visible: false,
+      settings: {}
+    }
+  }
 
   let!(:guide) do
     import_from_api! :guide,
@@ -71,17 +80,22 @@ describe 'routes' do
       context 'When guide exists' do
         before { get '/guides/foo/bar' }
         it { expect(last_response).to be_ok }
-        it { expect(last_response.body).to json_eq({beta: false,
-                                                    type: 'practice',
-                                                    id_format: '%05d',
-                                                    name: 'foo',
-                                                    locale: 'en',
-                                                    language: 'haskell',
-                                                    slug: 'foo/bar',
-                                                    description: 'desc',
-                                                    exercises: [exercise.merge(extra: 'the extra code')],
-                                                    private: false,
-                                                    expectations: []}) }
+        it {
+          expect(last_response.body).to json_eq(
+            beta: false,
+            type: 'practice',
+            id_format: '%05d',
+            name: 'foo',
+            locale: 'en',
+            language: 'haskell',
+            slug: 'foo/bar',
+            description: 'desc',
+            exercises: [exercise.merge(extra: 'the extra code')],
+            private: false,
+            expectations: [],
+            settings: {}
+          )
+        }
       end
     end
     context 'When guide does not exist' do
