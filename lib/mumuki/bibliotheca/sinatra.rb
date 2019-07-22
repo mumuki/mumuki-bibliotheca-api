@@ -17,8 +17,6 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
     set :app_name, 'bibliotheca'
     set :static, true
     set :public_folder, 'public'
-
-    use ::Rack::CommonLogger, Rails.logger
   end
 
   helpers do
