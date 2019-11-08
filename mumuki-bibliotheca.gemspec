@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'mumukit-login', '~> 7.0'
   s.add_dependency 'mumukit-nuntius', '~> 6.1'
   s.add_dependency 'mumukit-sync', '~> 1.0'
+  s.add_dependency 'sprockets', '~> 3.7'
 
   s.add_dependency 'rack', '~> 2.0'
   s.add_development_dependency 'pg', '~> 0.18.0'
