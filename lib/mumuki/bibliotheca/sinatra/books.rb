@@ -10,7 +10,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/books' do
-    list_books Book.all
+    list_books Book.visible(permissions)
   end
 
   get '/books/writable' do

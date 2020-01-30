@@ -165,7 +165,7 @@ HTML
     end
 
     def permissions
-      current_user.permissions
+      current_user&.permissions
     end
 
     def organizations_for(item)

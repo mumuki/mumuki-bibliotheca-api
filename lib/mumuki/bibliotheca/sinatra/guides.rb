@@ -14,11 +14,11 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/guides' do
-    list_guides Guide.visible(current_user&.permissions)
+    list_guides Guide.visible(permissions)
   end
 
   get '/guides/writable' do
-    list_guides Guide.allowed(current_user&.permissions)
+    list_guides Guide.allowed(permissions)
   end
 
   delete '/guides/:organization/:repository' do
