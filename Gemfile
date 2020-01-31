@@ -5,6 +5,7 @@ gemspec
 ruby '~> 2.3'
 
 gem 'puma', '~> 3.7'
+gem 'mumuki-domain', github: 'mumuki/mumuki-domain', branch: 'add-private-flag-for-other-contents'
 
 group :test do
   gem 'rspec-rails', '~> 3.6'
