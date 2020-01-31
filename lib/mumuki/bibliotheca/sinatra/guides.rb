@@ -26,14 +26,17 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/guides/:organization/:repository/markdown' do
+    validate_accessible! guide
     slice_guide_resource_h_for_api guide.to_markdownified_resource_h
   end
 
   get '/guides/:organization/:repository' do
+    validate_accessible! guide
     slice_guide_resource_h_for_api guide.to_resource_h
   end
 
   get '/guides/:organization/:repository/organizations' do
+    validate_accessible! guide
     organizations_for guide
   end
 
@@ -46,10 +49,12 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/guides/import/:organization/:repository' do
+    authorize! :writer
     history_syncer.locate_and_import! :guide, slug.to_s
   end
 
   post '/guides/:organization/:repository/assets' do
+    authorize! :writer
     Mumuki::Bibliotheca.upload_asset! slug, json_body['filename'], json_body['content']
   end
 
