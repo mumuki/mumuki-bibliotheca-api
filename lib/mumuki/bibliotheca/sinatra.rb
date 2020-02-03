@@ -94,6 +94,10 @@ HTML
     halt 400
   end
 
+  error Mumuki::Domain::ForbiddenError do
+    halt 403
+  end
+
   options '*' do
     response.headers['Allow'] = settings.allow_methods.map { |it| it.to_s.upcase }.join(',')
     response.headers['Access-Control-Allow-Headers'] = 'X-Mumuki-Auth-Token, X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization'
@@ -165,7 +169,7 @@ HTML
     end
 
     def permissions
-      current_user.permissions
+      current_user&.permissions
     end
 
     def organizations_for(item)
@@ -173,6 +177,10 @@ HTML
         .in_path(item)
         .accessible_as(current_user, :student)
         .map { |it| it.as_json(only: [:name]) }
+    end
+
+    def validate_accessible!(subject)
+      authorize! :writer if subject.private?
     end
   end
 

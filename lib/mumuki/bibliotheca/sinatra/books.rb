@@ -10,7 +10,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/books' do
-    list_books Book.all
+    list_books Book.visible(permissions)
   end
 
   get '/books/writable' do
@@ -18,10 +18,12 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/books/:organization/:repository' do
+    validate_accessible! book
     book.to_resource_h
   end
 
   get '/books/:organization/:repository/organizations' do
+    validate_accessible! book
     organizations_for book
   end
 

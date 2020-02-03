@@ -10,7 +10,7 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/topics' do
-    list_topics Topic.all
+    list_topics Topic.visible(permissions)
   end
 
   get '/topics/writable' do
@@ -18,10 +18,12 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   get '/topics/:organization/:repository' do
+    validate_accessible! topic
     topic.to_resource_h
   end
 
   get '/topics/:organization/:repository/organizations' do
+    validate_accessible! topic
     organizations_for topic
   end
 

@@ -36,6 +36,8 @@ describe 'routes' do
                      exercises: [exercise]
   end
 
+  let!(:private_guide) { guide.dup.update! slug: 'foobar/baz', private:true }
+
   before do
     import_from_api! :guide, name: 'foo2', description: 'desc', language: 'haskell', slug: 'baz/bar2', exercises: []
     import_from_api! :guide, name: 'foo3', description: 'desc', language: 'haskell', slug: 'baz/foo', exercises: []
@@ -77,7 +79,7 @@ describe 'routes' do
 
   describe('get /guides/:slug') do
     describe 'shows guide by slug' do
-      context 'When guide exists' do
+      context 'When guide exists and is public' do
         before { get '/guides/foo/bar' }
         it { expect(last_response).to be_ok }
         it {
@@ -92,6 +94,38 @@ describe 'routes' do
             description: 'desc',
             exercises: [exercise.merge(extra: 'the extra code')],
             private: false,
+            expectations: [],
+            settings: {}
+          )
+        }
+      end
+
+      context 'When guide exists, is private and user has no permissions' do
+        before { get '/guides/foobar/baz' }
+
+        it { expect(last_response.status).to eq 401 }
+      end
+
+      context 'When guide exists, is private and user has permissions' do
+        before do
+          header 'Authorization', build_auth_header(writer: '*')
+
+          get '/guides/foobar/baz'
+        end
+
+        it { expect(last_response).to be_ok }
+        it {
+          expect(last_response.body).to json_eq(
+            beta: false,
+            type: 'practice',
+            id_format: '%05d',
+            name: 'foo',
+            locale: 'en',
+            language: 'haskell',
+            slug: 'foobar/baz',
+            description: 'desc',
+            exercises: [],
+            private: true,
             expectations: [],
             settings: {}
           )
