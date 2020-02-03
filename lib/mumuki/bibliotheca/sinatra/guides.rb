@@ -49,7 +49,6 @@ class Mumuki::Bibliotheca::App < Sinatra::Application
   end
 
   post '/guides/import/:organization/:repository' do
-    authorize! :writer
     history_syncer.locate_and_import! :guide, slug.to_s
   end
 
