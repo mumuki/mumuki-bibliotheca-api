@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200312181842) do
+ActiveRecord::Schema.define(version: 20200731081757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,11 @@ ActiveRecord::Schema.define(version: 20200312181842) do
     t.index ["parent_id"], name: "index_assignments_on_parent_id"
     t.index ["submission_id"], name: "index_assignments_on_submission_id"
     t.index ["submitter_id"], name: "index_assignments_on_submitter_id"
+  end
+
+  create_table "avatars", force: :cascade do |t|
+    t.string "image_url"
+    t.string "description"
   end
 
   create_table "books", id: :serial, force: :cascade do |t|
@@ -112,6 +117,11 @@ ActiveRecord::Schema.define(version: 20200312181842) do
     t.text "manual_evaluation_comment"
     t.integer "upvotes_count", default: 0
     t.bigint "organization_id"
+    t.integer "messages_count", default: 0
+    t.integer "validated_messages_count", default: 0
+    t.boolean "requires_moderator_response", default: true
+    t.string "last_moderator_access_by_id"
+    t.datetime "last_moderator_access_at"
     t.index ["initiator_id"], name: "index_discussions_on_initiator_id"
     t.index ["item_type", "item_id"], name: "index_discussions_on_item_type_and_item_id"
     t.index ["organization_id"], name: "index_discussions_on_organization_id"
@@ -138,7 +148,11 @@ ActiveRecord::Schema.define(version: 20200312181842) do
     t.integer "max_problem_submissions"
     t.integer "max_choice_submissions"
     t.boolean "results_hidden_for_choices", default: false
+    t.bigint "course_id"
+    t.integer "passing_criterion_type", default: 0
+    t.integer "passing_criterion_value"
     t.index ["classroom_id"], name: "index_exams_on_classroom_id", unique: true
+    t.index ["course_id"], name: "index_exams_on_course_id"
     t.index ["guide_id"], name: "index_exams_on_guide_id"
     t.index ["organization_id"], name: "index_exams_on_organization_id"
   end
@@ -283,6 +297,7 @@ ActiveRecord::Schema.define(version: 20200312181842) do
     t.boolean "read", default: false
     t.integer "discussion_id"
     t.boolean "approved", default: false
+    t.boolean "not_actually_a_question", default: false
   end
 
   create_table "organizations", id: :serial, force: :cascade do |t|
@@ -293,6 +308,7 @@ ActiveRecord::Schema.define(version: 20200312181842) do
     t.text "settings", default: "{}", null: false
     t.text "theme", default: "{}", null: false
     t.text "profile", default: "{}", null: false
+    t.integer "progressive_display_lookahead"
     t.index ["book_id"], name: "index_organizations_on_book_id"
     t.index ["name"], name: "index_organizations_on_name", unique: true
   end
@@ -367,6 +383,9 @@ ActiveRecord::Schema.define(version: 20200312181842) do
     t.integer "gender"
     t.string "verified_first_name"
     t.string "verified_last_name"
+    t.bigint "avatar_id"
+    t.datetime "disabled_at"
+    t.index ["disabled_at"], name: "index_users_on_disabled_at"
     t.index ["last_organization_id"], name: "index_users_on_last_organization_id"
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
