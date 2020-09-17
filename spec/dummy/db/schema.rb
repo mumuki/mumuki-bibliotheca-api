@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.bigint "organization_id"
     t.datetime "submitted_at"
     t.bigint "parent_id"
-    t.integer "top_submission_status", default: 0
+    t.integer "top_submission_status"
     t.index ["exercise_id"], name: "index_assignments_on_exercise_id"
     t.index ["organization_id"], name: "index_assignments_on_organization_id"
     t.index ["parent_id"], name: "index_assignments_on_parent_id"
@@ -311,8 +311,8 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.text "theme", default: "{}", null: false
     t.text "profile", default: "{}", null: false
     t.integer "progressive_display_lookahead"
-    t.boolean "incognito_mode_enabled"
     t.integer "target_audience", default: 0
+    t.boolean "incognito_mode_enabled"
     t.index ["book_id"], name: "index_organizations_on_book_id"
     t.index ["name"], name: "index_organizations_on_name", unique: true
   end
