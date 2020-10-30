@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200804191643) do
+ActiveRecord::Schema.define(version: 20201027134205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.datetime "submitted_at"
     t.bigint "parent_id"
     t.integer "top_submission_status"
+    t.boolean "misplaced"
     t.index ["exercise_id"], name: "index_assignments_on_exercise_id"
     t.index ["organization_id"], name: "index_assignments_on_organization_id"
     t.index ["parent_id"], name: "index_assignments_on_parent_id"
@@ -66,6 +67,7 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.text "description"
     t.string "slug"
     t.boolean "private", default: false
+    t.bigint "medal_id"
     t.index ["slug"], name: "index_books_on_slug", unique: true
   end
 
@@ -124,9 +126,12 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.boolean "requires_moderator_response", default: true
     t.string "last_moderator_access_by_id"
     t.datetime "last_moderator_access_at"
+    t.bigint "status_updated_by_id"
+    t.datetime "status_updated_at"
     t.index ["initiator_id"], name: "index_discussions_on_initiator_id"
     t.index ["item_type", "item_id"], name: "index_discussions_on_item_type_and_item_id"
     t.index ["organization_id"], name: "index_discussions_on_organization_id"
+    t.index ["status_updated_by_id"], name: "index_discussions_on_status_updated_by_id"
   end
 
   create_table "exam_authorizations", force: :cascade do |t|
@@ -218,6 +223,7 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.text "learn_more"
     t.text "settings"
     t.text "custom_expectations"
+    t.bigint "medal_id"
     t.index ["name"], name: "index_guides_on_name"
     t.index ["slug"], name: "index_guides_on_slug", unique: true
   end
@@ -234,6 +240,7 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.boolean "dirty_by_submission", default: false
     t.integer "children_passed_count"
     t.integer "children_count"
+    t.boolean "once_completed"
     t.index ["content_type", "content_id"], name: "index_indicators_on_content_type_and_content_id"
     t.index ["organization_id"], name: "index_indicators_on_organization_id"
     t.index ["parent_id"], name: "index_indicators_on_parent_id"
@@ -289,6 +296,11 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.integer "topic_id"
   end
 
+  create_table "medals", force: :cascade do |t|
+    t.string "image_url"
+    t.string "description"
+  end
+
   create_table "messages", id: :serial, force: :cascade do |t|
     t.string "submission_id"
     t.text "content"
@@ -313,6 +325,10 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.integer "progressive_display_lookahead"
     t.integer "target_audience", default: 0
     t.boolean "incognito_mode_enabled"
+    t.text "display_name"
+    t.text "display_description"
+    t.boolean "wins_page"
+    t.boolean "immersible"
     t.index ["book_id"], name: "index_organizations_on_book_id"
     t.index ["name"], name: "index_organizations_on_name", unique: true
   end
@@ -343,6 +359,7 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.text "appendix"
     t.string "slug"
     t.boolean "private", default: false
+    t.bigint "medal_id"
     t.index ["slug"], name: "index_topics_on_slug", unique: true
   end
 
@@ -398,6 +415,8 @@ ActiveRecord::Schema.define(version: 20200804191643) do
     t.bigint "avatar_id"
     t.datetime "disabled_at"
     t.boolean "trusted_for_forum"
+    t.string "avatar_type", default: "Avatar"
+    t.index ["avatar_type", "avatar_id"], name: "index_users_on_avatar_type_and_avatar_id"
     t.index ["disabled_at"], name: "index_users_on_disabled_at"
     t.index ["last_organization_id"], name: "index_users_on_last_organization_id"
     t.index ["uid"], name: "index_users_on_uid", unique: true
