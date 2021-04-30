@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210119190204) do
+ActiveRecord::Schema.define(version: 20210330175706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,14 +79,16 @@ ActiveRecord::Schema.define(version: 20210119190204) do
     t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.index ["organization_id"], name: "index_certificate_programs_on_organization_id"
   end
 
   create_table "certificates", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "certificate_program_id"
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.datetime "started_at"
+    t.datetime "ended_at"
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -121,6 +123,8 @@ ActiveRecord::Schema.define(version: 20210119190204) do
     t.integer "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "period_start"
+    t.datetime "period_end"
   end
 
   create_table "discussions", force: :cascade do |t|
@@ -197,6 +201,13 @@ ActiveRecord::Schema.define(version: 20210119190204) do
     t.bigint "exam_registration_id", null: false
     t.index ["exam_id"], name: "index_exam_registrations_exams_on_exam_id"
     t.index ["exam_registration_id"], name: "index_exam_registrations_exams_on_exam_registration_id"
+  end
+
+  create_table "exam_registrations_users", id: false, force: :cascade do |t|
+    t.bigint "exam_registration_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["exam_registration_id"], name: "index_exam_registrations_users_on_exam_registration_id"
+    t.index ["user_id"], name: "index_exam_registrations_users_on_user_id"
   end
 
   create_table "exams", id: :serial, force: :cascade do |t|
@@ -368,6 +379,13 @@ ActiveRecord::Schema.define(version: 20210119190204) do
     t.integer "discussion_id"
     t.boolean "approved", default: false
     t.boolean "not_actually_a_question", default: false
+    t.datetime "approved_at"
+    t.bigint "approved_by_id"
+    t.integer "deletion_motive"
+    t.datetime "deleted_at"
+    t.bigint "deleted_by_id"
+    t.index ["approved_by_id"], name: "index_messages_on_approved_by_id"
+    t.index ["deleted_by_id"], name: "index_messages_on_deleted_by_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -400,6 +418,7 @@ ActiveRecord::Schema.define(version: 20210119190204) do
     t.boolean "wins_page"
     t.boolean "immersible"
     t.boolean "prevent_manual_evaluation_content"
+    t.text "faqs"
     t.index ["book_id"], name: "index_organizations_on_book_id"
     t.index ["name"], name: "index_organizations_on_name", unique: true
   end
@@ -506,6 +525,8 @@ ActiveRecord::Schema.define(version: 20210119190204) do
     t.datetime "forum_terms_accepted_at"
     t.boolean "banned_from_forum"
     t.boolean "uppercase_mode"
+    t.string "delete_account_token"
+    t.datetime "delete_account_token_expiration_date"
     t.index ["avatar_type", "avatar_id"], name: "index_users_on_avatar_type_and_avatar_id"
     t.index ["disabled_at"], name: "index_users_on_disabled_at"
     t.index ["last_organization_id"], name: "index_users_on_last_organization_id"
