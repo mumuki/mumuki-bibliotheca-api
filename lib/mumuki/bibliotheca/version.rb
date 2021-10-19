@@ -1,5 +1,5 @@
 module Mumuki
   module Bibliotheca
-    VERSION = '9.18.0'
+    VERSION = '9.19.0'
   end
 end
