@@ -29,7 +29,7 @@ sudo apt-get install autoconf curl git build-essential libssl-dev autoconf bison
 > [rbenv](https://github.com/rbenv/rbenv) is a ruby versions manager, similar to rvm, nvm, and so on.
 
 ```bash
-curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
+curl -fsSL https://raw.githubusercontent.com/rbenv/rbenv-installer/refs/heads/main/bin/rbenv-installer | bash
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc # or .bash_profile
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc # or .bash_profile
 ```
@@ -39,10 +39,10 @@ echo 'eval "$(rbenv init -)"' >> ~/.bashrc # or .bash_profile
 > Now we have rbenv installed, we can install ruby and [bundler](http://bundler.io/)
 
 ```bash
-rbenv install 2.3.1
-rbenv global 2.3.1
+rbenv install 2.6.3
+rbenv global 2.6.3
 rbenv rehash
-gem install bundler
+gem install bundler -v 2.4.22 # Last compatible version with 2.6.3
 ```
 
 ### 4. Clone this repository
@@ -55,6 +55,14 @@ cd mumuki-bibliotheca-api
 ```
 
 ### 5. Install and setup database
+
+Install postgres:
+
+```bash
+# Linux
+sudo apt install postgresql
+```
+
 
 > We need to create a PostgreSQL role - AKA a user - who will be used by Laboratory to create and access the database
 
