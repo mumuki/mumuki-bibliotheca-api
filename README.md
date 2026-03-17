@@ -153,6 +153,114 @@ bundle exec rake languages:import
 bundle exec rake db:migrate[<migration_name>]
 ```
 
+## TypeScript Guide Reader
+
+A TypeScript library is included that can read a guide repository from a local directory or directly from GitHub and return its JSON representation.
+
+### Installation
+
+```bash
+npm install
+```
+
+### Usage
+
+```typescript
+import { readGuideFromDir, readGuideFromGithub } from 'mumuki-guide-reader';
+
+// From a local clone
+const guide = await readGuideFromDir('./my-guide-repo', 'myorg/my-guide');
+
+// From a public GitHub repository
+const guide = await readGuideFromGithub('myorg/my-guide');
+
+// From a private GitHub repository
+const guide = await readGuideFromGithub('myorg/private-guide', { token: 'ghp_...' });
+
+// Targeting a specific branch or tag
+const guide = await readGuideFromGithub('myorg/my-guide', { ref: 'v2.0' });
+```
+
+### Guide repository structure
+
+```
+guide-repo/
+├── meta.yml                      # Guide metadata (see fields below)
+├── description.md                # Guide description (required)
+├── expectations.yml              # Guide-level expectations (optional)
+├── AUTHORS.txt                   # Author names → authors field (optional)
+├── COLLABORATORS.txt             # Collaborator names (optional)
+├── corollary.md                  # Closing remarks (optional)
+├── extra.<ext>                   # Extra code shared across exercises (optional)
+├── sources.md                    # Source citations (optional)
+└── 1_exercise_name/              # Exercise directory: number → id, slug → name
+    ├── meta.yml                  # Exercise metadata (see fields below)
+    ├── description.md            # Exercise description (required)
+    ├── test.<ext>                # Test code (optional)
+    ├── extra.<ext>               # Exercise-specific extra code (optional)
+    ├── default.<ext>             # Starter code for students → default_content (optional)
+    ├── hint.md                   # Hint text (optional)
+    ├── corollary.md              # Post-exercise remarks (optional)
+    ├── expectations.yml          # Exercise-level expectations (optional)
+    └── free_form_editor_source.html  # For free-form editor exercises (optional)
+```
+
+File extensions for code and test files are language-specific (e.g. `.hs` for Haskell, `.py` for Python). Files are discovered by stem name, so the extension does not need to be known in advance.
+
+Exercise directories must follow the `<number>_<name>` pattern (e.g. `1_hello_world`, `02_variables`). The number becomes the exercise `id`; the name part becomes the default `name` and can be overridden in the exercise `meta.yml`.
+
+#### Guide `meta.yml` fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `language` | string | yes | Programming language (e.g. `haskell`, `python`) |
+| `name` | string | no | Guide title |
+| `locale` | string | no | Locale code (e.g. `en`, `es`) |
+| `type` | string | no | `practice` (default), `learning`, or `exam` |
+| `beta` | boolean | no | Mark guide as beta (default: `false`) |
+| `private` | boolean | no | Mark guide as private (default: `false`) |
+| `id_format` | string | no | Exercise ID format string (e.g. `%05d`) |
+| `order` | number[] | no | Explicit exercise ordering by id |
+| `teacher_info` | string | no | Notes visible only to teachers |
+| `settings` | object | no | Arbitrary key/value settings |
+| `custom_expectations` | string | no | Custom expectation rules |
+
+Legacy fields also supported: `learning: true` is equivalent to `type: learning`; `original_id_format` is used as `id_format` when `id_format` is absent.
+
+#### Exercise `meta.yml` fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Override the name derived from the directory |
+| `type` | string | `problem` (default), `playground`, or `reading` |
+| `locale` | string | Locale code |
+| `layout` | string | Editor layout (e.g. `input_bottom`, `input_right`) |
+| `editor` | string/number | Editor type (e.g. `code`, `single_choice`, `multiple_choice`) |
+| `language` | string | Override the guide language for this exercise |
+| `tags` | string[] | Tags → `tag_list` in output |
+| `extra_visible` | boolean | Whether extra code is visible to students (default: `false`) |
+| `manual_evaluation` | boolean | Requires manual teacher evaluation (default: `false`) |
+| `teacher_info` | string | Notes visible only to teachers |
+| `assistance_rules` | object[] | Hint/assistance rules |
+| `randomizations` | object | Random variation configuration |
+| `choices` | object[] | Choices for single/multiple choice exercises |
+| `progressive_expectations` | boolean | Enable progressive expectations (default: `false`) |
+| `settings` | object | Arbitrary key/value settings |
+
+### Running the TypeScript tests
+
+```bash
+npm test
+```
+
+### Building
+
+```bash
+npm run build
+```
+
+Output is written to `dist/`.
+
 ## See also
 
 [Bibliotheca Web Client](https://github.com/mumuki/mumuki-bibliotheca)
